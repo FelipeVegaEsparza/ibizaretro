@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f5f0e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <title>Radio</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-96x96.png">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="/assets/css/loading-styles.css">
+  <link rel="stylesheet" href="/assets/css/pwa-installer.css?v=3">
+  <link rel="stylesheet" href="/assets/css/promotion-popup.css">
+  <link rel="stylesheet" href="/assets/css/notification-button.css">
+  <link rel="stylesheet" href="/assets/css/video-player.css">
+  <link rel="stylesheet" href="/assets/css/share-modal.css">
+  <link rel="stylesheet" href="/assets/css/mobile-player.css?v=4">
+  <link rel="stylesheet" href="/templates/tradicional/assets/css/style.css">
+</head>
+<body>
+
+  <div class="grain"></div>
+
+  <!-- ========== LOADING ========== -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-symbol">✦</div>
+      <h2 id="loading-title">Cargando...</h2>
+      <div class="loading-bar"><div class="loading-progress"></div></div>
+      <p id="loading-subtitle">Preparando edición...</p>
+    </div>
+  </div>
+
+  <!-- ========== HEADER ========== -->
+  <header class="masthead" id="masthead">
+    <div class="masthead-inner">
+      <div class="masthead-left">
+        <div class="masthead-date" id="current-date"></div>
+      </div>
+      <div class="masthead-brand">
+        <img id="radio-logo" src="" alt="Logo" class="masthead-logo">
+      </div>
+      <div class="masthead-right">
+        <div id="notification-button-container"></div>
+        <div class="social-links" id="social-links"></div>
+      </div>
+    </div>
+    <div class="masthead-rule"></div>
+  </header>
+
+  <!-- ========== TOP NAV ========== -->
+  <button class="nav-toggle" id="nav-toggle" aria-label="Menú">
+    <span></span><span></span><span></span>
+  </button>
+  <nav class="topnav" id="topnav">
+    <div class="topnav-header">
+      <span class="topnav-title">Secciones</span>
+      <button class="nav-close" id="nav-close" aria-label="Cerrar menú">&times;</button>
+    </div>
+    <div class="topnav-items">
+      <button class="topnav-item active" data-tab="hero">Portada</button>
+      <button class="topnav-item" data-tab="news" style="display:none;">Noticias</button>
+      <button class="topnav-item" data-tab="programs" style="display:none;">Programas</button>
+      <button class="topnav-item" data-tab="podcasts" style="display:none;">Podcasts</button>
+      <button class="topnav-item" data-tab="videocasts" style="display:none;">Videocasts</button>
+      <button class="topnav-item" data-tab="videos" style="display:none;">Ranking</button>
+      <button class="topnav-item" data-tab="polls" style="display:none;">Encuestas</button>
+      <button class="topnav-item" data-tab="events" style="display:none;">Eventos</button>
+      <button class="topnav-item" data-tab="sponsors" style="display:none;">Sponsors</button>
+      <button class="topnav-item" data-tab="announcers" style="display:none;">Equipo</button>
+      <button class="topnav-item" data-tab="galleries" style="display:none;">Galerías</button>
+      <button class="topnav-item" data-tab="tracks" style="display:none;">Temas</button>
+      <button class="topnav-item" data-tab="about">Radio</button>
+      <button class="topnav-item" data-tab="contact">Contacto</button>
+    </div>
+  </nav>
+  <div class="nav-overlay" id="nav-overlay"></div>
+
+  <!-- ========== PLAYER BAR ========== -->
+  <div class="player-bar" id="player-bar">
+    <div class="player-bar-inner">
+      <div class="player-bar-cover">
+        <img id="track-artwork" src="" alt="" class="player-bar-art" style="display:none;">
+        <div class="player-bar-art-default" id="default-artwork">
+          <i class="fas fa-radio"></i>
+        </div>
+      </div>
+      <div class="player-bar-info">
+        <div class="player-bar-title" id="track-title">Radio</div>
+        <div class="player-bar-artist" id="track-artist">En Vivo</div>
+      </div>
+      <div class="player-bar-controls">
+        <button class="player-bar-btn" id="play-btn">
+          <i class="fas fa-play"></i>
+        </button>
+        <div class="player-bar-stats">
+          <span><i class="fas fa-users"></i> <span id="listeners-count">0</span></span>
+          <span><i class="fas fa-signal"></i> <span id="bitrate">—</span></span>
+        </div>
+      </div>
+      <div class="player-bar-status" id="hero-status">
+        <span class="status-dot"></span>
+        <span>EN VIVO</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ========== MAIN ========== -->
+  <main class="main">
+
+    <!-- TAB: PORTADA -->
+    <div class="tab-content active" id="tab-hero">
+      <section class="hero-section">
+        <div class="hero-main">
+          <div class="hero-cover-art">
+            <img id="hero-track-artwork" src="" alt="" class="hero-cover-img" style="display:none;">
+            <div class="hero-cover-default" id="hero-cover-default">
+              <i class="fas fa-radio"></i>
+            </div>
+          </div>
+          <div class="hero-track-info">
+            <div class="hero-badge">TRANSMISIÓN EN VIVO</div>
+            <h1 class="hero-title" id="hero-track-title">Radio</h1>
+            <p class="hero-artist" id="hero-track-artist">En Vivo</p>
+          </div>
+        </div>
+      </section>
+
+      <div class="content-wide">
+        <section class="section">
+          <h2 class="section-headline">Últimas noticias</h2>
+          <div class="news-featured" id="featured-news-grid"></div>
+        </section>
+        <section class="section">
+          <div class="news-grid" id="all-news-grid"></div>
+          <div class="section-more" id="news-more" style="display:none;">
+            <button class="btn-load" id="news-load-more">Cargar más artículos &rarr;</button>
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!-- TAB: NOTICIAS -->
+    <div class="tab-content" id="tab-news">
+      <div class="content-inner">
+        <h2 class="page-heading">Noticias</h2>
+        <div class="divider"></div>
+        <div class="news-grid-full" id="all-news-grid-full"></div>
+        <div class="section-more" id="news-more-full" style="display:none;">
+          <button class="btn-load" id="news-load-more-full">Cargar más artículos &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: PROGRAMAS -->
+    <div class="tab-content" id="tab-programs">
+      <div class="content-inner">
+        <h2 class="page-heading">Programación</h2>
+        <div class="divider"></div>
+        <div class="day-nav" id="day-nav">
+          <button class="day-btn" data-day="lunes">Lun</button>
+          <button class="day-btn" data-day="martes">Mar</button>
+          <button class="day-btn" data-day="miercoles">Mié</button>
+          <button class="day-btn" data-day="jueves">Jue</button>
+          <button class="day-btn" data-day="viernes">Vie</button>
+          <button class="day-btn" data-day="sabado">Sáb</button>
+          <button class="day-btn" data-day="domingo">Dom</button>
+        </div>
+        <div class="programs-list" id="programs-timeline"></div>
+      </div>
+    </div>
+
+    <!-- TAB: PODCASTS -->
+    <div class="tab-content" id="tab-podcasts">
+      <div class="content-inner">
+        <h2 class="page-heading">Podcasts</h2>
+        <div class="divider"></div>
+        <div class="podcasts-grid" id="podcasts-list"></div>
+        <div class="section-more" id="podcasts-more" style="display:none;">
+          <button class="btn-load" id="podcasts-load-more">Cargar más &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: VIDECASTS -->
+    <div class="tab-content" id="tab-videocasts">
+      <div class="content-inner">
+        <h2 class="page-heading">Videocasts</h2>
+        <div class="divider"></div>
+        <div class="videocasts-grid" id="videocasts-list"></div>
+        <div class="section-more" id="videocasts-more" style="display:none;">
+          <button class="btn-load" id="videocasts-load-more">Cargar más &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: VIDEOS -->
+    <div class="tab-content" id="tab-videos">
+      <div class="content-inner">
+        <h2 class="page-heading">Ranking de videos</h2>
+        <div class="divider"></div>
+        <div class="videos-list" id="videos-ranking"></div>
+      </div>
+    </div>
+
+    <!-- TAB: ENCUESTAS -->
+    <div class="tab-content" id="tab-polls">
+      <div class="content-inner">
+        <h2 class="page-heading">Encuestas</h2>
+        <div class="divider"></div>
+        <div class="polls-list" id="polls-container"></div>
+      </div>
+    </div>
+
+    <!-- TAB: EVENTOS -->
+    <div class="tab-content" id="tab-events">
+      <div class="content-inner">
+        <h2 class="page-heading">Eventos</h2>
+        <div class="divider"></div>
+        <div class="events-list" id="events-timeline"></div>
+      </div>
+    </div>
+
+    <!-- TAB: SPONSORS -->
+    <div class="tab-content" id="tab-sponsors">
+      <div class="content-inner">
+        <h2 class="page-heading">Auspiciadores</h2>
+        <div class="divider"></div>
+        <div class="sponsors-grid" id="sponsors-grid"></div>
+      </div>
+    </div>
+
+    <!-- TAB: EQUIPO -->
+    <div class="tab-content" id="tab-announcers">
+      <div class="content-inner">
+        <h2 class="page-heading">Nuestro equipo</h2>
+        <div class="divider"></div>
+        <div class="announcers-grid" id="announcers-grid"></div>
+      </div>
+    </div>
+
+    <!-- TAB: GALERÍAS -->
+    <div class="tab-content" id="tab-galleries">
+      <div class="content-inner">
+        <h2 class="page-heading">Galerías</h2>
+        <div class="divider"></div>
+        <div class="galleries-grid" id="galleries-list"></div>
+      </div>
+    </div>
+
+    <!-- TAB: TEMAS -->
+    <div class="tab-content" id="tab-tracks">
+      <div class="content-inner">
+        <h2 class="page-heading">Últimos temas</h2>
+        <div class="divider"></div>
+        <div class="tracks-list" id="recent-tracks"></div>
+      </div>
+    </div>
+
+    <!-- TAB: NOSOTROS -->
+    <div class="tab-content" id="tab-about">
+      <div class="content-inner">
+        <h2 class="page-heading">La radio</h2>
+        <div class="divider"></div>
+        <div class="about-block">
+          <h3 id="about-title">Nuestra Radio</h3>
+          <p id="about-desc">Cargando...</p>
+          <div class="about-social" id="about-social"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: CONTACTO -->
+    <div class="tab-content" id="tab-contact">
+      <div class="content-inner">
+        <h2 class="page-heading">Contacto</h2>
+        <div class="divider"></div>
+        <form class="contact-form" id="contact-form">
+          <div class="form-row">
+            <input type="text" id="contact-name" class="form-input" placeholder="Nombre" autocomplete="name" required>
+          </div>
+          <div class="form-row">
+            <input type="email" id="contact-email" class="form-input" placeholder="Email" autocomplete="email" inputmode="email" required>
+          </div>
+          <div class="form-row">
+            <input type="text" id="contact-subject" class="form-input" placeholder="Asunto" required>
+          </div>
+          <div class="form-row">
+            <textarea id="contact-message" class="form-input form-ta" rows="5" placeholder="Mensaje" required></textarea>
+          </div>
+          <button type="submit" class="btn-submit">Enviar mensaje</button>
+          <div class="contact-feedback" id="contact-feedback" style="display:none;"></div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- ========== MODALS ========== -->
+  <div id="news-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div id="news-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="podcast-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div id="podcast-modal-body"></div>
+      <audio id="podcast-audio" controls></audio>
+    </div>
+  </div>
+
+  <div id="videocast-modal" class="modal">
+    <div class="modal-content modal-lg">
+      <button class="modal-close">&times;</button>
+      <div id="videocast-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="video-modal" class="modal">
+    <div class="modal-content modal-lg">
+      <button class="modal-close">&times;</button>
+      <div id="video-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="gallery-modal" class="modal modal-lg">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div id="gallery-modal-body"></div>
+      <div class="gallery-thumbs" id="gallery-thumbnails"></div>
+    </div>
+  </div>
+
+  <audio id="radio-audio" preload="none" crossorigin="anonymous"></audio>
+  <input type="range" id="volume-slider" min="0" max="100" value="50" style="display:none;">
+
+  <script>
+    class LoadingManager {
+      constructor() {
+        this.overlay = document.getElementById('loading-overlay');
+        this.title = document.getElementById('loading-title');
+        this.subtitle = document.getElementById('loading-subtitle');
+        this.progress = document.querySelector('.loading-progress');
+        this.init();
+      }
+      async init() {
+        await this.delay(200);
+        this.setProgress(15, 'Iniciando...');
+        await this.delay(300);
+        this.setProgress(35, 'Conectando...');
+        await this.delay(400);
+        try {
+          const resp = await fetch('/config/config.json');
+          const config = await resp.json();
+          if (config.project_name) this.title.textContent = config.project_name;
+        } catch (e) {}
+        this.setProgress(55, 'Cargando datos...');
+        await this.delay(500);
+        this.setProgress(75, 'Preparando edición...');
+        await this.delay(400);
+        this.setProgress(95, 'Casi listo...');
+        await this.delay(300);
+        this.setProgress(100, '¡Listo!');
+        await this.delay(300);
+        this.hide();
+      }
+      setProgress(pct, msg) {
+        if (this.progress) this.progress.style.width = pct + '%';
+        if (msg && this.subtitle) this.subtitle.textContent = msg;
+      }
+      hide() {
+        if (this.overlay) { this.overlay.classList.add('hidden'); setTimeout(() => { this.overlay.style.display = 'none'; }, 400); }
+      }
+      delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+    }
+    window.loadingManager = new LoadingManager();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="/assets/js/title-updater.js"></script>
+  <script src="/assets/js/meta-updater.js"></script>
+  <script src="/assets/js/mobile-enhancements.js"></script>
+  <script src="/assets/js/pwa-installer.js?v=3"></script>
+  <script src="/assets/js/promotion-popup.js"></script>
+  <script type="module" src="/assets/js/onesignal-init.js"></script>
+  <script type="module" src="/assets/js/video-player.js"></script>
+  <script src="/assets/js/share-button.js"></script>
+  <script type="module" src="/templates/tradicional/assets/js/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

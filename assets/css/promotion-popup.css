@@ -1,0 +1,351 @@
+/* Promotion Popup Styles */
+.promotion-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.promotion-popup-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.promotion-popup {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20px;
+  max-width: 500px;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: popupSlideIn 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes popupSlideIn {
+  from {
+    transform: scale(0.7) translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.promotion-popup-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 40px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  border-radius: 50%;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+}
+
+.promotion-popup-close:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+.promotion-popup-image {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  display: block;
+  flex-shrink: 0;
+}
+
+.promotion-popup-content {
+  padding: 30px;
+  color: white;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.promotion-popup-title {
+  font-size: 28px;
+  font-weight: 700;
+  margin: 0 0 15px 0;
+  line-height: 1.2;
+}
+
+.promotion-popup-description {
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 25px 0;
+  opacity: 0.95;
+}
+
+.promotion-popup-button {
+  display: inline-block;
+  background: white;
+  color: #667eea;
+  padding: 14px 32px;
+  border-radius: 50px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.promotion-popup-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: #f8f9fa;
+}
+
+.promotion-popup-button i {
+  margin-left: 8px;
+  transition: transform 0.3s ease;
+}
+
+.promotion-popup-button:hover i {
+  transform: translateX(4px);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .promotion-popup {
+    max-width: 95%;
+    margin: 20px;
+  }
+
+  .promotion-popup-image {
+    height: 200px;
+  }
+
+  .promotion-popup-content {
+    padding: 20px;
+  }
+
+  .promotion-popup-title {
+    font-size: 22px;
+  }
+
+  .promotion-popup-description {
+    font-size: 14px;
+  }
+
+  .promotion-popup-button {
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .promotion-popup {
+    max-width: 100%;
+    margin: 0;
+    border-radius: 15px;
+    max-height: 95vh;
+  }
+
+  .promotion-popup-image {
+    height: 180px;
+  }
+
+  .promotion-popup-content {
+    padding: 15px;
+  }
+
+  .promotion-popup-title {
+    font-size: 20px;
+    margin-bottom: 12px;
+  }
+
+  .promotion-popup-description {
+    font-size: 13px;
+    line-height: 1.5;
+    margin-bottom: 20px;
+  }
+
+  .promotion-popup-button {
+    padding: 10px 20px;
+    font-size: 13px;
+    width: 100%;
+    text-align: center;
+  }
+
+  .promotion-popup-close {
+    width: 35px;
+    height: 35px;
+    font-size: 18px;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 360px) {
+  .promotion-popup-overlay {
+    padding: 5px;
+  }
+
+  .promotion-popup {
+    border-radius: 12px;
+  }
+
+  .promotion-popup-image {
+    height: 150px;
+  }
+
+  .promotion-popup-content {
+    padding: 12px;
+  }
+
+  .promotion-popup-title {
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+
+  .promotion-popup-description {
+    font-size: 12px;
+    margin-bottom: 15px;
+  }
+
+  .promotion-popup-button {
+    padding: 9px 16px;
+    font-size: 12px;
+  }
+
+  .promotion-popup-close {
+    width: 32px;
+    height: 32px;
+    font-size: 16px;
+    top: 8px;
+    right: 8px;
+  }
+}
+
+/* Landscape mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .promotion-popup {
+    max-height: 95vh;
+    overflow-y: auto;
+    flex-direction: row;
+  }
+
+  .promotion-popup-image {
+    height: auto;
+    width: 40%;
+    min-height: 100%;
+  }
+
+  .promotion-popup-content {
+    width: 60%;
+    padding: 20px;
+  }
+
+  .promotion-popup-title {
+    font-size: 18px;
+  }
+
+  .promotion-popup-description {
+    font-size: 12px;
+  }
+
+  .promotion-popup-button {
+    padding: 8px 16px;
+    font-size: 12px;
+  }
+}
+
+/* Small landscape */
+@media (max-width: 640px) and (orientation: landscape) {
+  .promotion-popup {
+    max-height: 98vh;
+  }
+
+  .promotion-popup-image {
+    width: 35%;
+  }
+
+  .promotion-popup-content {
+    width: 65%;
+    padding: 15px;
+  }
+
+  .promotion-popup-title {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .promotion-popup-description {
+    font-size: 11px;
+    margin-bottom: 12px;
+  }
+}
+
+/* Tablets */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .promotion-popup {
+    max-width: 550px;
+  }
+
+  .promotion-popup-image {
+    height: 280px;
+  }
+}
+
+/* Large screens */
+@media (min-width: 1440px) {
+  .promotion-popup {
+    max-width: 600px;
+  }
+
+  .promotion-popup-image {
+    height: 300px;
+  }
+
+  .promotion-popup-content {
+    padding: 35px;
+  }
+
+  .promotion-popup-title {
+    font-size: 32px;
+  }
+
+  .promotion-popup-description {
+    font-size: 18px;
+  }
+}
+
+/* Animation for close */
+.promotion-popup-overlay.closing .promotion-popup {
+  animation: popupSlideOut 0.3s ease forwards;
+}
+
+@keyframes popupSlideOut {
+  to {
+    transform: scale(0.7) translateY(-50px);
+    opacity: 0;
+  }
+}

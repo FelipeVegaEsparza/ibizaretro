@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio Pulse Player</title>
+  
+  <!-- Favicon Configuration -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/icon-72x72.png">
+  <link rel="shortcut icon" href="/assets/icons/icon-96x96.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/icon-128x128.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/icon-128x128.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/icon-96x96.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/icon-72x72.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-152x152.png">
+  
+  <!-- PWA Configuration -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Radio Pulse Player">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Radio Pulse Player">
+  
+  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="/assets/css/loading-styles.css">
+  <link rel="stylesheet" href="/assets/css/pwa-installer.css?v=3">
+  <link rel="stylesheet" href="/assets/css/promotion-popup.css">
+  <link rel="stylesheet" href="/assets/css/notification-button.css">
+  <link rel="stylesheet" href="/assets/css/video-player.css">
+  <link rel="stylesheet" href="/assets/css/share-modal.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/mobile-player.css?v=4">
+</head>
+<body>
+  
+  <!-- Dynamic Background with Cover -->
+  <div class="player-bg" id="player-bg">
+    <div class="bg-cover" id="bg-cover"></div>
+    <div class="bg-overlay"></div>
+    <div class="bg-blur"></div>
+  </div>
+
+  <!-- VU Meter: visualizador de audio en tiempo real (reemplaza al fake anterior) -->
+  <div class="vumeter" id="vumeter" aria-hidden="true">
+    <div class="vumeter-bars" id="vumeter-bars"></div>
+  </div>
+
+  <!-- Main Player Container -->
+  <div class="player-container">
+    
+    <!-- Header with Logo and Social -->
+    <header class="player-header">
+      <div class="logo-section">
+        <img id="radio-logo" src="" alt="Radio Logo" style="display: none;">
+      </div>
+      
+      <div class="social-section">
+        <!-- Notification Button -->
+        <div id="notification-button-container"></div>
+        
+        <!-- TV Online Button -->
+        <button class="tv-online-btn" id="tv-online-btn" style="display: none;">
+          <i class="fas fa-tv"></i>
+          <span>TV Online</span>
+        </button>
+        
+        <div class="social-links" id="social-links">
+          <!-- Social links will be loaded here -->
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Player -->
+    <div class="main-player" id="radio-player">
+      
+      <!-- Track Artwork -->
+      <div class="track-artwork-container">
+        <div class="artwork-frame">
+          <div class="artwork-inner">
+            <img id="track-artwork" src="" alt="Now Playing" style="display: none;">
+            <div class="default-artwork" id="default-artwork">
+              <div class="artwork-animation"></div>
+              <i class="fas fa-music"></i>
+            </div>
+          </div>
+          <div class="artwork-glow"></div>
+        </div>
+      </div>
+
+      <!-- Track Info -->
+      <div class="track-info">
+        <h2 class="track-title" id="track-title">Radio Pulse</h2>
+        <p class="track-artist" id="track-artist">En Vivo</p>
+        <div class="track-meta">
+          <span class="live-indicator">
+            <span class="live-dot"></span>
+            <span>EN VIVO</span>
+          </span>
+          <span class="listeners-count">
+            <i class="fas fa-users"></i>
+            <span id="listeners-count">0</span> oyentes
+          </span>
+        </div>
+      </div>
+
+      <!-- Player Controls -->
+      <div class="player-controls">
+        <button class="control-btn secondary" id="prev-btn">
+          <i class="fas fa-step-backward"></i>
+          <div class="btn-ripple"></div>
+        </button>
+        
+        <button class="control-btn primary" id="play-btn">
+          <i class="fas fa-play"></i>
+          <div class="btn-ripple"></div>
+        </button>
+        
+        <button class="control-btn secondary" id="next-btn">
+          <i class="fas fa-step-forward"></i>
+          <div class="btn-ripple"></div>
+        </button>
+      </div>
+
+      <!-- Volume Control -->
+      <div class="volume-control">
+        <i class="fas fa-volume-down"></i>
+        <div class="volume-slider-container">
+          <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+          <div class="volume-track"></div>
+          <div class="volume-fill"></div>
+        </div>
+        <i class="fas fa-volume-up"></i>
+      </div>
+
+      <!-- Additional Info -->
+      <div class="additional-info">
+        <div class="info-item">
+          <i class="fas fa-signal"></i>
+          <span>Calidad: <span id="audio-quality">HD</span></span>
+        </div>
+        <div class="info-item">
+          <i class="fas fa-broadcast-tower"></i>
+          <span>Bitrate: <span id="bitrate">N/A</span> kbps</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Footer -->
+    <footer class="player-footer">
+      <p>&copy; 2025 <span id="footer-radio-name">Radio Pulse</span></p>
+    </footer>
+
+  </div>
+
+  <!-- TV Online Popup Modal -->
+  <div class="tv-popup-overlay" id="tv-popup-overlay">
+    <div class="tv-popup-modal">
+      <div class="tv-popup-header">
+        <h3>
+          <i class="fas fa-tv"></i>
+          TV Online - Transmisión en Vivo
+        </h3>
+        <button class="tv-popup-close" id="tv-popup-close">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="tv-popup-content">
+        <div id="tv-player-container">
+          <!-- TV Player will be injected here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-logo">
+        <img id="loading-logo-img" src="/assets/icons/icon-512x512.png" alt="Logo" class="loading-logo-image">
+        <div class="logo-animation"></div>
+      </div>
+      <h2 id="loading-title">Cargando...</h2>
+      <div class="loading-progress">
+        <div class="progress-bar"></div>
+      </div>
+      <p id="loading-subtitle">Preparando la experiencia musical...</p>
+    </div>
+  </div>
+
+  <!-- Audio Element (crossorigin habilita el análisis real con Web Audio API) -->
+  <audio id="radio-audio" preload="none" crossorigin="anonymous"></audio>
+
+  <script src="/assets/js/title-updater.js"></script>
+  <script src="/assets/js/mobile-enhancements.js"></script>
+  <script src="/assets/js/pwa-installer.js?v=3"></script>
+  <script src="/assets/js/promotion-popup.js"></script>
+  <script type="module" src="/assets/js/onesignal-init.js"></script>
+  <script type="module" src="/assets/js/video-player.js"></script>
+  <script src="/assets/js/share-button.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
+  
+  <!-- Loading Manager Inline -->
+  <script>
+    // Loading Manager ejecutado inmediatamente
+    class LoadingManager {
+      constructor() {
+        this.loadingOverlay = null;
+        this.loadingTitle = null;
+        this.loadingSubtitle = null;
+        this.loadingLogo = null;
+        this.progressBar = null;
+        this.currentProgress = 0;
+        this.init();
+      }
+
+      init() {
+        this.loadingOverlay = document.getElementById('loading-overlay');
+        this.loadingTitle = document.getElementById('loading-title');
+        this.loadingSubtitle = document.getElementById('loading-subtitle');
+        this.loadingLogo = document.getElementById('loading-logo-img');
+        this.progressBar = document.querySelector('.progress-bar');
+        
+        console.log('LoadingManager: Inicializado');
+        if (this.loadingOverlay) {
+          this.startLoading();
+        }
+      }
+
+      async startLoading() {
+        try {
+          console.log('LoadingManager: Iniciando carga...');
+          await this.loadBasicData();
+          await this.simulateProgress();
+        } catch (error) {
+          console.error('LoadingManager: Error:', error);
+          setTimeout(() => this.hide(), 1000);
+        }
+      }
+
+      async loadBasicData() {
+        try {
+          this.updateProgress(10, 'Iniciando aplicación...');
+          await this.delay(900);
+          
+          this.updateProgress(25, 'Conectando con IPStream...');
+          await this.delay(1100);
+          
+          const configResponse = await fetch('/config/config.json');
+          const config = await configResponse.json();
+          
+          this.updateProgress(45, 'Cargando datos de la radio...');
+          await this.delay(1300);
+          
+          // Usar el project_name del config local
+          if (config.project_name) {
+            this.updateTitle(`Cargando ${config.project_name}`);
+            await this.delay(600);
+          }
+          
+          this.updateProgress(65, 'Personalizando experiencia...');
+          await this.delay(900);
+          
+          // Cargar datos de la API para el logo
+          try {
+            const apiUrl = `${config.ipstream_base_url}/${config.clientId}/basic-data`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            
+            if (data.logoUrl) {
+              this.updateLogo(`https://dashboard.ipstream.cl${data.logoUrl}`);
+              await this.delay(600);
+            }
+          } catch (apiError) {
+            console.warn('LoadingManager: Error cargando logo desde API:', apiError);
+          }
+          
+          this.updateProgress(85, 'Aplicando configuración...');
+          await this.delay(1100);
+          
+        } catch (error) {
+          console.error('LoadingManager: Error cargando datos:', error);
+          await this.delay(1000);
+        }
+      }
+
+      async simulateProgress() {
+        this.updateProgress(95, 'Preparando interfaz...');
+        await this.delay(800);
+        
+        this.updateProgress(100, '¡Listo para comenzar!');
+        await this.delay(1200);
+        
+        this.hide();
+      }
+
+      updateProgress(percentage, message = null) {
+        this.currentProgress = percentage;
+        
+        if (this.progressBar) {
+          this.progressBar.style.width = `${percentage}%`;
+        }
+        
+        if (message && this.loadingSubtitle) {
+          this.loadingSubtitle.textContent = message;
+        }
+        
+        console.log(`LoadingManager: ${percentage}% - ${message}`);
+      }
+
+      updateTitle(title) {
+        if (this.loadingTitle) {
+          this.loadingTitle.textContent = title;
+        }
+      }
+
+      updateSubtitle(subtitle) {
+        if (this.loadingSubtitle) {
+          this.loadingSubtitle.textContent = subtitle;
+        }
+      }
+
+      updateLogo(logoUrl) {
+        if (this.loadingLogo) {
+          const img = new Image();
+          img.onload = () => {
+            this.loadingLogo.src = logoUrl;
+          };
+          img.src = logoUrl;
+        }
+      }
+
+      hide() {
+        if (this.loadingOverlay) {
+          this.loadingOverlay.classList.add('hidden');
+          setTimeout(() => {
+            this.loadingOverlay.style.display = 'none';
+          }, 500);
+        }
+      }
+
+      delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+    }
+
+    // Crear instancia inmediatamente
+    window.loadingManager = new LoadingManager();
+  </script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Radio</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-96x96.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0d0806">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Prata&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/loading-styles.css">
+  <link rel="stylesheet" href="/assets/css/pwa-installer.css?v=3">
+  <link rel="stylesheet" href="/assets/css/promotion-popup.css">
+  <link rel="stylesheet" href="/assets/css/notification-button.css">
+  <link rel="stylesheet" href="/assets/css/video-player.css">
+  <link rel="stylesheet" href="/assets/css/share-modal.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="/assets/css/mobile-player.css?v=4">
+  <link rel="stylesheet" href="/templates/app/assets/css/style.css">
+</head>
+<body>
+
+  <div class="grain-overlay"></div>
+
+  <div class="app-shell">
+    <main class="main">
+      <div class="app-content" id="app-content">
+        <div class="tab-content active" id="tab-home">
+          <div class="hero-player" id="hero-player">
+            <div class="hero-player-bg" id="hero-player-bg"></div>
+            <div class="hero-player-overlay"></div>
+
+            <!-- VU Meter (entre el cover y el efecto blur) -->
+            <div class="vumeter" id="vumeter" aria-hidden="true">
+              <div class="vumeter-bars" id="vumeter-bars"></div>
+            </div>
+
+            <header class="header">
+              <div class="container">
+                <div class="header-inner">
+                  <div class="header-logo">
+                    <img id="news-logo" src="" alt="Logo" style="display:none;">
+                  </div>
+                  <div class="header-actions">
+                    <div id="notification-button-container"></div>
+                    <div class="social-links" id="social-links"></div>
+                  </div>
+                </div>
+              </div>
+            </header>
+
+            <div class="container">
+              <div class="hero-player-inner">
+                <div class="hero-player-cover" id="hero-player-cover">
+                  <div class="cover-card" id="cover-card">
+                    <img id="cover-artwork" src="" alt="Cover">
+                    <div class="cover-card-default" id="cover-card-default">
+                      <i class="fas fa-music"></i>
+                    </div>
+                  </div>
+                </div>
+                <div class="hero-player-info">
+                  <div class="on-air-badge">ON AIR</div>
+                  <div class="now-playing-label">REPRODUCIENDO AHORA</div>
+                  <h1 class="track-title-main" id="track-title-main">Radio</h1>
+                  <p class="track-artist-main" id="track-artist-main">En Vivo</p>
+                  <div class="hero-player-controls">
+                    <button class="live-btn" id="main-play-btn">
+                      <i class="fas fa-play"></i>
+                      <span>ESCUCHAR EN VIVO</span>
+                    </button>
+                  </div>
+                  <div class="player-stats-hero">
+                    <span><i class="fas fa-users"></i> <span id="listeners-count">0</span> oyentes</span>
+                    <span><i class="fas fa-signal"></i> <span id="bitrate">N/A</span> kbps</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-news">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Noticias</h2>
+              <div class="news-grid" id="all-news-grid"></div>
+              <div class="pagination" id="news-pagination"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-programs">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Programación</h2>
+              <div class="day-nav" id="day-nav">
+                <button class="day-btn" data-day="lunes">L</button>
+                <button class="day-btn" data-day="martes">M</button>
+                <button class="day-btn" data-day="miercoles">X</button>
+                <button class="day-btn" data-day="jueves">J</button>
+                <button class="day-btn" data-day="viernes">V</button>
+                <button class="day-btn" data-day="sabado">S</button>
+                <button class="day-btn" data-day="domingo">D</button>
+              </div>
+              <div class="programs-list" id="programs-list"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-podcasts">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Podcasts</h2>
+              <div id="podcasts-list" class="card-grid"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-polls">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Encuestas</h2>
+              <div class="polls-grid" id="polls-grid"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-videos">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Ranking de Videos</h2>
+              <div class="videos-ranking" id="videos-ranking"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-videocasts">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Videocasts</h2>
+              <div id="videocasts-list" class="card-grid"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-galleries">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Galerías</h2>
+              <div id="galleries-list" class="card-grid"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-announcers">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Locutores</h2>
+              <div id="announcers-list" class="card-grid"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-sponsors">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Auspiciadores</h2>
+              <div class="sponsors-grid" id="sponsors-list"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-tv">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">TV Online</h2>
+              <div class="tv-online-container">
+                <div id="tv-player-container">
+                  <!-- TV Player will be injected here -->
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-events">
+          <div class="container">
+            <section class="section" data-aos="fade-up">
+              <h2 class="section-title">Eventos</h2>
+              <div id="events-timeline"></div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-about">
+          <div class="container">
+            <section class="section about-section" data-aos="fade-up">
+              <h2 class="section-title">La Radio</h2>
+                <div class="about-card">
+                  <img id="about-radio-img" src="/assets/icons/icon-512x512.png" alt="Radio">
+                  <h3 id="about-radio-title">Nuestra Radio</h3>
+                  <p id="about-radio-desc">Cargando información...</p>
+                  <div class="about-social" id="about-social"></div>
+                </div>
+            </section>
+          </div>
+        </div>
+
+        <div class="tab-content" id="tab-contact">
+          <div class="container">
+            <section class="section contact-section-app" data-aos="fade-up">
+              <h2 class="section-title">Contacto</h2>
+              <p class="contact-intro">Si tienes alguna duda, sugerencia o simplemente quieres saludarnos, no dudes en escribirnos. Estaremos encantados de leerte.</p>
+              <form class="contact-form" id="contact-form">
+                <div class="form-group">
+                  <label for="contact-name">Nombre</label>
+                  <input type="text" id="contact-name" class="contact-input" placeholder="Tu nombre" required>
+                </div>
+                <div class="form-group">
+                  <label for="contact-email">Email</label>
+                  <input type="email" id="contact-email" class="contact-input" placeholder="tu@email.com" required>
+                </div>
+                <div class="form-group">
+                  <label for="contact-subject">Asunto</label>
+                  <input type="text" id="contact-subject" class="contact-input" placeholder="Asunto del mensaje" required>
+                </div>
+                <div class="form-group">
+                  <label for="contact-message">Mensaje</label>
+                  <textarea id="contact-message" class="contact-input" rows="4" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                </div>
+                <button type="submit" class="contact-submit-btn">
+                  <i class="fas fa-paper-plane"></i>
+                  <span>Enviar</span>
+                </button>
+                <div class="contact-feedback" id="contact-feedback" style="display:none;"></div>
+              </form>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="nav-item active" data-tab="home">
+        <i class="fas fa-home"></i>
+        <span>Inicio</span>
+      </button>
+      <button class="nav-item" data-tab="news" style="display:none;">
+        <i class="fas fa-newspaper"></i>
+        <span>Noticias</span>
+      </button>
+      <button class="nav-item" data-tab="programs" style="display:none;">
+        <i class="fas fa-calendar-alt"></i>
+        <span>Programas</span>
+      </button>
+      <button class="nav-item" data-tab="podcasts" style="display:none;">
+        <i class="fas fa-podcast"></i>
+        <span>Podcasts</span>
+      </button>
+      <button class="nav-item" data-tab="polls" style="display:none;">
+        <i class="fas fa-chart-bar"></i>
+        <span>Encuestas</span>
+      </button>
+      <button class="nav-item" data-tab="videos" style="display:none;">
+        <i class="fas fa-trophy"></i>
+        <span>Videos</span>
+      </button>
+      <button class="nav-item" data-tab="videocasts" style="display:none;">
+        <i class="fas fa-video"></i>
+        <span>Videocasts</span>
+      </button>
+      <button class="nav-item" data-tab="galleries" style="display:none;">
+        <i class="fas fa-images"></i>
+        <span>Galerías</span>
+      </button>
+      <button class="nav-item" data-tab="announcers" style="display:none;">
+        <i class="fas fa-microphone"></i>
+        <span>Locutores</span>
+      </button>
+      <button class="nav-item" data-tab="sponsors" style="display:none;">
+        <i class="fas fa-handshake"></i>
+        <span>Auspiciadores</span>
+      </button>
+      <button class="nav-item" data-tab="tv" style="display:none;">
+        <i class="fas fa-tv"></i>
+        <span>TV</span>
+      </button>
+      <button class="nav-item" data-tab="events" style="display:none;">
+        <i class="fas fa-calendar-check"></i>
+        <span>Eventos</span>
+      </button>
+      <button class="nav-item" data-tab="about">
+        <i class="fas fa-info-circle"></i>
+        <span>Radio</span>
+      </button>
+      <button class="nav-item" data-tab="contact">
+        <i class="fas fa-envelope"></i>
+        <span>Contacto</span>
+      </button>
+      <button class="nav-more-btn" id="nav-more-btn" style="display:none;">
+        <i class="fas fa-ellipsis-h"></i>
+      </button>
+    </nav>
+
+    <div class="nav-overflow" id="nav-overflow" style="display:none;">
+      <div class="nav-overflow-content" id="nav-overflow-content"></div>
+    </div>
+  </div>
+
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-content">
+      <img id="loading-logo-img" src="/assets/icons/icon-512x512.png" alt="Logo" class="loading-logo">
+      <h2 id="loading-title">Cargando...</h2>
+      <div class="loading-bar"><div class="loading-progress"></div></div>
+      <p id="loading-subtitle">Preparando la experiencia...</p>
+    </div>
+  </div>
+
+  <div id="news-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div id="news-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="podcast-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div id="podcast-modal-body"></div>
+      <audio id="podcast-audio" controls></audio>
+    </div>
+  </div>
+
+  <div id="videocast-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div id="videocast-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="video-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div id="video-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="gallery-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close">&times;</button>
+      <div id="gallery-modal-body"></div>
+      <div class="gallery-thumbnails" id="gallery-thumbnails"></div>
+    </div>
+  </div>
+
+  <!-- crossorigin="anonymous" habilita el análisis real con Web Audio API
+       (ipstream.cl envía Access-Control-Allow-Origin: *) -->
+  <audio id="radio-audio" preload="none" crossorigin="anonymous"></audio>
+  <input type="range" id="volume-slider" min="0" max="100" value="50" style="display:none;">
+
+  <script>
+    class LoadingManager {
+      constructor() {
+        this.overlay = document.getElementById('loading-overlay');
+        this.title = document.getElementById('loading-title');
+        this.subtitle = document.getElementById('loading-subtitle');
+        this.progress = document.querySelector('.loading-progress');
+        this.init();
+      }
+      async init() {
+        await this.delay(300);
+        this.setProgress(20, 'Iniciando...');
+        await this.delay(400);
+        this.setProgress(40, 'Conectando...');
+        await this.delay(500);
+        try {
+          const resp = await fetch('/config/config.json');
+          const config = await resp.json();
+          if (config.project_name) this.title.textContent = config.project_name;
+        } catch (e) {}
+        this.setProgress(60, 'Cargando datos...');
+        await this.delay(600);
+        this.setProgress(80, 'Personalizando...');
+        await this.delay(500);
+        this.setProgress(100, '¡Listo!');
+        await this.delay(400);
+        this.hide();
+      }
+      setProgress(pct, msg) {
+        if (this.progress) this.progress.style.width = pct + '%';
+        if (msg && this.subtitle) this.subtitle.textContent = msg;
+      }
+      hide() {
+        if (this.overlay) { this.overlay.classList.add('hidden'); setTimeout(() => { this.overlay.style.display = 'none'; }, 400); }
+      }
+      delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+    }
+    window.loadingManager = new LoadingManager();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="/assets/js/title-updater.js"></script>
+  <script src="/assets/js/meta-updater.js"></script>
+  <script src="/assets/js/mobile-enhancements.js"></script>
+  <script src="/assets/js/pwa-installer.js?v=3"></script>
+  <script src="/assets/js/promotion-popup.js"></script>
+  <script type="module" src="/assets/js/onesignal-init.js"></script>
+  <script type="module" src="/assets/js/video-player.js"></script>
+  <script src="/assets/js/share-button.js"></script>
+  <script type="module" src="/templates/app/assets/js/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

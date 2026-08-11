@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio - Covered</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-96x96.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#1a1a2e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <link rel="stylesheet" href="/templates/covered/assets/css/style.css?v=3">
+  <link rel="stylesheet" href="/assets/css/loading-styles.css">
+  <link rel="stylesheet" href="/assets/css/pwa-installer.css?v=3">
+  <link rel="stylesheet" href="/assets/css/promotion-popup.css">
+  <link rel="stylesheet" href="/assets/css/notification-button.css">
+  <link rel="stylesheet" href="/assets/css/video-player.css">
+  <link rel="stylesheet" href="/assets/css/share-modal.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/mobile-player.css?v=4">
+</head>
+<body>
+
+  <main class="main">
+    <header class="header">
+      <div class="container">
+        <div class="header-inner">
+          <div class="header-logo">
+            <img id="news-logo" src="" alt="Logo" style="display:none;">
+          </div>
+          <div class="header-actions">
+            <div id="notification-button-container"></div>
+            <div class="social-links" id="social-links"></div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="hero-player" id="hero-player">
+      <div class="hero-player-bg" id="hero-player-bg"></div>
+      <div class="hero-player-overlay"></div>
+
+      <!-- VU Meter: visualizador de audio en tiempo real -->
+      <div class="vumeter" id="vumeter" aria-hidden="true">
+        <div class="vumeter-bars" id="vumeter-bars"></div>
+      </div>
+
+      <div class="container">
+        <div class="hero-player-inner">
+          <div class="hero-player-cover" id="hero-player-cover">
+            <div class="cover-card" id="cover-card">
+              <img id="cover-artwork" src="" alt="Cover">
+              <div class="cover-card-default" id="cover-card-default">
+                <i class="fas fa-music"></i>
+              </div>
+            </div>
+          </div>
+          <div class="hero-player-info">
+            <div class="on-air-badge">ON AIR</div>
+            <div class="now-playing-label">REPRODUCIENDO AHORA</div>
+            <h1 class="track-title-main" id="track-title-main">Radio</h1>
+            <p class="track-artist-main" id="track-artist-main">En Vivo</p>
+            <p class="track-album-main" id="track-album-main"></p>
+            <div class="hero-player-controls">
+              <button class="live-btn" id="main-play-btn">
+                <i class="fas fa-play"></i>
+                <span>ESCUCHAR EN VIVO</span>
+              </button>
+              <button class="share-btn-hero" id="share-btn" title="Compartir">
+                <i class="fas fa-share-alt"></i>
+              </button>
+            </div>
+            <div class="player-stats-hero">
+              <span><i class="fas fa-users"></i> <span id="listeners-count">0</span> oyentes</span>
+              <span><i class="fas fa-signal"></i> <span id="bitrate">N/A</span> kbps</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <section class="about-radio">
+      <div class="container">
+        <div class="about-radio-inner">
+          <div class="about-radio-cover">
+            <img id="about-radio-img" src="/assets/icons/icon-512x512.png" alt="Radio">
+          </div>
+          <div class="about-radio-info">
+            <h2 id="about-radio-title">Nuestra Radio</h2>
+            <p id="about-radio-desc">Cargando información...</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-separator"></div>
+
+    <section class="section full-section all-news-section bg-light" id="all-news-section" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Todas las Noticias</h2>
+        <div class="news-grid" id="all-news-grid"></div>
+        <div class="pagination" id="news-pagination"></div>
+      </div>
+    </section>
+
+    <div class="section-separator"></div>
+
+    <section class="section full-section programs-week-section bg-white" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Programación</h2>
+        <div class="day-nav" id="day-nav">
+          <button class="day-btn" data-day="lunes">Lunes</button>
+          <button class="day-btn" data-day="martes">Martes</button>
+          <button class="day-btn" data-day="miercoles">Miércoles</button>
+          <button class="day-btn" data-day="jueves">Jueves</button>
+          <button class="day-btn" data-day="viernes">Viernes</button>
+          <button class="day-btn" data-day="sabado">Sábado</button>
+          <button class="day-btn" data-day="domingo">Domingo</button>
+        </div>
+        <div class="programs-list" id="programs-list"></div>
+      </div>
+    </section>
+
+    <section class="section full-section polls-section bg-light" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Encuestas</h2>
+        <div class="polls-grid" id="polls-grid"></div>
+      </div>
+    </section>
+
+    <section class="section full-section bg-white" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Podcasts</h2>
+        <div id="podcasts-list" class="card-grid"></div>
+      </div>
+    </section>
+
+    <section class="section full-section bg-light" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Videocasts</h2>
+        <div id="videocasts-list" class="card-grid"></div>
+      </div>
+    </section>
+
+    <section class="section full-section bg-white" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Ranking de Videos</h2>
+        <div id="videos-ranking"></div>
+      </div>
+    </section>
+
+    <section class="section full-section bg-white" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Galerías</h2>
+        <div id="galleries-list" class="card-grid"></div>
+      </div>
+    </section>
+
+    <section class="section full-section bg-light" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Locutores</h2>
+        <div id="announcers-grid" class="card-grid"></div>
+      </div>
+    </section>
+
+    <section class="section full-section bg-white" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Eventos</h2>
+        <div id="events-timeline"></div>
+      </div>
+    </section>
+
+    <section class="section full-section" data-aos="fade-up">
+      <div class="container">
+        <h2 class="section-title">Auspiciadores</h2>
+        <div class="sponsors-grid-enhanced" id="sponsors-grid"></div>
+      </div>
+    </section>
+
+    <section class="contact-section">
+      <div class="container">
+        <div class="contact-inner">
+          <div class="contact-cover">
+            <img id="contact-cover-img" src="/assets/icons/icon-512x512.png" alt="Radio">
+            <h3 id="contact-radio-name">Nuestra Radio</h3>
+            <p id="contact-radio-desc">Estamos aquí para escucharte. Déjanos tu mensaje y te responderemos a la brevedad.</p>
+          </div>
+          <div class="contact-form-wrap">
+            <form class="contact-form" id="contact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="contact-name">Nombre</label>
+                  <input type="text" id="contact-name" class="contact-input" placeholder="Tu nombre" required>
+                </div>
+                <div class="form-group">
+                  <label for="contact-email">Email</label>
+                  <input type="email" id="contact-email" class="contact-input" placeholder="tu@email.com" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="contact-subject">Asunto</label>
+                <input type="text" id="contact-subject" class="contact-input" placeholder="Asunto del mensaje" required>
+              </div>
+              <div class="form-group">
+                <label for="contact-message">Mensaje</label>
+                <textarea id="contact-message" class="contact-input" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+              </div>
+              <button type="submit" class="contact-submit-btn">
+                <i class="fas fa-paper-plane"></i>
+                <span>Enviar mensaje</span>
+              </button>
+              <div class="contact-feedback" id="contact-feedback" style="display:none;"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- crossorigin="anonymous" habilita el análisis real con Web Audio API
+       (ipstream.cl envía Access-Control-Allow-Origin: *) -->
+  <audio id="radio-audio" preload="none" crossorigin="anonymous"></audio>
+  <input type="range" id="volume-slider" min="0" max="100" value="50" style="display:none;">
+
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-content">
+      <img id="loading-logo-img" src="/assets/icons/icon-512x512.png" alt="Logo" class="loading-logo">
+      <h2 id="loading-title">Cargando...</h2>
+      <div class="loading-bar"><div class="loading-progress"></div></div>
+      <p id="loading-subtitle">Preparando la experiencia...</p>
+    </div>
+  </div>
+
+  <div id="news-modal" class="modal">
+    <div class="modal-content glass">
+      <button class="modal-close">&times;</button>
+      <div id="news-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="podcast-modal" class="modal">
+    <div class="modal-content glass">
+      <button class="modal-close">&times;</button>
+      <div id="podcast-modal-body"></div>
+      <audio id="podcast-audio" controls></audio>
+    </div>
+  </div>
+
+  <div id="videocast-modal" class="modal modal-lg">
+    <div class="modal-content glass">
+      <button class="modal-close">&times;</button>
+      <div id="videocast-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="video-modal" class="modal modal-lg">
+    <div class="modal-content glass">
+      <button class="modal-close">&times;</button>
+      <div id="video-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="gallery-modal" class="modal modal-lg">
+    <div class="modal-content glass">
+      <button class="modal-close">&times;</button>
+      <div id="gallery-modal-body"></div>
+      <div class="gallery-thumbnails" id="gallery-thumbnails"></div>
+    </div>
+  </div>
+
+    <script>
+    class LoadingManager {
+      constructor() {
+        this.overlay = document.getElementById('loading-overlay');
+        this.title = document.getElementById('loading-title');
+        this.subtitle = document.getElementById('loading-subtitle');
+        this.progress = document.querySelector('.loading-progress');
+        this.logo = document.getElementById('loading-logo-img');
+        this.init();
+      }
+      async init() {
+        await this.delay(300);
+        this.setProgress(20, 'Iniciando...');
+        await this.delay(400);
+        this.setProgress(40, 'Conectando...');
+        await this.delay(500);
+        try {
+          const resp = await fetch('/config/config.json');
+          const config = await resp.json();
+          if (config.project_name) this.title.textContent = config.project_name;
+        } catch (e) {}
+        this.setProgress(60, 'Cargando datos...');
+        await this.delay(600);
+        this.setProgress(80, 'Personalizando...');
+        await this.delay(500);
+        this.setProgress(100, '¡Listo!');
+        await this.delay(500);
+        this.hide();
+      }
+      setProgress(pct, msg) {
+        if (this.progress) this.progress.style.width = pct + '%';
+        if (msg && this.subtitle) this.subtitle.textContent = msg;
+      }
+      hide() {
+        if (this.overlay) {
+          this.overlay.classList.add('hidden');
+          setTimeout(() => { this.overlay.style.display = 'none'; }, 400);
+        }
+      }
+      delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+    }
+    window.loadingManager = new LoadingManager();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/assets/js/title-updater.js"></script>
+  <script src="/assets/js/meta-updater.js"></script>
+  <script src="/assets/js/mobile-enhancements.js"></script>
+  <script src="/assets/js/pwa-installer.js?v=3"></script>
+  <script src="/assets/js/promotion-popup.js"></script>
+  <script type="module" src="/assets/js/onesignal-init.js"></script>
+  <script type="module" src="/assets/js/video-player.js"></script>
+  <script src="/assets/js/share-button.js"></script>
+  <script type="module" src="/templates/covered/assets/js/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js').catch(() => {});
+      });
+    }
+  </script>
+</body>
+</html>

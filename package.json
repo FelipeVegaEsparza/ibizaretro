@@ -1,0 +1,55 @@
+{
+  "name": "@felipevegaesparza/radio-pwa-core",
+  "version": "1.0.47",
+  "description": "PWA Radio Core - Sistema de radio streaming con templates personalizables",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "echo 'No build step required for static files'",
+    "serve": "node server.js"
+  },
+  "keywords": [
+    "radio",
+    "pwa",
+    "templates",
+    "streaming",
+    "responsive",
+    "hostreams"
+  ],
+  "author": "Hostreams",
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^17.4.2",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.4.1",
+    "helmet": "^7.1.0"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "npm": ">=8.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FelipeVegaEsparza/app-pwa-hostreams.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "files": [
+    "server.js",
+    "service-worker.js",
+    "index.html",
+    "offline.html",
+    "manifest.json",
+    "start.js",
+    "templates/",
+    "assets/",
+    "config/config.json",
+    "public/OneSignalSDKWorker.js",
+    "ONESIGNAL_INTEGRATION.md",
+    "ONESIGNAL_QUICK_START.md"
+  ]
+}

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OneSignal - Test Page</title>
+  
+  <link rel="stylesheet" href="/assets/css/notification-button.css">
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    
+    .container {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 2rem;
+    }
+    
+    .subtitle {
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 1rem;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+      padding: 20px;
+      background: #f8f9fa;
+      border-radius: 10px;
+    }
+    
+    .section h2 {
+      color: #667eea;
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+    
+    .button-demo {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .test-btn {
+      padding: 12px 24px;
+      background: #667eea;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    .test-btn:hover {
+      background: #5568d3;
+      transform: translateY(-2px);
+    }
+    
+    .test-btn:active {
+      transform: translateY(0);
+    }
+    
+    .status {
+      padding: 15px;
+      background: white;
+      border-radius: 8px;
+      margin-top: 15px;
+      font-family: 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 1.6;
+    }
+    
+    .status-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .status-item:last-child {
+      border-bottom: none;
+    }
+    
+    .status-label {
+      color: #666;
+      font-weight: 600;
+    }
+    
+    .status-value {
+      color: #333;
+    }
+    
+    .status-value.success {
+      color: #22c55e;
+    }
+    
+    .status-value.error {
+      color: #ef4444;
+    }
+    
+    .status-value.warning {
+      color: #f59e0b;
+    }
+    
+    .console {
+      background: #1e1e1e;
+      color: #d4d4d4;
+      padding: 15px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      max-height: 300px;
+      overflow-y: auto;
+      margin-top: 15px;
+    }
+    
+    .console-line {
+      padding: 4px 0;
+      border-bottom: 1px solid #333;
+    }
+    
+    .console-line:last-child {
+      border-bottom: none;
+    }
+    
+    .console-time {
+      color: #888;
+      margin-right: 10px;
+    }
+    
+    .console-info {
+      color: #4fc3f7;
+    }
+    
+    .console-success {
+      color: #66bb6a;
+    }
+    
+    .console-error {
+      color: #ef5350;
+    }
+    
+    .console-warning {
+      color: #ffa726;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+      
+      h1 {
+        font-size: 1.5rem;
+      }
+      
+      .button-demo {
+        flex-direction: column;
+      }
+      
+      .test-btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  
+  <div class="container">
+    <h1>🔔 OneSignal Test Page</h1>
+    <p class="subtitle">Página de prueba para verificar la integración de OneSignal</p>
+    
+    <!-- Botón de Notificaciones -->
+    <div class="section">
+      <h2>1. Botón de Notificaciones</h2>
+      <div class="button-demo">
+        <div id="notification-button-container"></div>
+        <span style="color: #666;">← Este es el botón de notificaciones</span>
+      </div>
+    </div>
+    
+    <!-- Estado del Sistema -->
+    <div class="section">
+      <h2>2. Estado del Sistema</h2>
+      <div class="status" id="status">
+        <div class="status-item">
+          <span class="status-label">Cargando...</span>
+          <span class="status-value">⏳</span>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Acciones de Prueba -->
+    <div class="section">
+      <h2>3. Acciones de Prueba</h2>
+      <div class="button-demo">
+        <button class="test-btn" onclick="testStatus()">
+          🔍 Verificar Estado
+        </button>
+        <button class="test-btn" onclick="testPermission()">
+          🔔 Solicitar Permisos
+        </button>
+        <button class="test-btn" onclick="testUserId()">
+          🆔 Obtener User ID
+        </button>
+        <button class="test-btn" onclick="testTags()">
+          🏷️ Enviar Tags
+        </button>
+        <button class="test-btn" onclick="clearConsole()">
+          🗑️ Limpiar Consola
+        </button>
+      </div>
+    </div>
+    
+    <!-- Consola de Logs -->
+    <div class="section">
+      <h2>4. Consola de Logs</h2>
+      <div class="console" id="console">
+        <div class="console-line">
+          <span class="console-time">[--:--:--]</span>
+          <span class="console-info">Esperando inicialización...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script type="module">
+    import { oneSignalManager } from '/assets/js/onesignal-manager.js';
+    import { initNotificationButton } from '/assets/js/notification-button.js';
+    
+    // Hacer disponible globalmente para los botones
+    window.oneSignalManager = oneSignalManager;
+    
+    // Función para agregar logs a la consola
+    function addLog(message, type = 'info') {
+      const console = document.getElementById('console');
+      const time = new Date().toLocaleTimeString();
+      const line = document.createElement('div');
+      line.className = 'console-line';
+      line.innerHTML = `
+        <span class="console-time">[${time}]</span>
+        <span class="console-${type}">${message}</span>
+      `;
+      console.appendChild(line);
+      console.scrollTop = console.scrollHeight;
+    }
+    
+    window.addLog = addLog;
+    
+    // Función para actualizar el estado
+    async function updateStatus() {
+      const statusDiv = document.getElementById('status');
+      
+      try {
+        const isSupported = 'Notification' in window;
+        const isInitialized = oneSignalManager.initialized;
+        const isSubscribed = isInitialized ? await oneSignalManager.isSubscribed() : false;
+        const permission = isInitialized ? await oneSignalManager.getPermissionState() : 'unknown';
+        const userId = isInitialized ? await oneSignalManager.getUserId() : null;
+        
+        statusDiv.innerHTML = `
+          <div class="status-item">
+            <span class="status-label">Navegador Soportado:</span>
+            <span class="status-value ${isSupported ? 'success' : 'error'}">
+              ${isSupported ? '✅ Sí' : '❌ No'}
+            </span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">OneSignal Inicializado:</span>
+            <span class="status-value ${isInitialized ? 'success' : 'warning'}">
+              ${isInitialized ? '✅ Sí' : '⚠️ No'}
+            </span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Usuario Suscrito:</span>
+            <span class="status-value ${isSubscribed ? 'success' : 'warning'}">
+              ${isSubscribed ? '✅ Sí' : '⚠️ No'}
+            </span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">Estado de Permisos:</span>
+            <span class="status-value ${permission === 'granted' ? 'success' : permission === 'denied' ? 'error' : 'warning'}">
+              ${permission}
+            </span>
+          </div>
+          <div class="status-item">
+            <span class="status-label">User ID:</span>
+            <span class="status-value" style="font-size: 11px;">
+              ${userId || 'N/A'}
+            </span>
+          </div>
+        `;
+      } catch (error) {
+        statusDiv.innerHTML = `
+          <div class="status-item">
+            <span class="status-label">Error:</span>
+            <span class="status-value error">${error.message}</span>
+          </div>
+        `;
+      }
+    }
+    
+    window.updateStatus = updateStatus;
+    
+    // Inicializar
+    async function init() {
+      addLog('Iniciando OneSignal...', 'info');
+      
+      const initialized = await oneSignalManager.init();
+      
+      if (initialized) {
+        addLog('✅ OneSignal inicializado correctamente', 'success');
+        
+        // Inicializar el botón
+        initNotificationButton('notification-button-container');
+        addLog('✅ Botón de notificaciones creado', 'success');
+        
+        // Actualizar estado
+        await updateStatus();
+        
+        // Escuchar cambios
+        window.addEventListener('onesignal-subscription-changed', async (event) => {
+          addLog(`📢 Estado de suscripción cambió: ${event.detail.isSubscribed}`, 'info');
+          await updateStatus();
+        });
+        
+      } else {
+        addLog('⚠️ OneSignal no se pudo inicializar (cliente sin configuración o navegador no soportado)', 'warning');
+        await updateStatus();
+      }
+    }
+    
+    // Funciones de prueba
+    window.testStatus = async function() {
+      addLog('🔍 Verificando estado...', 'info');
+      await updateStatus();
+      addLog('✅ Estado actualizado', 'success');
+    };
+    
+    window.testPermission = async function() {
+      addLog('🔔 Solicitando permisos...', 'info');
+      try {
+        const granted = await oneSignalManager.requestPermission();
+        if (granted) {
+          addLog('✅ Permisos concedidos', 'success');
+        } else {
+          addLog('⚠️ Permisos rechazados', 'warning');
+        }
+        await updateStatus();
+      } catch (error) {
+        addLog(`❌ Error: ${error.message}`, 'error');
+      }
+    };
+    
+    window.testUserId = async function() {
+      addLog('🆔 Obteniendo User ID...', 'info');
+      try {
+        const userId = await oneSignalManager.getUserId();
+        if (userId) {
+          addLog(`✅ User ID: ${userId}`, 'success');
+        } else {
+          addLog('⚠️ User ID no disponible (usuario no suscrito)', 'warning');
+        }
+      } catch (error) {
+        addLog(`❌ Error: ${error.message}`, 'error');
+      }
+    };
+    
+    window.testTags = async function() {
+      addLog('🏷️ Enviando tags de prueba...', 'info');
+      try {
+        const success = await oneSignalManager.sendTags({
+          'test': 'true',
+          'timestamp': new Date().toISOString()
+        });
+        if (success) {
+          addLog('✅ Tags enviados correctamente', 'success');
+        } else {
+          addLog('⚠️ No se pudieron enviar los tags', 'warning');
+        }
+      } catch (error) {
+        addLog(`❌ Error: ${error.message}`, 'error');
+      }
+    };
+    
+    window.clearConsole = function() {
+      const console = document.getElementById('console');
+      console.innerHTML = `
+        <div class="console-line">
+          <span class="console-time">[${new Date().toLocaleTimeString()}]</span>
+          <span class="console-info">Consola limpiada</span>
+        </div>
+      `;
+    };
+    
+    // Iniciar
+    init();
+  </script>
+  
+</body>
+</html>

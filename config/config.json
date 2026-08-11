@@ -1,0 +1,21 @@
+{
+  "template": "app",
+  "project_name": "Radio Fusion Austral",
+  "clientId": "cmf4du07u000313x255b7jy2t",
+  "sonicpanel_port": "8002",
+  "ipstream_base_url": "https://dashboard.ipstream.cl/api/public",
+  "sonicpanel_stream_url": "https://stream2.ipstream.cl/8002/stream",
+  "sonicpanel_api_url": "https://stream2.ipstream.cl/cp/get_info.php?p=8002",
+  "cache_version": "v1",
+  "offline_page": "/offline.html",
+  "pagination": {
+    "news_per_page": 10,
+    "podcasts_per_page": 10,
+    "videocasts_per_page": 10
+  },
+  "audio_enhancer": {
+    "enabled": true,
+    "preset": "enhanced"
+  },
+  "contact_email": "felipevegaesparza@gmail.com"
+}

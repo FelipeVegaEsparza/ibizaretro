@@ -1,0 +1,32 @@
+# Archivos de desarrollo
+node_modules/
+.git/
+.vscode/
+.DS_Store
+
+# Archivos de documentación (no necesarios en el package)
+*.md
+!README.md
+
+# Archivos de configuración de desarrollo
+.gitignore
+.dockerignore
+docker-compose.yml
+Dockerfile
+Dockerfile.simple
+easypanel.yml
+
+# Scripts de generación de iconos (no necesarios en producción)
+generate-*.js
+
+# Archivos de test
+test/
+*.test.js
+
+# Logs
+*.log
+npm-debug.log*
+
+# Archivos temporales
+*.tmp
+*.temp

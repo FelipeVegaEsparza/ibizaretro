@@ -1,0 +1,246 @@
+/**
+ * Loading Styles - Estilos universales para pantallas de carga
+ * Compatible con todos los templates
+ */
+
+/* Estilos para la imagen del logo en loading */
+.loading-logo-image {
+  width: 180px;
+  height: 180px;
+  object-fit: contain;
+  border-radius: 20px;
+  z-index: 2;
+  position: relative;
+}
+
+/* Mejoras para el contenedor del logo */
+.loading-logo {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 30px;
+  animation: gentlePulse 3s ease-in-out infinite;
+  background: linear-gradient(135deg, #e43f5a, #533483);
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+}
+
+/* Animación de pulso suave */
+@keyframes gentlePulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+  50% { 
+    transform: scale(1.02);
+    box-shadow: 0 15px 50px rgba(228, 63, 90, 0.4), 0 15px 50px rgba(83, 52, 131, 0.4);
+  }
+}
+
+/* Animación del fondo del logo */
+.logo-animation {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  animation: gentleGlow 4s ease-in-out infinite;
+  border-radius: 24px;
+}
+
+@keyframes gentleGlow {
+  0%, 100% { 
+    opacity: 0.3;
+  }
+  50% { 
+    opacity: 0.6;
+  }
+}
+
+/* Estilos responsivos para loading */
+@media (max-width: 768px) {
+  .loading-logo {
+    width: 160px;
+    height: 160px;
+  }
+  
+  .loading-logo-image {
+    width: 140px;
+    height: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-logo {
+    width: 140px;
+    height: 140px;
+  }
+  
+  .loading-logo-image {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+/* Mejoras para la barra de progreso */
+.loading-progress {
+  width: 100%;
+  max-width: 350px;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  overflow: hidden;
+  margin: 0 auto 25px;
+  position: relative;
+}
+
+.progress-bar {
+  height: 100%;
+  background: linear-gradient(135deg, #3498db, #2980b9);
+  width: 0%;
+  transition: width 0.5s ease;
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.progress-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: progressShine 1.5s infinite;
+}
+
+@keyframes progressShine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+
+/* Estilos para texto de loading */
+.loading-content h2 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  font-family: inherit;
+}
+
+.loading-content p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  margin: 0;
+  font-family: inherit;
+}
+
+/* Animación de entrada para el loading */
+.loading-overlay {
+  animation: loadingFadeIn 0.5s ease-out;
+}
+
+@keyframes loadingFadeIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Animación de salida para el loading */
+.loading-overlay.hidden {
+  animation: loadingFadeOut 0.5s ease-in forwards;
+}
+
+@keyframes loadingFadeOut {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+/* Efectos adicionales para mejor UX */
+.loading-content {
+  animation: contentSlideUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes contentSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================
+   LAZY LOADING STYLES
+   ========================================== */
+
+/* Imágenes que están esperando ser cargadas */
+img[data-src] {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+/* Imagen cargándose */
+img.lazy-loading {
+  opacity: 0.5;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: lazyLoading 1.5s infinite;
+}
+
+@keyframes lazyLoading {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+/* Imagen cargada exitosamente */
+img.lazy-loaded {
+  opacity: 1;
+}
+
+/* Error al cargar imagen */
+img.lazy-error {
+  opacity: 1;
+}
+
+/* Placeholder para imágenes */
+.lazy-placeholder {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: lazyLoading 1.5s infinite;
+}
+
+/* ==========================================
+   ANIMACIONES GLOBALES
+   ========================================== */
+
+@keyframes slideUp {
+  0% { transform: translate(-50%, 100%); opacity: 0; }
+  100% { transform: translate(-50%, 0); opacity: 1; }
+}
+
+@keyframes slideDown {
+  0% { transform: translate(-50%, 0); opacity: 1; }
+  100% { transform: translate(-50%, 100%); opacity: 0; }
+}

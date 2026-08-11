@@ -1,0 +1,83 @@
+name: Publish Package
+
+on:
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
+  workflow_dispatch: # Permitir ejecución manual
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          registry-url: 'https://npm.pkg.github.com'
+
+      - name: Configure npm for GitHub Packages
+        run: |
+          echo "@felipevegaesparza:registry=https://npm.pkg.github.com" > .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_TOKEN }}" >> .npmrc
+
+      - name: Check for changes and bump version
+        id: version_check
+        run: |
+          # Check if there are changes since last tag
+          if git describe --tags --exact-match HEAD 2>/dev/null; then
+            echo "No changes since last tag, skipping publish"
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+          else
+            # Increment patch version
+            npm version patch --no-git-tag-version
+            NEW_VERSION=$(node -p "require('./package.json').version")
+            echo "Bumped version to $NEW_VERSION"
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+            echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check if version exists
+        if: steps.version_check.outputs.should_publish == 'true'
+        id: check_version
+        run: |
+          PACKAGE_VERSION=$(node -p "require('./package.json').version")
+          PACKAGE_NAME=$(node -p "require('./package.json').name")
+          
+          # Check if this version already exists
+          if npm view "$PACKAGE_NAME@$PACKAGE_VERSION" version 2>/dev/null; then
+            echo "Version $PACKAGE_VERSION already exists, skipping publish"
+            echo "should_publish=false" >> $GITHUB_OUTPUT
+          else
+            echo "Version $PACKAGE_VERSION does not exist, will publish"
+            echo "should_publish=true" >> $GITHUB_OUTPUT
+          fi
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Commit version bump
+        if: steps.version_check.outputs.should_publish == 'true' && steps.check_version.outputs.should_publish == 'true'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add package.json
+          git commit -m "chore: bump version to ${{ steps.version_check.outputs.new_version }}"
+          git tag "v${{ steps.version_check.outputs.new_version }}"
+          git push origin main --tags
+
+      - name: Publish to GitHub Packages
+        if: steps.version_check.outputs.should_publish == 'true' && steps.check_version.outputs.should_publish == 'true'
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio Pulse - Dynamic Broadcasting</title>
+  
+  <!-- Favicon Configuration -->
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/assets/icons/icon-72x72.png">
+  <link rel="shortcut icon" href="/assets/icons/icon-96x96.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="/assets/icons/icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="/assets/icons/icon-128x128.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/icon-128x128.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="/assets/icons/icon-96x96.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/icon-72x72.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-152x152.png">
+  
+  <!-- PWA Configuration -->
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#2c3e50">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Radio Pulse">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Radio Pulse">
+  
+  <!-- SEO and Social Media Meta Tags -->
+  <meta name="description" content="Escucha nuestra radio online en vivo. Música, noticias y entretenimiento las 24 horas del día.">
+  <meta name="keywords" content="radio online, música en vivo, streaming, entretenimiento">
+  <meta name="author" content="Radio Pulse">
+  
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Radio Pulse">
+  <meta property="og:description" content="Escucha nuestra radio online en vivo. Música, noticias y entretenimiento las 24 horas del día.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="">
+  <meta property="og:image" content="/assets/icons/icon-512x512.png">
+  <meta property="og:image:width" content="512">
+  <meta property="og:image:height" content="512">
+  <meta property="og:site_name" content="Radio Pulse">
+  <meta property="og:locale" content="es_ES">
+  
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Radio Pulse">
+  <meta name="twitter:description" content="Escucha nuestra radio online en vivo. Música, noticias y entretenimiento las 24 horas del día.">
+  <meta name="twitter:image" content="/assets/icons/icon-512x512.png">
+  <meta name="twitter:site" content="@radiopulse">
+  <meta name="twitter:creator" content="@radiopulse">
+  
+  <link rel="stylesheet" href="/templates/petroleo/assets/css/style.css?v=3">
+  <link rel="stylesheet" href="/assets/css/loading-styles.css">
+  <link rel="stylesheet" href="/assets/css/pwa-installer.css?v=3">
+  <link rel="stylesheet" href="/assets/css/promotion-popup.css">
+  <link rel="stylesheet" href="/assets/css/notification-button.css">
+  <link rel="stylesheet" href="/assets/css/video-player.css">
+  <link rel="stylesheet" href="/assets/css/share-modal.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+  <link rel="stylesheet" href="/assets/css/mobile-player.css?v=4">
+</head>
+<body>
+  
+  <!-- Dynamic Background -->
+  <div class="dynamic-bg">
+    <div class="bg-gradient"></div>
+    <div class="grid-pattern"></div>
+    <div class="floating-particles">
+      <div class="particle particle-1"></div>
+      <div class="particle particle-2"></div>
+      <div class="particle particle-3"></div>
+      <div class="particle particle-4"></div>
+      <div class="particle particle-5"></div>
+      <div class="particle particle-6"></div>
+    </div>
+  </div>
+  
+  <!-- Header -->
+  <header class="dynamic-header">
+    <div class="header-blur"></div>
+    <div class="header-top">
+      <div class="container">
+        <div class="header-info">
+          <div class="date-weather">
+            <span class="current-date" id="current-date"></span>
+            <div class="live-indicator">
+              <span class="live-dot"></span>
+              <span>EN VIVO</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="header-main">
+      <div class="container">
+        <div class="logo-section">
+          <img id="news-logo" src="" alt="Logo" style="display: none;">
+        </div>
+        
+        <div class="header-actions">
+          <!-- Notification Button -->
+          <div id="notification-button-container"></div>
+          <div class="header-social-main" id="header-social-main">
+            <!-- Social links will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </header>
+
+  <!-- TV Online Section (visible when TV streaming is available) -->
+  <section class="tv-online-section" id="tv-online-section" style="display: none;">
+    <div class="container">
+      <div class="tv-section-header">
+        <h2 class="tv-section-title">
+          <i class="fas fa-tv"></i>
+          <span>TV Online</span>
+          <div class="live-indicator">
+            <span class="live-dot"></span>
+            <span>EN VIVO</span>
+          </div>
+        </h2>
+      </div>
+      <div class="tv-player-wrapper glass-effect">
+        <div id="tv-player-container">
+          <!-- TV Player will be injected here -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Fixed Audio Player -->
+  <div class="fixed-player glass-effect" id="fixed-player">
+    <div class="player-content">
+      <div class="now-playing">
+        <div class="track-artwork">
+          <img id="track-artwork" src="" alt="Now Playing" style="display: none;">
+          <div class="default-artwork" id="default-artwork">
+            <div class="artwork-animation"></div>
+            <i class="fas fa-music"></i>
+          </div>
+        </div>
+        <div class="track-info">
+          <div class="track-title" id="player-song-title">Radio Pulse</div>
+          <div class="track-artist" id="player-song-artist">En Vivo</div>
+        </div>
+      </div>
+      
+      <div class="player-controls">
+        <button class="control-btn glass-btn" id="play-btn">
+          <i class="fas fa-play"></i>
+          <div class="btn-ripple"></div>
+        </button>
+        <div class="volume-control">
+          <i class="fas fa-volume-up"></i>
+          <input type="range" id="volume-slider" class="volume-slider glass-slider" min="0" max="100" value="50">
+        </div>
+        <div class="player-stats">
+          <span><i class="fas fa-users"></i> <span id="listeners-count">0</span></span>
+          <span><i class="fas fa-signal"></i> <span id="bitrate">N/A</span> kbps</span>
+        </div>
+      </div>
+      
+      <button class="player-toggle glass-btn" id="player-toggle">
+        <i class="fas fa-chevron-up"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="dynamic-main">
+    
+    <!-- Home Section -->
+    <section id="home-section" class="dynamic-section">
+      
+      <!-- Hero Carousel -->
+      <div class="hero-section">
+        <div class="container">
+          <div class="hero-carousel-container glass-effect">
+            <div class="swiper hero-swiper">
+              <div class="swiper-wrapper" id="hero-carousel">
+                <!-- Hero slides will be loaded here -->
+                <div class="swiper-slide">
+                  <div class="hero-slide loading-slide">
+                    <div class="loading-skeleton"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="swiper-pagination"></div>
+              <div class="swiper-button-next glass-btn"></div>
+              <div class="swiper-button-prev glass-btn"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Main Content Grid -->
+      <div class="content-grid">
+        <div class="container">
+          <div class="grid-layout">
+            
+            <!-- Main Content Column -->
+            <div class="main-content">
+              
+              <!-- Breaking News Ticker -->
+              <div class="breaking-news glass-effect">
+                <div class="breaking-label">
+                  <i class="fas fa-bolt"></i>
+                  <span>ÚLTIMAS NOTICIAS</span>
+                </div>
+                <div class="breaking-ticker">
+                  <div class="ticker-content" id="breaking-ticker">
+                    <!-- Breaking news will be loaded here -->
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Featured News Grid -->
+              <div class="featured-news">
+                <h2 class="section-title">
+                  <span class="title-text">Noticias Destacadas</span>
+                  <div class="title-line"></div>
+                </h2>
+                <div class="news-masonry" id="featured-news-grid">
+                  <!-- Featured news cards will be loaded here -->
+                  <div class="loading-grid">
+                    <div class="news-card-skeleton"></div>
+                    <div class="news-card-skeleton"></div>
+                    <div class="news-card-skeleton"></div>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            
+            <!-- Sidebar -->
+            <aside class="sidebar">
+              
+              <!-- Live Stats Widget -->
+              <div class="widget glass-effect stats-widget">
+                <div class="widget-header">
+                  <h3>En Vivo Ahora</h3>
+                  <div class="live-pulse"></div>
+                </div>
+                <div class="stats-content">
+                  <div class="stat-item">
+                    <div class="stat-icon">
+                      <i class="fas fa-users"></i>
+                      <div class="icon-glow"></div>
+                    </div>
+                    <div class="stat-info">
+                      <span class="stat-number" id="sidebar-listeners">0</span>
+                      <span class="stat-label">Oyentes</span>
+                    </div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-icon">
+                      <i class="fas fa-music"></i>
+                      <div class="icon-glow"></div>
+                    </div>
+                    <div class="stat-info">
+                      <span class="stat-number" id="sidebar-songs">0</span>
+                      <span class="stat-label">Canciones hoy</span>
+                    </div>
+                  </div>
+                  <div class="stat-item">
+                    <div class="stat-icon">
+                      <i class="fas fa-signal"></i>
+                      <div class="icon-glow"></div>
+                    </div>
+                    <div class="stat-info">
+                      <span class="stat-number" id="sidebar-quality">HD</span>
+                      <span class="stat-label">Calidad</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Recent Tracks Widget -->
+              <div class="widget glass-effect tracks-widget">
+                <div class="widget-header">
+                  <h3>Últimas Canciones</h3>
+                </div>
+                <div class="tracks-list" id="recent-tracks">
+                  <!-- Recent tracks will be loaded here -->
+                </div>
+              </div>
+              
+              <!-- Sponsors Widget -->
+              <div class="widget glass-effect sponsors-widget">
+                <div class="widget-header">
+                  <h3>Nuestros Patrocinadores</h3>
+                </div>
+                <div class="sponsors-carousel">
+                  <div class="swiper sponsors-swiper">
+                    <div class="swiper-wrapper" id="sponsors-carousel">
+                      <!-- Sponsors will be loaded here -->
+                    </div>
+                    <div class="swiper-pagination"></div>
+                  </div>
+                </div>
+              </div>
+              
+            </aside>
+            
+          </div>
+        </div>
+      </div>
+      
+    </section>
+
+
+
+    <!-- News Section -->
+    <section id="news-section" class="dynamic-section">
+      <div class="container">
+        <div class="news-grid-container glass-effect">
+          <div class="news-grid" id="all-news-grid">
+            <!-- All news will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Programs Section -->
+    <section id="programs-section" class="dynamic-section">
+      <div class="container">
+        
+        <!-- Weekly Schedule Navigation -->
+        <div class="weekly-schedule-nav glass-effect">
+          <button class="day-btn glass-btn" data-day="lunes">
+            <span>Lunes</span>
+            <div class="btn-ripple"></div>
+          </button>
+          <button class="day-btn glass-btn" data-day="martes">
+            <span>Martes</span>
+            <div class="btn-ripple"></div>
+          </button>
+          <button class="day-btn glass-btn" data-day="miercoles">
+            <span>Miércoles</span>
+            <div class="btn-ripple"></div>
+          </button>
+          <button class="day-btn glass-btn" data-day="jueves">
+            <span>Jueves</span>
+            <div class="btn-ripple"></div>
+          </button>
+          <button class="day-btn glass-btn" data-day="viernes">
+            <span>Viernes</span>
+            <div class="btn-ripple"></div>
+          </button>
+          <button class="day-btn glass-btn" data-day="sabado">
+            <span>Sábado</span>
+            <div class="btn-ripple"></div>
+          </button>
+          <button class="day-btn glass-btn" data-day="domingo">
+            <span>Domingo</span>
+            <div class="btn-ripple"></div>
+          </button>
+        </div>
+        
+        <!-- Programs Schedule (single container, day buttons switch content) -->
+        <div class="programs-schedule">
+          <div class="day-programs active" id="day-schedule-container">
+            <!-- Programs for selected day will be loaded here -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Multimedia Section -->
+    <section id="multimedia-section" class="dynamic-section">
+      <div class="container">
+        
+        <div class="multimedia-tabs glass-effect">
+          <button class="tab-btn glass-btn active" data-tab="podcasts">
+            <i class="fas fa-podcast"></i>
+            <span>Podcasts</span>
+            <div class="btn-ripple"></div>
+          </button>
+          <button class="tab-btn glass-btn" data-tab="videocasts">
+            <i class="fas fa-broadcast-tower"></i>
+            <span>Videocasts</span>
+            <div class="btn-ripple"></div>
+          </button>
+        </div>
+        
+        <div class="multimedia-content">
+          <div id="podcasts-tab" class="tab-content active">
+            <div class="media-grid" id="podcasts-grid">
+              <!-- Podcasts will be loaded here -->
+            </div>
+          </div>
+          
+          <div id="videocasts-tab" class="tab-content">
+            <div class="media-grid" id="videocasts-grid">
+              <!-- Videocasts will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Sponsors Section -->
+    <section id="sponsors-section" class="dynamic-section">
+      <div class="container">
+        
+        <div class="sponsors-grid" id="all-sponsors-grid">
+          <!-- All sponsors will be loaded here -->
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- Galleries Section -->
+    <section id="galleries-section" class="dynamic-section"><div class="container"><h2 class="section-title" data-aos="fade-up">Galerías</h2><div class="galleries-grid" id="galleries-grid"></div></div></section>
+
+
+
+    <!-- Announcers Section -->
+    <section id="announcers-section" class="dynamic-section"><div class="container"><h2 class="section-title" data-aos="fade-up">Locutores</h2><div class="announcers-grid" id="announcers-grid"></div></div></section>
+
+
+
+    <!-- Polls Section -->
+    <section id="polls-section" class="dynamic-section"><div class="container"><h2 class="section-title" data-aos="fade-up">Encuestas</h2><div class="polls-container" id="polls-container"></div></div></section>
+
+
+
+    <!-- Events Section -->
+    <section id="events-section" class="dynamic-section"><div class="container"><h2 class="section-title" data-aos="fade-up">Eventos</h2><div class="events-timeline" id="events-timeline"></div></div></section>
+
+
+    <!-- Videos Section -->
+    <section id="videos-section" class="dynamic-section"><div class="container"><h2 class="section-title" data-aos="fade-up">Videos</h2><div class="videos-grid" id="videos-grid"></div></div></section>
+
+
+
+    <!-- Social Section -->
+    <section id="social-section" class="dynamic-section"><div class="container"><h2 class="section-title" data-aos="fade-up">Redes Sociales</h2><div class="social-hub" id="social-hub"></div></div></section>
+
+    <!-- Contact Section -->
+    <section id="contact-section" class="dynamic-section">
+      <div class="container">
+        <h2 class="section-title" data-aos="fade-up">
+          <span class="title-text">Contacto</span>
+          <div class="title-line"></div>
+        </h2>
+        <div class="contact-split" data-aos="fade-up" data-aos-delay="100">
+          <div class="contact-cover glass-effect">
+            <div class="contact-cover-image">
+              <img id="contact-cover-img" src="/assets/icons/icon-512x512.png" alt="Radio">
+            </div>
+            <div class="contact-cover-info">
+              <h3 id="contact-radio-name">Nuestra Radio</h3>
+              <p id="contact-radio-desc">Estamos aquí para escucharte. Déjanos tu mensaje y te responderemos a la brevedad.</p>
+            </div>
+          </div>
+          <div class="contact-form-wrap glass-effect">
+            <form class="contact-form" id="contact-form">
+              <div class="form-row">
+                <div class="form-group">
+                  <label for="contact-name">Nombre</label>
+                  <input type="text" id="contact-name" class="glass-input" placeholder="Tu nombre" required>
+                </div>
+                <div class="form-group">
+                  <label for="contact-email">Email</label>
+                  <input type="email" id="contact-email" class="glass-input" placeholder="tu@email.com" required>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="contact-subject">Asunto</label>
+                <input type="text" id="contact-subject" class="glass-input" placeholder="Asunto del mensaje" required>
+              </div>
+              <div class="form-group">
+                <label for="contact-message">Mensaje</label>
+                <textarea id="contact-message" class="glass-input" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+              </div>
+              <button type="submit" class="glass-btn contact-submit-btn">
+                <i class="fas fa-paper-plane"></i>
+                <span>Enviar mensaje</span>
+                <div class="btn-ripple"></div>
+              </button>
+              <div class="contact-feedback" id="contact-feedback" style="display:none;"></div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+    <!-- TV Player -->
+    <div class="tv-player" id="tv-player" style="display: none;">
+      <div id="tv-player-container">
+        <!-- TV Player will be injected here -->
+      </div>
+    </div>
+
+
+
+  <!-- Footer -->
+  <footer class="dynamic-footer glass-effect">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <div class="footer-brand">
+            <img id="footer-logo" src="" alt="Logo" style="display: none;">
+            <h3 id="footer-title">Radio Pulse</h3>
+            <p id="footer-description">Tu experiencia radiofónica dinámica las 24 horas del día.</p>
+          </div>
+          <div class="footer-social">
+            <h4>Síguenos</h4>
+            <div class="social-links" id="footer-social">
+              <!-- Social links will be loaded here -->
+            </div>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Navegación</h4>
+          <ul class="footer-links">
+            <li><a href="#" onclick="radioPulse.showSection('home')">Inicio</a></li>
+            <li><a href="#" onclick="radioPulse.showSection('news')">Noticias</a></li>
+            <li><a href="#" onclick="radioPulse.showSection('programs')">Programas</a></li>
+            <li><a href="#" onclick="radioPulse.showSection('multimedia')">Multimedia</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Información</h4>
+          <div class="footer-info">
+            <p><i class="fas fa-broadcast-tower"></i> Transmitiendo 24/7</p>
+            <p><i class="fas fa-users"></i> <span id="footer-listeners">0</span> oyentes conectados</p>
+            <p><i class="fas fa-signal"></i> Calidad HD</p>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h4>Newsletter</h4>
+          <p>Recibe las últimas noticias en tu email</p>
+          <div class="newsletter-form">
+            <input type="email" placeholder="Tu email" class="newsletter-input glass-input">
+            <button class="newsletter-submit glass-btn">
+              <i class="fas fa-paper-plane"></i>
+              <div class="btn-ripple"></div>
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <div class="copyright">
+          <p>&copy; 2025 <span id="footer-radio-name">Radio Pulse</span>. Todos los derechos reservados.</p>
+        </div>
+        <div class="footer-meta">
+          <span>Diseñado para la experiencia dinámica</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Audio Element (crossorigin habilita la mejora de audio y el VU real) -->
+  <audio id="radio-audio" preload="none" crossorigin="anonymous"></audio>
+  <audio id="news-audio" preload="none"></audio>
+
+  <!-- Loading Overlay -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-content">
+      <div class="loading-logo">
+        <img id="loading-logo-img" src="/assets/icons/icon-512x512.png" alt="Logo" class="loading-logo-image">
+        <div class="logo-animation"></div>
+      </div>
+      <h2 id="loading-title">Cargando...</h2>
+      <div class="loading-progress">
+        <div class="progress-bar"></div>
+      </div>
+      <p id="loading-subtitle">Preparando la experiencia...</p>
+    </div>
+  </div>
+
+  <!-- News Modal -->
+  <div class="modal-overlay glass-effect" id="news-modal">
+    <div class="modal-content glass-effect news-modal-content">
+      <button class="modal-close glass-btn">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-header">
+        <div class="news-modal-category" id="news-modal-category">Noticias</div>
+        <h2 id="news-modal-title">Título de la noticia</h2>
+        <div class="news-modal-meta">
+          <span id="news-modal-date"><i class="fas fa-calendar"></i> Fecha</span>
+          <span id="news-modal-author"><i class="fas fa-user"></i> Autor</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="news-modal-image" id="news-modal-image-container">
+          <img id="news-modal-image" src="" alt="">
+        </div>
+        <div class="news-modal-content" id="news-modal-content">
+          <p>Contenido de la noticia...</p>
+        </div>
+        <div class="news-modal-actions">
+          <button class="glass-btn share-btn">
+            <i class="fas fa-share-alt"></i>
+            <span>Compartir</span>
+            <div class="btn-ripple"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Gallery Modal -->
+  <div class="modal-overlay" id="gallery-modal"><div class="modal-content glass-effect"><button class="modal-close">&times;</button><h3 id="gallery-modal-title"></h3><div class="gallery-main-image"><img id="gallery-main-img" src=""><button class="gallery-nav gallery-prev"><i class="fas fa-chevron-left"></i></button><button class="gallery-nav gallery-next"><i class="fas fa-chevron-right"></i></button></div><div class="gallery-thumbnails" id="gallery-thumbnails"></div></div></div>
+
+  <!-- Podcast Modal -->
+  <div class="modal-overlay glass-effect" id="podcast-modal">
+    <div class="modal-content glass-effect media-modal-content">
+      <button class="modal-close glass-btn">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-header">
+        <div class="media-modal-category">Podcast</div>
+        <h2 id="podcast-modal-title">Título del podcast</h2>
+        <div class="media-modal-meta">
+          <span id="podcast-modal-date"><i class="fas fa-calendar"></i> Fecha</span>
+          <span id="podcast-modal-duration"><i class="fas fa-clock"></i> Duración</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="media-modal-player">
+          <div class="media-player-artwork">
+            <img id="podcast-modal-image" src="" alt="">
+            <div class="media-player-controls">
+              <button class="media-play-btn glass-btn" id="podcast-play-btn">
+                <i class="fas fa-play"></i>
+                <div class="btn-ripple"></div>
+              </button>
+            </div>
+          </div>
+          <audio id="podcast-audio" controls preload="none"></audio>
+          <div class="media-progress-container">
+            <div class="media-progress-bar">
+              <div class="media-progress-fill" id="podcast-progress"></div>
+            </div>
+            <div class="media-time-info">
+              <span id="podcast-current-time">0:00</span>
+              <span id="podcast-total-time">0:00</span>
+            </div>
+          </div>
+        </div>
+        <div class="media-modal-description" id="podcast-modal-description">
+          <p>Descripción del podcast...</p>
+        </div>
+        <div class="media-modal-actions">
+          <button class="glass-btn download-btn">
+            <i class="fas fa-download"></i>
+            <span>Descargar</span>
+            <div class="btn-ripple"></div>
+          </button>
+          <button class="glass-btn share-btn">
+            <i class="fas fa-share-alt"></i>
+            <span>Compartir</span>
+            <div class="btn-ripple"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Videocast Modal -->
+  <div class="modal-overlay glass-effect" id="videocast-modal">
+    <div class="modal-content glass-effect media-modal-content">
+      <button class="modal-close glass-btn">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-header">
+        <div class="media-modal-category">Videocast</div>
+        <h2 id="videocast-modal-title">Título del videocast</h2>
+        <div class="media-modal-meta">
+          <span id="videocast-modal-date"><i class="fas fa-calendar"></i> Fecha</span>
+          <span id="videocast-modal-duration"><i class="fas fa-clock"></i> Duración</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="media-modal-player video-player">
+          <video id="videocast-video" controls preload="none" poster="">
+            <source src="" type="video/mp4">
+            Tu navegador no soporta el elemento de video.
+          </video>
+        </div>
+        <div class="media-modal-description" id="videocast-modal-description">
+          <p>Descripción del videocast...</p>
+        </div>
+        <div class="media-modal-actions">
+          <button class="glass-btn download-btn">
+            <i class="fas fa-download"></i>
+            <span>Descargar</span>
+            <div class="btn-ripple"></div>
+          </button>
+          <button class="glass-btn share-btn">
+            <i class="fas fa-share-alt"></i>
+            <span>Compartir</span>
+            <div class="btn-ripple"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Newsletter Modal -->
+  <div class="modal-overlay glass-effect" id="newsletter-modal">
+    <div class="modal-content glass-effect">
+      <button class="modal-close glass-btn">
+        <i class="fas fa-times"></i>
+      </button>
+      <div class="modal-header">
+        <h3>Suscríbete a nuestro Newsletter</h3>
+        <p>Recibe las noticias más importantes directamente en tu email</p>
+      </div>
+      <div class="modal-body">
+        <form class="newsletter-form-modal">
+          <input type="email" placeholder="Tu dirección de email" class="glass-input" required>
+          <button type="submit" class="glass-btn">
+            <i class="fas fa-envelope"></i>
+            <span>Suscribirse</span>
+            <div class="btn-ripple"></div>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loading Manager Inline -->
+  <script>
+    // Loading Manager ejecutado inmediatamente
+    class LoadingManager {
+      constructor() {
+        this.loadingOverlay = null;
+        this.loadingTitle = null;
+        this.loadingSubtitle = null;
+        this.loadingLogo = null;
+        this.progressBar = null;
+        this.currentProgress = 0;
+        this.init();
+      }
+
+      init() {
+        this.loadingOverlay = document.getElementById('loading-overlay');
+        this.loadingTitle = document.getElementById('loading-title');
+        this.loadingSubtitle = document.getElementById('loading-subtitle');
+        this.loadingLogo = document.getElementById('loading-logo-img');
+        this.progressBar = document.querySelector('.progress-bar');
+        
+        console.log('LoadingManager: Inicializado');
+        if (this.loadingOverlay) {
+          this.startLoading();
+        }
+      }
+
+      async startLoading() {
+        try {
+          console.log('LoadingManager: Iniciando carga...');
+          await this.loadBasicData();
+          await this.simulateProgress();
+        } catch (error) {
+          console.error('LoadingManager: Error:', error);
+          setTimeout(() => this.hide(), 1000);
+        }
+      }
+
+      async loadBasicData() {
+        try {
+          this.updateProgress(10, 'Iniciando aplicación...');
+          await this.delay(900);
+          
+          this.updateProgress(25, 'Conectando con IPStream...');
+          await this.delay(1100);
+          
+          const configResponse = await fetch('/config/config.json');
+          const config = await configResponse.json();
+          
+          this.updateProgress(45, 'Cargando datos de la radio...');
+          await this.delay(1300);
+          
+          // Usar el project_name del config local
+          if (config.project_name) {
+            this.updateTitle(`Cargando ${config.project_name}`);
+            await this.delay(600);
+          }
+          
+          this.updateProgress(65, 'Personalizando experiencia...');
+          await this.delay(900);
+          
+          // Cargar datos de la API para el logo
+          try {
+            const apiUrl = `${config.ipstream_base_url}/${config.clientId}/basic-data`;
+            const response = await fetch(apiUrl);
+            const data = await response.json();
+            
+            if (data.logoUrl) {
+              this.updateLogo(`https://dashboard.ipstream.cl${data.logoUrl}`);
+              await this.delay(600);
+            }
+          } catch (apiError) {
+            console.warn('LoadingManager: Error cargando logo desde API:', apiError);
+          }
+          
+          this.updateProgress(85, 'Aplicando configuración...');
+          await this.delay(1100);
+          
+        } catch (error) {
+          console.error('LoadingManager: Error cargando datos:', error);
+          await this.delay(1000);
+        }
+      }
+
+      async simulateProgress() {
+        this.updateProgress(95, 'Preparando interfaz...');
+        await this.delay(800);
+        
+        this.updateProgress(100, '¡Listo para comenzar!');
+        await this.delay(1200);
+        
+        this.hide();
+      }
+
+      updateProgress(percentage, message = null) {
+        this.currentProgress = percentage;
+        
+        if (this.progressBar) {
+          this.progressBar.style.width = `${percentage}%`;
+        }
+        
+        if (message && this.loadingSubtitle) {
+          this.loadingSubtitle.textContent = message;
+        }
+        
+        console.log(`LoadingManager: ${percentage}% - ${message}`);
+      }
+
+      updateTitle(title) {
+        if (this.loadingTitle) {
+          this.loadingTitle.textContent = title;
+        }
+      }
+
+      updateSubtitle(subtitle) {
+        if (this.loadingSubtitle) {
+          this.loadingSubtitle.textContent = subtitle;
+        }
+      }
+
+      updateLogo(logoUrl) {
+        if (this.loadingLogo) {
+          const img = new Image();
+          img.onload = () => {
+            this.loadingLogo.src = logoUrl;
+          };
+          img.src = logoUrl;
+        }
+      }
+
+      hide() {
+        if (this.loadingOverlay) {
+          this.loadingOverlay.classList.add('hidden');
+          setTimeout(() => {
+            this.loadingOverlay.style.display = 'none';
+          }, 500);
+        }
+      }
+
+      delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
+    }
+
+    // Crear instancia inmediatamente
+    window.loadingManager = new LoadingManager();
+  </script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script src="/assets/js/title-updater.js"></script>
+  <script src="/assets/js/meta-updater.js"></script>
+  <script src="/assets/js/mobile-enhancements.js"></script>
+  <script src="/assets/js/pwa-installer.js?v=3"></script>
+  <script src="/assets/js/promotion-popup.js"></script>
+  <script type="module" src="/assets/js/onesignal-init.js"></script>
+    <script type="module" src="/assets/js/video-player.js"></script>
+    <script src="/assets/js/share-button.js"></script>
+  <script type="module" src="/templates/petroleo/assets/js/main.js"></script>
+  
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then(registration => {
+            console.log('SW registered: ', registration);
+          })
+          .catch(registrationError => {
+            console.log('SW registration failed: ', registrationError);
+          });
+      });
+    }
+  </script>
+</body>
+</html>

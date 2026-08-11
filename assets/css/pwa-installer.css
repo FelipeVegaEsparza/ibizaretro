@@ -1,0 +1,528 @@
+/**
+ * PWA Installer Styles - Estilos globales para el sistema de instalación PWA
+ */
+
+/* Modal de instalación PWA */
+.pwa-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  padding: 20px;
+}
+
+.pwa-modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.pwa-modal-content {
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 20px;
+  padding: 30px;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  transform: scale(0.9);
+  transition: transform 0.3s ease;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.pwa-modal-overlay.active .pwa-modal-content {
+  transform: scale(1);
+}
+
+.pwa-modal-close {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  border: none;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: #666;
+}
+
+.pwa-modal-close:hover {
+  background: rgba(0, 0, 0, 0.2);
+  transform: scale(1.1);
+}
+
+.pwa-modal-header {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.pwa-modal-icon {
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 15px;
+  color: white;
+  font-size: 24px;
+}
+
+.pwa-modal-header h3 {
+  margin: 0 0 8px 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.pwa-modal-header p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+/* Beneficios de la PWA */
+.pwa-benefits {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.pwa-benefit {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 10px;
+  font-size: 0.9rem;
+  color: #333;
+}
+
+.pwa-benefit i {
+  color: #667eea;
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+/* Opción de notificaciones */
+.pwa-notifications-option {
+  background: rgba(102, 126, 234, 0.05);
+  border: 2px solid rgba(102, 126, 234, 0.2);
+  border-radius: 12px;
+  padding: 15px;
+  margin-bottom: 20px;
+}
+
+.pwa-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.pwa-checkbox-label input[type="checkbox"] {
+  display: none;
+}
+
+.pwa-checkbox-custom {
+  width: 24px;
+  height: 24px;
+  border: 2px solid #667eea;
+  border-radius: 6px;
+  position: relative;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  background: white;
+}
+
+.pwa-checkbox-label input[type="checkbox"]:checked + .pwa-checkbox-custom {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-color: #667eea;
+}
+
+.pwa-checkbox-label input[type="checkbox"]:checked + .pwa-checkbox-custom::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.pwa-checkbox-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.pwa-checkbox-text i {
+  color: #667eea;
+  font-size: 16px;
+}
+
+.pwa-notifications-description {
+  margin: 8px 0 0 36px;
+  font-size: 0.85rem;
+  color: #666;
+  line-height: 1.4;
+}
+
+/* Botones del modal */
+.pwa-modal-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pwa-install-btn {
+  width: 100%;
+  padding: 15px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.pwa-install-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+}
+
+.pwa-install-btn:active {
+  transform: translateY(0);
+}
+
+.pwa-dismiss-btn {
+  width: 100%;
+  padding: 12px;
+  background: transparent;
+  color: #666;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pwa-dismiss-btn:hover {
+  background: #f9fafb;
+  border-color: #d1d5db;
+  color: #374151;
+}
+
+.pwa-dismiss-btn:active {
+  transform: scale(0.98);
+}
+
+/* Instrucciones para iOS */
+.pwa-ios-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pwa-ios-step {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 12px;
+}
+
+.pwa-step-number {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.pwa-step-content {
+  flex: 1;
+}
+
+.pwa-step-content p {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.pwa-ios-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+  background: rgba(102, 126, 234, 0.1);
+  border-radius: 8px;
+  color: #667eea;
+  font-size: 16px;
+}
+
+/* Botón flotante */
+.pwa-floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  min-width: 140px;
+  height: 50px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+  transition: all 0.3s ease;
+  z-index: 10002;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8) translateY(20px);
+  padding: 0 20px;
+  gap: 8px;
+}
+
+.pwa-floating-button.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+}
+
+.pwa-floating-button:hover {
+  transform: scale(1.05) translateY(-2px);
+  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+}
+
+.pwa-floating-button:active {
+  transform: scale(0.98) translateY(0);
+}
+
+.pwa-floating-icon {
+  color: white;
+  font-size: 16px;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.pwa-floating-text {
+  color: white;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: transform 0.3s ease;
+}
+
+.pwa-floating-button:hover .pwa-floating-icon,
+.pwa-floating-button:hover .pwa-floating-text {
+  transform: scale(1.05);
+}
+
+
+
+/* Toast notifications */
+.pwa-toast {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: white;
+  border-radius: 10px;
+  padding: 15px 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 10001;
+  transform: translateX(100%);
+  transition: all 0.3s ease;
+  max-width: 300px;
+}
+
+.pwa-toast.show {
+  transform: translateX(0);
+}
+
+.pwa-toast-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.pwa-toast-success {
+  border-left: 4px solid #10b981;
+}
+
+.pwa-toast-success i {
+  color: #10b981;
+}
+
+.pwa-toast-error {
+  border-left: 4px solid #ef4444;
+}
+
+.pwa-toast-error i {
+  color: #ef4444;
+}
+
+.pwa-toast-info {
+  border-left: 4px solid #3b82f6;
+}
+
+.pwa-toast-info i {
+  color: #3b82f6;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .pwa-modal-content {
+    margin: 20px;
+    padding: 25px;
+  }
+  
+  .pwa-benefits {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .pwa-benefit {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+  
+  .pwa-floating-button {
+    min-width: auto;
+    width: auto;
+    height: 42px;
+    padding: 0 14px;
+    bottom: 80px;
+    right: 15px;
+    border-radius: 21px;
+    gap: 6px;
+  }
+  
+  .pwa-floating-icon {
+    font-size: 15px;
+  }
+  
+  .pwa-floating-text {
+    display: inline;
+    font-size: 13px;
+  }
+  
+  .pwa-toast {
+    top: 15px;
+    right: 15px;
+    left: 15px;
+    max-width: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .pwa-modal-content {
+    background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+    color: white;
+  }
+  
+  .pwa-modal-header h3 {
+    color: white;
+  }
+  
+  .pwa-modal-header p {
+    color: #d1d5db;
+  }
+  
+  .pwa-modal-close {
+    background: rgba(255, 255, 255, 0.1);
+    color: #d1d5db;
+  }
+  
+  .pwa-modal-close:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  .pwa-benefit {
+    background: rgba(102, 126, 234, 0.2);
+    color: white;
+  }
+  
+  .pwa-notifications-option {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.3);
+  }
+  
+  .pwa-checkbox-text {
+    color: white;
+  }
+  
+  .pwa-notifications-description {
+    color: #d1d5db;
+  }
+  
+  .pwa-checkbox-custom {
+    background: #374151;
+    border-color: #667eea;
+  }
+  
+  .pwa-ios-step {
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .pwa-step-content p {
+    color: white;
+  }
+  
+  .pwa-toast {
+    background: #1f2937;
+    color: white;
+  }
+  
+  .pwa-dismiss-btn {
+    border-color: #374151;
+    color: #d1d5db;
+  }
+  
+  .pwa-dismiss-btn:hover {
+    background: #374151;
+    border-color: #4b5563;
+    color: white;
+  }
+}
