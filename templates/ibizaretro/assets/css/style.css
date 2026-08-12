@@ -3384,12 +3384,20 @@ body.is-live .play-orb-ring {
    OCULTAR CONTENEDORES VACÍOS
    ============================================================ */
 
-/* Cuando un .col, .block o .section no tiene contenido real (el endpoint
-   devolvió vacío), se marca con .is-empty. Esto evita huecos en grillas
-   pensadas para varias columnas. */
+/* Cuando un .col, .block o .section no tiene contenido real, se oculta.
+   .has-content marca que JS confirmó contenido y debe mostrarse.
+   .is-empty marca que definitivamente no hay datos (redundante con la
+   regla de abajo, pero explícito para selectores CSS complejos). */
 .col.is-empty,
 .block.is-empty,
 .section.is-empty { display: none !important; }
+
+/* Regla principal: todo contenedor marcado como [data-dynamic-content]
+   permanece oculto hasta que JS confirme que tiene datos añadiendo la
+   clase .has-content. Esto evita que se rendericen los headers
+   ("Programación destacada", "Últimas noticias", etc.) cuando el
+   endpoint devuelve 0 items. */
+[data-dynamic-content]:not(.has-content) { display: none !important; }
 
 /* Rejuste: si en un .cols quedó solo 1 elemento visible, queremos que
    ocupe el ancho natural sin huecos. .cols-3 con 1 hijo → auto-fit
