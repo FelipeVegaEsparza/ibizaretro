@@ -1,11 +1,12 @@
 {
-  "template": "app",
-  "project_name": "Radio Fusion Austral",
-  "clientId": "cmf4du07u000313x255b7jy2t",
-  "sonicpanel_port": "8002",
+  "template": "ibizaretro",
+  "lock_template": true,
+  "project_name": "Ibiza Retro Beats",
+  "clientId": "cmsp4uiq6002tzuccc3s57lnx",
+  "sonicpanel_port": "8016",
   "ipstream_base_url": "https://dashboard.ipstream.cl/api/public",
-  "sonicpanel_stream_url": "https://stream2.ipstream.cl/8002/stream",
-  "sonicpanel_api_url": "https://stream2.ipstream.cl/cp/get_info.php?p=8002",
+  "sonicpanel_stream_url": "https://sp002.servidoresph.com:8016/stream",
+  "sonicpanel_api_url": "https://sp002.servidoresph.com/cp/get_info.php?p=8016",
   "cache_version": "v1",
   "offline_page": "/offline.html",
   "pagination": {

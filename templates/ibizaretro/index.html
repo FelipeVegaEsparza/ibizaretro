@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="es" style="color-scheme: dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#08081a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="description" content="Ibiza Retro Beats · Radio online de música dance, house, trance y eurodance 24/7. Cero charla, 100% música en alta definición.">
+  <meta name="keywords" content="ibiza retro beats, radio dance online, eurodance 90, trance classics, house, retro dance, paul van dyk, tiësto, armin van buuren, paul oakenfold, radio electronica, radio online gratis">
+  <title>Ibiza Retro Beats · Dance · House · Trance · 24/7</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/icon-96x96.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+  <link rel="manifest" href="/manifest.json">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Righteous&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <link rel="stylesheet" href="/assets/css/loading-styles.css">
+  <link rel="stylesheet" href="/assets/css/pwa-installer.css?v=3">
+  <link rel="stylesheet" href="/assets/css/promotion-popup.css">
+  <link rel="stylesheet" href="/assets/css/notification-button.css">
+  <link rel="stylesheet" href="/assets/css/video-player.css">
+  <link rel="stylesheet" href="/assets/css/share-modal.css">
+  <link rel="stylesheet" href="/assets/css/mobile-player.css?v=4">
+  <link rel="stylesheet" href="/templates/ibizaretro/assets/css/style.css">
+</head>
+<body>
+
+  <!-- ========== AMBIENT FX ========== -->
+  <div class="fx-aurora" aria-hidden="true">
+    <span class="aurora aurora-1"></span>
+    <span class="aurora aurora-2"></span>
+    <span class="aurora aurora-3"></span>
+  </div>
+  <div class="fx-horizon" aria-hidden="true">
+    <div class="horizon-sun"></div>
+    <div class="horizon-grid"></div>
+  </div>
+  <div class="fx-scanlines" aria-hidden="true"></div>
+  <div class="fx-noise" aria-hidden="true"></div>
+  <div class="fx-orbits" aria-hidden="true">
+    <div class="orbit orbit-1"></div>
+    <div class="orbit orbit-2"></div>
+  </div>
+
+  <!-- ========== LOADING ========== -->
+  <div class="loading-overlay" id="loading-overlay">
+    <div class="loading-box">
+      <div class="loading-ring">
+        <img id="loading-logo-img" src="/assets/icons/icon-512x512.png" alt="Logo">
+      </div>
+      <h2 class="loading-title" id="loading-title">Ibiza Retro Beats</h2>
+      <div class="loading-bar"><span class="loading-progress"></span></div>
+      <p class="loading-sub" id="loading-subtitle">Sintonizando frecuencia…</p>
+    </div>
+  </div>
+
+  <div class="shell">
+
+    <!-- ========== TOP BAR ========== -->
+    <header class="topbar">
+      <div class="topbar-in">
+        <div class="brand">
+          <div class="brand-mark">
+            <img id="radio-logo" src="" alt="Logo" style="display:none;">
+            <span class="brand-fallback"><i class="fas fa-headphones"></i></span>
+          </div>
+          <div class="brand-text">
+            <strong id="footer-radio-name">Ibiza Retro Beats</strong>
+            <span class="brand-tag">
+              <i class="on-air-dot"></i><span id="onair-label">EN VIVO</span>
+            </span>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div id="notification-button-container"></div>
+          <div id="pwa-install-button"></div>
+          <div class="social-links" id="social-links"></div>
+        </div>
+      </div>
+      <div class="ticker" id="ticker-wrap" style="display:none;">
+        <span class="ticker-tag">ÚLTIMA HORA</span>
+        <div class="ticker-view"><div class="ticker-track" id="breaking-ticker"></div></div>
+      </div>
+    </header>
+
+    <!-- ========== MAIN ========== -->
+    <main class="main" id="main">
+
+      <!-- ============================================
+           1 · HERO (incluye reproductor)
+      ============================================= -->
+      <section class="hero" id="hero" data-spy="hero">
+        <div class="hero-bg" id="hero-bg"></div>
+        <div class="hero-veil"></div>
+        <div class="hero-stars" aria-hidden="true"></div>
+
+        <div class="hero-in">
+          <div class="hero-visual">
+            <div class="disc" id="cover-disc">
+              <div class="disc-glow"></div>
+              <div class="disc-art">
+                <img id="track-artwork" src="" alt="" style="display:none;">
+                <div class="disc-default" id="default-artwork"><span>♪</span></div>
+              </div>
+              <div class="disc-ring disc-ring-1"></div>
+              <div class="disc-ring disc-ring-2"></div>
+              <div class="disc-spindle"></div>
+            </div>
+            <div class="eq" id="eq-bars" aria-hidden="true">
+              <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+            </div>
+          </div>
+
+          <div class="hero-copy">
+            <div class="hero-badge" id="hero-badge">
+              <span class="badge-pulse"></span>
+              <span id="hero-status">OFFLINE</span>
+            </div>
+            <p class="hero-kicker">SONANDO AHORA · 24/7</p>
+            <h1 class="hero-title glitch" id="track-title" data-text="Ibiza Retro Beats">Ibiza Retro Beats</h1>
+            <p class="hero-artist" id="track-artist">Dance · House · Trance · Eurodance</p>
+
+            <div class="hero-controls">
+              <button class="play-orb" id="play-btn" aria-label="Reproducir">
+                <span class="play-orb-ring"></span>
+                <i class="fas fa-play"></i>
+              </button>
+              <div class="vol">
+                <i class="fas fa-volume-down"></i>
+                <input type="range" id="volume-slider" min="0" max="100" value="60" aria-label="Volumen">
+                <i class="fas fa-volume-up"></i>
+              </div>
+              <button class="ghost-btn" id="hero-tv-btn" style="display:none;">
+                <i class="fas fa-tv"></i><span>TV</span>
+              </button>
+            </div>
+
+            <div class="hero-meta">
+              <div class="meta-cell">
+                <span class="meta-k"><i class="fas fa-users"></i> Oyentes</span>
+                <span class="meta-v" id="listeners-count">0</span>
+              </div>
+              <div class="meta-cell">
+                <span class="meta-k"><i class="fas fa-signal"></i> Bitrate</span>
+                <span class="meta-v"><span id="bitrate">—</span> <em>kbps</em></span>
+              </div>
+              <div class="meta-cell">
+                <span class="meta-k"><i class="fas fa-wave-square"></i> Calidad</span>
+                <span class="meta-v" id="audio-quality">HD</span>
+              </div>
+            </div>
+
+            <p class="hero-date" id="current-date"></p>
+
+            <a class="hero-cta" href="#historia"><span>Descúbrenos</span><i class="fas fa-arrow-down"></i></a>
+          </div>
+        </div>
+
+        <div class="scroll-hint" aria-hidden="true"><span></span></div>
+      </section>
+
+      <!-- ============================================
+           2 · MARQUEE DE ESTADÍSTICAS
+      ============================================= -->
+      <section class="marquee" aria-label="Datos clave">
+        <div class="marquee-track" id="marquee-track">
+          <span><i class="fas fa-headphones"></i> 100% Música</span>
+          <span><i class="fas fa-ban"></i> Cero Cháchara</span>
+          <span><i class="fas fa-tower-broadcast"></i> 24/7 Online</span>
+          <span><i class="fas fa-record-vinyl"></i> HD 320 kbps</span>
+          <span><i class="fas fa-music"></i> Dance · Trance · House · Eurodance</span>
+          <span><i class="fas fa-bolt"></i> BPM 135–145</span>
+        </div>
+      </section>
+
+      <!-- ============================================
+           3 · HISTORIA DE LA RADIO
+      ============================================= -->
+      <section class="section about" id="historia" data-spy="historia">
+        <div class="container">
+          <div class="sec-head" data-reveal>
+            <span class="sec-kicker">Nuestra historia</span>
+            <h2 class="sec-title">La historia de<br><span class="grad">Ibiza Retro Beats</span></h2>
+            <span class="sec-line"></span>
+          </div>
+
+          <div class="about-grid">
+            <div class="about-copy" data-reveal>
+              <p class="lead">
+                <strong>Ibiza Retro Beats</strong> es una emisora de radio online de música dance centrada en la calidad y la energía.
+                Transmitimos lo mejor del <em>dance, clásicos del house, del club y del trance</em>.
+                Sin distracciones, sin ruido, solo música que te hace vibrar, las 24 horas del día, los 7 días de la semana.
+              </p>
+              <p>
+                El destino definitivo para todos los apasionados de los ritmos electrónicos. Si buscabas la mejor radio de trance classics y dance para dar ritmo a tus días y noches, has llegado al lugar correcto.
+              </p>
+
+              <div class="pill-list">
+                <span class="pill"><i class="fas fa-ban"></i> Cero charla</span>
+                <span class="pill pill-em"><i class="fas fa-fire"></i> 100% música</span>
+                <span class="pill"><i class="fas fa-wave-square"></i> Alta definición</span>
+              </div>
+
+              <p>
+                A diferencia de la banda FM, priorizamos la música. Sin largas interrupciones, solo el flujo continuo de tus éxitos favoritos.
+                <strong>Ibiza Retro Beats</strong> se ha establecido como un actor indispensable en la escena digital.
+              </p>
+              <p>
+                Nuestra misión es simple: ofrecer lo mejor del sonido <em>Dancefloor, Trance Classics, House y Electro</em>, gratis y en alta definición.
+                En la jungla de las webradios, Ibiza Retro Beats se distingue por una programación musical aguda, lejos de los algoritmos automáticos y fríos.
+              </p>
+            </div>
+
+            <aside class="about-visual" data-reveal>
+              <div class="visual-stack">
+                <div class="vs-card vs-1">
+                  <img src="https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?auto=format&fit=crop&w=720&q=70" alt="Mezcladora DJ">
+                  <span class="vs-tag">HOUSE</span>
+                </div>
+                <div class="vs-card vs-2">
+                  <img src="https://images.unsplash.com/photo-1485579149621-3123dd979885?auto=format&fit=crop&w=720&q=70" alt="Sintetizador analógico">
+                  <span class="vs-tag">TRANCE</span>
+                </div>
+                <div class="vs-card vs-3">
+                  <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=720&q=70" alt="Concierto con luces">
+                  <span class="vs-tag">DANCE</span>
+                </div>
+                <div class="vs-glow"></div>
+              </div>
+            </aside>
+          </div>
+
+          <div class="stats" data-reveal>
+            <div class="stat">
+              <span class="stat-num" data-count="24">0</span>
+              <span class="stat-k"><i class="fas fa-clock"></i> HORAS EN VIVO</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="7">0</span>
+              <span class="stat-k"><i class="fas fa-calendar-week"></i> DÍAS A LA SEMANA</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="320">0</span>
+              <span class="stat-k"><i class="fas fa-signal"></i> KBPS HD</span>
+            </div>
+            <div class="stat">
+              <span class="stat-num" data-count="0">∞</span>
+              <span class="stat-k"><i class="fas fa-ban"></i> % DE CHÁCHARA</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           4 · GÉNEROS MUSICALES
+      ============================================= -->
+      <section class="section genres" id="generos" data-spy="generos">
+        <div class="container">
+          <div class="sec-head" data-reveal>
+            <span class="sec-kicker">El sonido que nos define</span>
+            <h2 class="sec-title">Géneros de<br><span class="grad">la radio</span></h2>
+            <span class="sec-line"></span>
+          </div>
+
+          <div class="genre-grid">
+            <article class="genre-card g-eurodance" data-reveal>
+              <div class="gc-bg" style="background-image:url('https://images.unsplash.com/photo-1429962714451-bb934ecdc4ec?auto=format&fit=crop&w=900&q=70')"></div>
+              <div class="gc-overlay"></div>
+              <div class="gc-body">
+                <span class="gc-num">01</span>
+                <h3>Eurodance 90's</h3>
+                <p>
+                  El género musical que definió las pistas de baile globales. Caracterizado por un
+                  sintetizador potente, ritmos de <strong>135–145 BPM</strong>, estribillos
+                  femeninos melódicos y versos rapeados masculinos.
+                </p>
+                <div class="gc-tags">
+                  <span>135–145 BPM</span><span>Synth</span><span>Pistas globales</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="genre-card g-trance" data-reveal>
+              <div class="gc-bg" style="background-image:url('https://images.unsplash.com/photo-1518972559570-7cc1309f3229?auto=format&fit=crop&w=900&q=70')"></div>
+              <div class="gc-overlay"></div>
+              <div class="gc-body">
+                <span class="gc-num">02</span>
+                <h3>Trance Classics</h3>
+                <p>
+                  Los años 90 fueron la época dorada de nacimiento y explosión de la música trance.
+                  El género se consolidó gracias a sus icónicos <em>breakdowns emotivos</em>,
+                  melodías de sintetizador hipnóticas y progresiones largas que dominaron los clubes del mundo.
+                </p>
+                <div class="gc-tags">
+                  <span>Breakdowns</span><span>Synth hipnótico</span><span>Uplifting</span>
+                </div>
+              </div>
+            </article>
+
+            <article class="genre-card g-pioneers" data-reveal>
+              <div class="gc-bg" style="background-image:url('https://images.unsplash.com/photo-1598387993441-a364f854c3e1?auto=format&fit=crop&w=900&q=70')"></div>
+              <div class="gc-overlay"></div>
+              <div class="gc-body">
+                <span class="gc-num">03</span>
+                <h3>Pioneros del género</h3>
+                <p>
+                  La escena de los 90 vio nacer y consolidarse a los pioneros más importantes,
+                  estableciendo las bases del <strong>uplifting</strong>, el <strong>progressive</strong>
+                  y el <strong>acid trance</strong>.
+                </p>
+                <div class="gc-tags">
+                  <span>Uplifting</span><span>Progressive</span><span>Acid</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           5 · DJs / PIONEROS
+      ============================================= -->
+      <section class="section djs" id="djs" data-spy="djs">
+        <div class="container">
+          <div class="sec-head" data-reveal>
+            <span class="sec-kicker">Leyendas detrás del sonido</span>
+            <h2 class="sec-title">Los <span class="grad">pioneros</span><br>del trance</h2>
+            <span class="sec-line"></span>
+          </div>
+
+          <div class="dj-grid">
+            <article class="dj-card" data-reveal>
+              <div class="dj-img" style="background-image:url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&w=700&q=70')"></div>
+              <div class="dj-body">
+                <span class="dj-flag">Alemania · 🇩🇪</span>
+                <h3>Paul van Dyk</h3>
+                <p>
+                  Este DJ alemán se convirtió en una de las figuras más grandes del género gracias
+                  a himnos eternos como <strong><em>For An Angel (1994)</em></strong>.
+                </p>
+                <span class="dj-track"><i class="fas fa-record-vinyl"></i> For An Angel · 1994</span>
+              </div>
+            </article>
+
+            <article class="dj-card" data-reveal>
+              <div class="dj-img" style="background-image:url('https://images.unsplash.com/photo-1485579149621-3123dd979885?auto=format&fit=crop&w=700&q=70')"></div>
+              <div class="dj-body">
+                <span class="dj-flag">Holanda · 🇳🇱</span>
+                <h3>Tiësto</h3>
+                <p>
+                  Antes de ser una estrella del pop-EDM, dominó finales de los 90 con sus legendarias
+                  compilaciones <em>In Search of Sunrise</em> y remixes como el de
+                  <strong>Silence</strong> de Delerium.
+                </p>
+                <span class="dj-track"><i class="fas fa-record-vinyl"></i> In Search of Sunrise</span>
+              </div>
+            </article>
+
+            <article class="dj-card" data-reveal>
+              <div class="dj-img" style="background-image:url('https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=700&q=70')"></div>
+              <div class="dj-body">
+                <span class="dj-flag">Holanda · 🇳🇱</span>
+                <h3>Armin van Buuren</h3>
+                <p>
+                  Aunque su reinado absoluto llegó en los 2000, inició su carrera a mediados de los 90
+                  con éxitos tempranos como <strong><em>Blue Fear (1997)</em></strong>.
+                </p>
+                <span class="dj-track"><i class="fas fa-record-vinyl"></i> Blue Fear · 1997</span>
+              </div>
+            </article>
+
+            <article class="dj-card" data-reveal>
+              <div class="dj-img" style="background-image:url('https://images.unsplash.com/photo-1506157786151-b8491531f063?auto=format&fit=crop&w=700&q=70')"></div>
+              <div class="dj-body">
+                <span class="dj-flag">Reino Unido · 🇬🇧</span>
+                <h3>Paul Oakenfold</h3>
+                <p>
+                  Fue el responsable de popularizar el sonido <em>Goa trance</em> y el
+                  <em>trance psicodélico</em> en Reino Unido a través de sus sets en el club
+                  <strong>Cream</strong> y sus residencias masivas.
+                </p>
+                <span class="dj-track"><i class="fas fa-record-vinyl"></i> Cream · Liverpool</span>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           6 · FEATURES (por qué somos distintos)
+      ============================================= -->
+      <section class="section features" id="features" data-spy="features">
+        <div class="container">
+          <div class="sec-head" data-reveal>
+            <span class="sec-kicker">Lo que nos hace distintos</span>
+            <h2 class="sec-title">Una radio<br><span class="grad">sin ruido</span></h2>
+            <span class="sec-line"></span>
+          </div>
+
+          <div class="feature-grid">
+            <div class="feat" data-reveal>
+              <div class="feat-ico"><i class="fas fa-headphones"></i></div>
+              <h3>100% Música</h3>
+              <p>Solo éxitos, sin interrupciones ni relleno. Tu pista favorita nunca se interrumpe.</p>
+            </div>
+            <div class="feat" data-reveal>
+              <div class="feat-ico"><i class="fas fa-ban"></i></div>
+              <h3>Cero charla</h3>
+              <p>Adiós a los locutores eternos. Aquí el silencio se llena con sintetizadores.</p>
+            </div>
+            <div class="feat" data-reveal>
+              <div class="feat-ico"><i class="fas fa-wave-square"></i></div>
+              <h3>HD 320 kbps</h3>
+              <p>Calidad de estudio para que escuches cada hi-hat, cada reverb, cada breakdown.</p>
+            </div>
+            <div class="feat" data-reveal>
+              <div class="feat-ico"><i class="fas fa-tower-broadcast"></i></div>
+              <h3>24/7 Online</h3>
+              <p>Los 365 días del año, en vivo desde cualquier dispositivo del planeta.</p>
+            </div>
+            <div class="feat" data-reveal>
+              <div class="feat-ico"><i class="fas fa-music"></i></div>
+              <h3>Curación humana</h3>
+              <p>Programación musical aguda, lejos de los algoritmos automáticos y fríos.</p>
+            </div>
+            <div class="feat" data-reveal>
+              <div class="feat-ico"><i class="fas fa-bolt"></i></div>
+              <h3>135–145 BPM</h3>
+              <p>El rango perfecto para sentir el pulso del dancefloor, sin perder energía.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           7 · CTA + PROGRAMACIÓN
+      ============================================= -->
+      <section class="section cta-section" id="programacion" data-spy="programacion">
+        <div class="container">
+          <div class="cta-card" data-reveal>
+            <div class="cta-glow"></div>
+            <span class="cta-kicker">Tu pista suena ahora mismo</span>
+            <h2>No esperes más.<br>Pulsa play y <span class="grad">siente el beat.</span></h2>
+            <p>
+              Llevamos años pinchando lo mejor del dance, house, trance y eurodance.
+              Únete a la comunidad de Ibiza Retro Beats — gratis, sin registro, en alta definición.
+            </p>
+            <div class="cta-actions">
+              <button class="cta-btn" id="cta-play"><i class="fas fa-play"></i><span>Escuchar ahora</span></button>
+              <a class="cta-btn cta-ghost" href="#contacto"><i class="fas fa-envelope"></i><span>Contacto</span></a>
+            </div>
+          </div>
+
+          <div class="prog-block" data-reveal>
+            <div class="sec-head">
+              <span class="sec-kicker">Lo que suena esta semana</span>
+              <h2 class="sec-title">Programación<br><span class="grad">destacada</span></h2>
+              <span class="sec-line"></span>
+            </div>
+            <div class="day-nav" id="day-nav">
+              <button class="day-btn" data-day="lunes">LUN</button>
+              <button class="day-btn" data-day="martes">MAR</button>
+              <button class="day-btn" data-day="miercoles">MIÉ</button>
+              <button class="day-btn" data-day="jueves">JUE</button>
+              <button class="day-btn" data-day="viernes">VIE</button>
+              <button class="day-btn" data-day="sabado">SÁB</button>
+              <button class="day-btn" data-day="domingo">DOM</button>
+            </div>
+            <div class="prog-timeline" id="programs-timeline"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           8 · NOTICIAS + PODCASTS
+      ============================================= -->
+      <section class="section content-grid" id="noticias" data-spy="noticias">
+        <div class="container">
+          <div class="sec-head" data-reveal>
+            <span class="sec-kicker">Comunidad</span>
+            <h2 class="sec-title">Noticias<br><span class="grad">& podcasts</span></h2>
+            <span class="sec-line"></span>
+          </div>
+
+          <div class="cols">
+            <div class="col" data-reveal>
+              <h3 class="col-title"><i class="fas fa-newspaper"></i> Últimas noticias</h3>
+              <div class="news-list" id="news-list"></div>
+              <div class="more-wrap" id="news-more" style="display:none;">
+                <button class="more-btn" id="news-load-more">Cargar más <i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+            <div class="col" data-reveal>
+              <h3 class="col-title"><i class="fas fa-podcast"></i> Podcasts destacados</h3>
+              <div class="podcast-list" id="podcasts-list"></div>
+              <div class="more-wrap" id="podcasts-more" style="display:none;">
+                <button class="more-btn" id="podcasts-load-more">Cargar más <i class="fas fa-plus"></i></button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           9 · SPONSORS + EVENTOS + ÚLTIMOS TEMAS
+      ============================================= -->
+      <section class="section misc" id="extras" data-spy="extras">
+        <div class="container">
+          <div class="cols cols-3">
+            <div class="col" data-reveal>
+              <h3 class="col-title"><i class="fas fa-handshake"></i> Auspiciadores</h3>
+              <div class="swiper sponsors-swiper">
+                <div class="swiper-wrapper" id="sponsors-carousel"></div>
+              </div>
+              <div class="sponsor-grid" id="sponsors-grid"></div>
+            </div>
+
+            <div class="col" data-reveal>
+              <h3 class="col-title"><i class="fas fa-calendar-check"></i> Próximos eventos</h3>
+              <div class="events-list" id="events-timeline"></div>
+            </div>
+
+            <div class="col" data-reveal>
+              <h3 class="col-title"><i class="fas fa-clock-rotate-left"></i> Últimos temas</h3>
+              <div class="tracks" id="recent-tracks"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           10 · GALERÍA + EQUIPO + VIDEOS + VIDEOCASTS + ENCUESTAS
+      ============================================= -->
+      <section class="section more" id="comunidad" data-spy="comunidad">
+        <div class="container">
+          <div class="block" data-reveal>
+            <div class="sec-head">
+              <span class="sec-kicker">Detrás del beat</span>
+              <h2 class="sec-title">Galería<br><span class="grad">de la escena</span></h2>
+              <span class="sec-line"></span>
+            </div>
+            <div class="gal-grid" id="galleries-list"></div>
+          </div>
+
+          <div class="block" data-reveal>
+            <div class="sec-head">
+              <span class="sec-kicker">Locutores</span>
+              <h2 class="sec-title">Equipo<br><span class="grad">de Ibiza Retro</span></h2>
+              <span class="sec-line"></span>
+            </div>
+            <div class="ann-grid" id="announcers-grid"></div>
+          </div>
+
+          <div class="cols cols-2" data-reveal>
+            <div class="col">
+              <h3 class="col-title"><i class="fas fa-music"></i> Ranking musical</h3>
+              <div class="rank-list" id="videos-ranking"></div>
+            </div>
+            <div class="col">
+              <h3 class="col-title"><i class="fas fa-video"></i> Videocasts</h3>
+              <div class="vc-list" id="videocasts-list"></div>
+            </div>
+          </div>
+
+          <div class="block" data-reveal>
+            <div class="sec-head">
+              <span class="sec-kicker">Vota y opina</span>
+              <h2 class="sec-title">Encuestas<br><span class="grad">de la comunidad</span></h2>
+              <span class="sec-line"></span>
+            </div>
+            <div class="polls" id="polls-container"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           11 · TV
+      ============================================= -->
+      <section class="section tv-section" id="tv" data-spy="tv" style="display:none;">
+        <div class="container">
+          <div class="sec-head" data-reveal>
+            <span class="sec-kicker">Imagen en vivo</span>
+            <h2 class="sec-title">TV<br><span class="grad">en directo</span></h2>
+            <span class="sec-line"></span>
+          </div>
+          <div class="tv-frame"><div id="tv-player-container"></div></div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           12 · CONTACTO
+      ============================================= -->
+      <section class="section contact" id="contacto" data-spy="contacto">
+        <div class="container">
+          <div class="sec-head" data-reveal>
+            <span class="sec-kicker">Hablemos</span>
+            <h2 class="sec-title">Contacto<br><span class="grad">& colaboraciones</span></h2>
+            <span class="sec-line"></span>
+          </div>
+
+          <div class="contact-grid">
+            <div class="contact-text" data-reveal>
+              <p>
+                ¿Quieres pinchar en Ibiza Retro Beats, proponer un set, una entrevista o
+                colaborar con la radio? Escríbenos.
+              </p>
+              <ul class="contact-list">
+                <li><i class="fas fa-bullhorn"></i> Propuestas artísticas</li>
+                <li><i class="fas fa-music"></i> Promociones y mezclas</li>
+                <li><i class="fas fa-handshake"></i> Patrocinios</li>
+                <li><i class="fas fa-share-nodes"></i> Compartir feedback</li>
+              </ul>
+            </div>
+            <form class="contact-form" id="contact-form" data-reveal>
+              <div class="field">
+                <input type="text" id="contact-name" placeholder="Nombre" autocomplete="name" required>
+              </div>
+              <div class="field">
+                <input type="email" id="contact-email" placeholder="Email" autocomplete="email" inputmode="email" required>
+              </div>
+              <div class="field">
+                <input type="text" id="contact-subject" placeholder="Asunto" required>
+              </div>
+              <div class="field">
+                <textarea id="contact-message" rows="5" placeholder="Tu mensaje" required></textarea>
+              </div>
+              <button type="submit" class="contact-submit-btn">
+                <i class="fas fa-paper-plane"></i><span>Enviar</span>
+              </button>
+              <div class="contact-feedback" id="contact-feedback" style="display:none;"></div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <span>© <span id="foot-year"></span> <span id="foot-name">Ibiza Retro Beats</span></span>
+        <span class="foot-sep">·</span>
+        <span>Dance · House · Trance · Eurodance 24/7</span>
+        <span class="foot-sep">·</span>
+        <span>Powered by ipstream</span>
+      </footer>
+    </main>
+
+    <!-- ========== DOCK ========== -->
+    <nav class="dock" id="dock">
+      <button class="dock-item active" data-tab="hero"><i class="fas fa-play"></i><span>En Vivo</span></button>
+      <button class="dock-item" data-tab="tv" style="display:none;"><i class="fas fa-tv"></i><span>TV</span></button>
+      <button class="dock-item" data-tab="historia"><i class="fas fa-book-open"></i><span>Historia</span></button>
+      <button class="dock-item" data-tab="generos"><i class="fas fa-record-vinyl"></i><span>Géneros</span></button>
+      <button class="dock-item" data-tab="djs"><i class="fas fa-headphones"></i><span>DJs</span></button>
+      <button class="dock-item" data-tab="programacion"><i class="fas fa-calendar-day"></i><span>Programas</span></button>
+      <button class="dock-item" data-tab="noticias"><i class="fas fa-newspaper"></i><span>Noticias</span></button>
+      <button class="dock-item" data-tab="contacto"><i class="fas fa-envelope"></i><span>Contacto</span></button>
+      <button class="dock-more" id="dock-more" style="display:none;" aria-label="Más secciones"><i class="fas fa-ellipsis"></i></button>
+    </nav>
+    <div class="dock-overflow" id="dock-overflow" style="display:none;">
+      <div class="dock-overflow-in" id="dock-overflow-content"></div>
+    </div>
+  </div>
+
+  <!-- ========== MODALES ========== -->
+  <div id="news-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="news-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="program-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="program-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="podcast-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="podcast-modal-body"></div>
+      <audio id="podcast-audio" controls></audio>
+    </div>
+  </div>
+
+  <div id="videocast-modal" class="modal">
+    <div class="modal-content modal-lg">
+      <button class="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="videocast-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="video-modal" class="modal">
+    <div class="modal-content modal-lg">
+      <button class="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="video-modal-body"></div>
+    </div>
+  </div>
+
+  <div id="gallery-modal" class="modal">
+    <div class="modal-content modal-lg">
+      <button class="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="gallery-modal-body"></div>
+      <div class="gallery-thumbs" id="gallery-thumbnails"></div>
+    </div>
+  </div>
+
+  <div id="promotion-modal" class="modal">
+    <div class="modal-content">
+      <button class="modal-close" aria-label="Cerrar">&times;</button>
+      <div id="promotion-modal-body"></div>
+    </div>
+  </div>
+
+  <!-- ========== AUDIO ========== -->
+  <audio id="radio-audio" preload="none" crossorigin="anonymous"></audio>
+
+  <script>
+    document.getElementById('foot-year').textContent = new Date().getFullYear();
+    (function () {
+      var overlay = document.getElementById('loading-overlay');
+      var bar = document.querySelector('.loading-progress');
+      var sub = document.getElementById('loading-subtitle');
+      var title = document.getElementById('loading-title');
+      var steps = [
+        [15, 'Iniciando sistema…'],
+        [35, 'Sintonizando frecuencia…'],
+        [60, 'Calibrando sintetizadores…'],
+        [85, 'Cargando pista…'],
+        [100, '¡Listo!']
+      ];
+      var i = 0;
+      fetch('/config/config.json')
+        .then(function (r) { return r.json(); })
+        .then(function (c) { if (c && c.project_name && title) title.textContent = c.project_name; })
+        .catch(function () {});
+      var timer = setInterval(function () {
+        if (i >= steps.length) {
+          clearInterval(timer);
+          if (overlay) {
+            overlay.classList.add('hidden');
+            setTimeout(function () { overlay.style.display = 'none'; }, 500);
+          }
+          return;
+        }
+        if (bar) bar.style.width = steps[i][0] + '%';
+        if (sub) sub.textContent = steps[i][1];
+        i++;
+      }, 380);
+    })();
+  </script>
+
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <script src="/assets/js/title-updater.js"></script>
+  <script src="/assets/js/meta-updater.js"></script>
+  <script src="/assets/js/mobile-enhancements.js"></script>
+  <script src="/assets/js/pwa-installer.js?v=3"></script>
+  <script src="/assets/js/promotion-popup.js"></script>
+  <script type="module" src="/assets/js/onesignal-init.js"></script>
+  <script type="module" src="/assets/js/video-player.js"></script>
+  <script src="/assets/js/share-button.js"></script>
+  <script type="module" src="/templates/ibizaretro/assets/js/main.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/service-worker.js').catch(function () {});
+      });
+    }
+  </script>
+</body>
+</html>

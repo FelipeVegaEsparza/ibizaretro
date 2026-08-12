@@ -63,7 +63,14 @@ app.use(express.json({ limit: '10kb' }));
 app.use(express.urlencoded({ extended: true, limit: '10kb' }));
 
 // Content Security Policy (CSP)
-// Configurado para permitir todos los recursos que la app utiliza
+// Configurado para permitir todos los recursos que la app utiliza.
+
+// Helper: extrae el origen (scheme://host[:puerto]) de una URL
+function originOf(url) {
+  try { return new URL(url).origin; } catch { return null; }
+}
+
+// CSP base (vacía al inicio; loadConfig() la amplía con los hosts del cliente).
 const cspDirectives = {
   defaultSrc: ["'self'"],
   scriptSrc: [
@@ -130,6 +137,29 @@ const cspDirectives = {
   upgradeInsecureRequests: []
 };
 
+// Añade los hosts de streaming del cliente (audio + api sonicpanel + base API)
+// a connectSrc y mediaSrc de la CSP. Si el config.json apunta a otro dominio
+// (ej: sp002.servidoresph.com en lugar de stream2.ipstream.cl), no hay que
+// editar el servidor: se detecta solo al arrancar.
+function addStreamHostsToCsp(cfg) {
+  if (!cfg) return;
+  const hosts = new Set();
+  if (cfg.ipstream_base_url) {
+    const o = originOf(cfg.ipstream_base_url);
+    if (o) hosts.add(o);
+  }
+  for (const k of ['sonicpanel_stream_url', 'sonicpanel_api_url']) {
+    if (cfg[k]) {
+      const o = originOf(cfg[k]);
+      if (o) hosts.add(o);
+    }
+  }
+  if (!hosts.size) return;
+  const list = [...hosts];
+  cspDirectives.connectSrc = [...(cspDirectives.connectSrc || []), ...list];
+  cspDirectives.mediaSrc = [...(cspDirectives.mediaSrc || []), ...list];
+}
+
 app.use(helmet({
   contentSecurityPolicy: {
     directives: cspDirectives,
@@ -160,6 +190,7 @@ app.use(compression());
 const fs = require('fs');
 const https = require('https');
 let currentTemplate = 'minimalista';
+let lockTemplate = false;
 let clientId = null;
 let ipstreamBaseUrl = null;
 let clientConfig = null;
@@ -200,7 +231,15 @@ function loadConfig() {
   clientId = clientConfig.clientId;
   ipstreamBaseUrl = clientConfig.ipstream_base_url;
   currentTemplate = clientConfig.template || 'minimalista';
-  
+
+  // Si lock_template es true, el template del config.json manda y la API
+  // no puede sobrescribirlo (útil para forzar/probar un template local)
+  lockTemplate = clientConfig.lock_template === true;
+
+  // Añadir hosts de streaming del cliente a la CSP (connectSrc + mediaSrc)
+  // para que SonicPanel y el stream de audio no sean bloqueados.
+  addStreamHostsToCsp(clientConfig);
+
   // Validar que el template sea seguro
   if (!isValidTemplateName(currentTemplate)) {
     console.error(`⚠️ Template name invalid: ${currentTemplate}, using fallback`);
@@ -210,14 +249,14 @@ function loadConfig() {
 
 try {
   loadConfig();
-  console.log(`📂 Config loaded. Template: ${currentTemplate}`);
+  console.log(`📂 Config loaded. Template: ${currentTemplate}${lockTemplate ? ' (bloqueado)' : ''}`);
 } catch (error) {
   console.error('Error loading config:', error.message);
 }
 
 // Función para obtener el template desde la API
 async function fetchTemplateFromAPI() {
-  if (!clientId || !ipstreamBaseUrl) {
+  if (!clientId || !ipstreamBaseUrl || lockTemplate) {
     return currentTemplate;
   }
 
@@ -253,7 +292,7 @@ async function fetchTemplateFromAPI() {
 // Obtener template de la API al iniciar
 fetchTemplateFromAPI().then((template) => {
   currentTemplate = template;
-  console.log(`🎨 Template activo: ${currentTemplate}`);
+  console.log(`🎨 Template activo: ${currentTemplate}${lockTemplate ? ' (bloqueado por config.json)' : ''}`);
 });
 
 // Ruta principal - sirve el template con rutas corregidas
