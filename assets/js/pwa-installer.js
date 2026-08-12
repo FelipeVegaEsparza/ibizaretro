@@ -173,18 +173,62 @@ class PWAInstaller {
 
   createFloatingButton() {
     const buttonHTML = `
-      <div class="pwa-floating-button" id="pwa-floating-button">
-        <div class="pwa-floating-icon">
-          <i class="fas fa-download"></i>
-        </div>
-        <div class="pwa-floating-text">
-          <span>Instalar App</span>
-        </div>
+      <div class="pwa-floating-button" id="pwa-floating-button" role="button" tabindex="0" aria-label="Instalar App">
+        <button class="pwa-floating-dismiss" id="pwa-floating-dismiss" aria-label="Ocultar">&times;</button>
+        <i class="fas fa-download pwa-floating-icon" aria-hidden="true"></i>
+        <span class="pwa-floating-text">Instalar App</span>
       </div>
+      <button class="pwa-floating-reopen" id="pwa-floating-reopen" aria-label="Mostrar botón de instalación">
+        <i class="fas fa-download" aria-hidden="true"></i>
+      </button>
     `;
 
     document.body.insertAdjacentHTML('beforeend', buttonHTML);
     this.floatingButton = document.getElementById('pwa-floating-button');
+    this.reopenButton = document.getElementById('pwa-floating-reopen');
+    this.dismissBtn = document.getElementById('pwa-floating-dismiss');
+
+    const dismissed = this._isDismissed();
+    if (dismissed) {
+      this.floatingButton.classList.add('dismissing');
+      this.reopenButton.classList.add('visible');
+    }
+
+    // Click en el handle pequeño reabre la etiqueta
+    this.reopenButton.addEventListener('click', () => {
+      this._clearDismissed();
+      this.floatingButton.classList.remove('dismissing');
+      this.reopenButton.classList.remove('visible');
+    });
+
+    // Click en el aspa cierra la etiqueta y la deja oculta hasta nueva orden
+    this.dismissBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      this.hideFloatingButton({ manual: true });
+    });
+
+    // Accesibilidad: Enter/Space sobre la etiqueta → click
+    this.floatingButton.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        this.floatingButton.click();
+      }
+    });
+  }
+
+  _isDismissed() {
+    try { return localStorage.getItem('pwa-banner-dismissed') === '1'; }
+    catch (e) { return false; }
+  }
+
+  _setDismissed() {
+    try { localStorage.setItem('pwa-banner-dismissed', '1'); }
+    catch (e) {}
+  }
+
+  _clearDismissed() {
+    try { localStorage.removeItem('pwa-banner-dismissed'); }
+    catch (e) {}
   }
 
   setupEventListeners() {
@@ -388,16 +432,32 @@ class PWAInstaller {
 
   showFloatingButton() {
     if (!this.floatingButton || this.isStandalone) return;
-    
-    // Mostrar inmediatamente sin delay adicional
+
+    // Si el usuario la cerró manualmente en este dispositivo, no la
+    // volvemos a mostrar hasta que haga click en el handle de reapertura.
+    if (this._isDismissed()) {
+      if (this.reopenButton) this.reopenButton.classList.add('visible');
+      return;
+    }
+
     this.floatingButton.classList.add('visible');
+    if (this.reopenButton) this.reopenButton.classList.remove('visible');
     console.log('PWA: Floating button shown');
   }
 
-  hideFloatingButton() {
+  hideFloatingButton({ manual = false } = {}) {
     if (!this.floatingButton) return;
-    
     this.floatingButton.classList.remove('visible');
+
+    // Si el usuario la cierra con el aspa, dejamos un handle de reapertura
+    // pegado al borde derecho y guardamos la preferencia para no
+    // volver a molestarlo en este dispositivo.
+    if (manual) {
+      this._setDismissed();
+      this.floatingButton.classList.add('dismissing');
+      if (this.reopenButton) this.reopenButton.classList.add('visible');
+      console.log('PWA: Floating button dismissed by user');
+    }
   }
 
   async installApp() {

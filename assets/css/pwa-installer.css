@@ -301,62 +301,154 @@
   font-size: 16px;
 }
 
-/* Botón flotante */
+/* Botón flotante (etiqueta vertical al costado derecho)
+   — Colocada a media altura de la pantalla
+   — Aparece/desaparece con animaciones suaves
+   — Botón interno para cerrarla manualmente
+   — Estilo acorde al resto del template (naranja/magenta neón) */
 .pwa-floating-button {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
-  min-width: 140px;
-  height: 50px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  border-radius: 25px;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) translateX(100%);
+  z-index: 10002;
   display: flex;
   align-items: center;
-  justify-content: center;
+  background: linear-gradient(180deg, var(--nrg) 0%, var(--magenta) 100%);
+  border-radius: 14px 0 0 14px;
+  padding: 16px 12px 16px 14px;
+  gap: 10px;
   cursor: pointer;
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
-  transition: all 0.3s ease;
-  z-index: 10002;
+  box-shadow:
+    -4px 0 24px rgba(255, 119, 0, 0.35),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              opacity 0.35s ease;
   opacity: 0;
   visibility: hidden;
-  transform: scale(0.8) translateY(20px);
-  padding: 0 20px;
-  gap: 8px;
+  /* asegura buena legibilidad sobre cualquier fondo */
+  color: #12101c;
+  font-family: 'Space Grotesk', system-ui, sans-serif;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 .pwa-floating-button.visible {
   opacity: 1;
   visibility: visible;
-  transform: scale(1) translateY(0);
+  transform: translateY(-50%) translateX(0);
 }
 
 .pwa-floating-button:hover {
-  transform: scale(1.05) translateY(-2px);
-  box-shadow: 0 12px 35px rgba(102, 126, 234, 0.5);
+  box-shadow:
+    -6px 0 30px rgba(255, 119, 0, 0.55),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 
-.pwa-floating-button:active {
-  transform: scale(0.98) translateY(0);
+.pwa-floating-button.dismissing {
+  transform: translateY(-50%) translateX(100%);
+  opacity: 0;
+  visibility: hidden;
 }
 
-.pwa-floating-icon {
-  color: white;
-  font-size: 16px;
-  transition: transform 0.3s ease;
-  flex-shrink: 0;
-}
-
+/* Etiqueta escrita en vertical (se lee de abajo hacia arriba).
+   Le damos un poco de aire y la hacemos semitransparente si
+   la pantalla está pequeña en altura. */
 .pwa-floating-text {
-  color: white;
-  font-size: 14px;
-  font-weight: 600;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  font-family: 'Audiowide', system-ui, sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #12101c;
   white-space: nowrap;
-  transition: transform 0.3s ease;
+  line-height: 1;
+  padding: 4px 0;
 }
 
-.pwa-floating-button:hover .pwa-floating-icon,
-.pwa-floating-button:hover .pwa-floating-text {
-  transform: scale(1.05);
+/* Icono en el extremo opuesto a la esquina */
+.pwa-floating-icon {
+  font-size: 0.92rem;
+  color: #12101c;
+  flex-shrink: 0;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.pwa-floating-button:hover .pwa-floating-icon {
+  transform: scale(1.12) rotate(-12deg);
+  background: rgba(255, 255, 255, 0.28);
+}
+
+/* Botón de cierre dentro de la etiqueta */
+.pwa-floating-dismiss {
+  position: absolute;
+  top: 6px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  border: 0;
+  font-size: 0.62rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  padding: 0;
+  font-family: inherit;
+}
+.pwa-floating-button:hover .pwa-floating-dismiss { opacity: 1; }
+.pwa-floating-dismiss:hover { transform: translateX(-50%) scale(1.1); }
+.pwa-floating-dismiss:active { transform: translateX(-50%) scale(0.95); }
+
+
+
+/* Reapertura: un pequeño handle se queda en la esquina para reabrirla
+   después de cerrarla manualmente. */
+.pwa-floating-reopen {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%) translateX(100%);
+  width: 32px;
+  height: 56px;
+  border-radius: 10px 0 0 10px;
+  background: linear-gradient(180deg, var(--nrg) 0%, var(--magenta) 100%);
+  border: 0;
+  color: #12101c;
+  font-size: 0.85rem;
+  cursor: pointer;
+  z-index: 10001;
+  display: grid;
+  place-items: center;
+  box-shadow: -4px 0 18px rgba(255, 119, 0, 0.3);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s ease,
+              opacity 0.3s ease;
+  opacity: 0;
+  visibility: hidden;
+  padding: 0;
+  font-family: inherit;
+}
+.pwa-floating-reopen.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(-50%) translateX(0);
+}
+.pwa-floating-reopen:hover {
+  box-shadow: -6px 0 24px rgba(255, 119, 0, 0.5);
 }
 
 
@@ -416,42 +508,64 @@
     margin: 20px;
     padding: 25px;
   }
-  
+
   .pwa-benefits {
     grid-template-columns: 1fr;
     gap: 10px;
   }
-  
+
   .pwa-benefit {
     padding: 10px;
     font-size: 0.85rem;
   }
-  
+
+  /* La etiqueta vertical sigue funcionando bien en móvil, solo
+     la hacemos un poco más pequeña. En alturas cortas, cae al
+     centro vertical y deja sitio al dock inferior. */
   .pwa-floating-button {
-    min-width: auto;
-    width: auto;
-    height: 42px;
-    padding: 0 14px;
-    bottom: 80px;
-    right: 15px;
-    border-radius: 21px;
-    gap: 6px;
+    padding: 12px 9px 12px 11px;
+    gap: 7px;
   }
-  
-  .pwa-floating-icon {
-    font-size: 15px;
-  }
-  
-  .pwa-floating-text {
-    display: inline;
-    font-size: 13px;
-  }
-  
+  .pwa-floating-text { font-size: 0.66rem; letter-spacing: 0.16em; }
+  .pwa-floating-icon { width: 19px; height: 19px; font-size: 0.78rem; }
+
   .pwa-toast {
     top: 15px;
     right: 15px;
     left: 15px;
     max-width: none;
+  }
+}
+
+@media (max-width: 480px) {
+  /* En pantallas muy angostas, la etiqueta se va al fondo derecho
+     como un botón compacto (modo "smartphone" que no estorbe). */
+  .pwa-floating-button {
+    top: auto;
+    bottom: calc(var(--dock-h, 66px) + 14px);
+    transform: translateX(100%);
+    border-radius: 14px 0 0 14px;
+  }
+  .pwa-floating-button.visible {
+    transform: translateY(0) translateX(0);
+  }
+  .pwa-floating-button.dismissing {
+    transform: translateY(0) translateX(100%);
+  }
+  .pwa-floating-text {
+    writing-mode: horizontal-tb;
+    transform: none;
+    font-size: 0.72rem;
+  }
+  .pwa-floating-reopen {
+    top: auto;
+    bottom: calc(var(--dock-h, 66px) + 14px);
+    transform: translateX(100%);
+    width: 38px;
+    height: 44px;
+  }
+  .pwa-floating-reopen.visible {
+    transform: translateY(0) translateX(0);
   }
 }
 
@@ -524,5 +638,16 @@
     background: #374151;
     border-color: #4b5563;
     color: white;
+  }
+}
+
+/* Accesibilidad: respetar preferencia de reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .pwa-floating-button,
+  .pwa-floating-reopen {
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+  }
+  .pwa-floating-icon {
+    transition: none;
   }
 }
