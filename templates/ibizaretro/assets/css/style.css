@@ -3408,6 +3408,293 @@ body.is-live .play-orb-ring {
 }
 
 /* ============================================================
+   SECCIÓN 4.5 · HIMNOS DEL DANCEFLOOR + PROTO-TRANCE
+   ============================================================ */
+
+.hymns {
+  background:
+    radial-gradient(circle at 100% 0%, rgba(255, 45, 149, 0.06), transparent 45%),
+    radial-gradient(circle at 0% 100%, rgba(255, 119, 0, 0.06), transparent 45%);
+}
+
+.hymns-lead {
+  max-width: 76ch;
+  margin: 0 auto 40px;
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--txt-dim);
+  text-align: center;
+}
+.hymns-lead strong { color: var(--nrg-soft); }
+.hymns-lead em { color: var(--txt); font-style: normal; }
+
+.hymn-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+  gap: 14px;
+}
+
+.hymn-card {
+  position: relative;
+  padding: 22px 22px 26px;
+  border-radius: var(--r-lg);
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  box-shadow: inset 0 0 0 1px var(--line);
+  overflow: hidden;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s, background 0.35s;
+}
+.hymn-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: var(--r-lg);
+  padding: 1px;
+  background: linear-gradient(135deg, var(--nrg), transparent 45%, var(--magenta));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0.6;
+  pointer-events: none;
+}
+.hymn-card:hover {
+  transform: translateY(-6px);
+  background: var(--panel-2);
+}
+.hymn-card:hover::before { opacity: 1; }
+
+.hymn-num {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  font-family: var(--f-display);
+  font-size: 4rem;
+  line-height: 1;
+  background: linear-gradient(180deg, var(--nrg), var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  opacity: 0.18;
+  letter-spacing: -0.04em;
+  pointer-events: none;
+}
+
+.hymn-meta {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.hymn-track {
+  font-family: var(--f-head);
+  font-size: 1.08rem;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+  padding-right: 60px;
+}
+.hymn-artist {
+  font-family: var(--f-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--nrg);
+}
+.hymn-year {
+  font-family: var(--f-display);
+  font-size: 0.66rem;
+  letter-spacing: 0.18em;
+  color: var(--txt-mute);
+  align-self: flex-start;
+  padding: 4px 9px;
+  border-radius: 99px;
+  background: rgba(255, 119, 0, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(255, 119, 0, 0.18);
+}
+
+.hymn-equa {
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  height: 22px;
+  margin-top: 16px;
+}
+.hymn-equa span {
+  flex: 1 1 0;
+  height: 25%;
+  background: linear-gradient(to top, var(--nrg), var(--magenta));
+  border-radius: 2px;
+  transform-origin: bottom;
+  animation: hymn-bar 1.4s ease-in-out infinite alternate;
+}
+.hymn-equa span:nth-child(2n) { animation-duration: 1.05s; }
+.hymn-equa span:nth-child(3n) { animation-duration: 1.7s; animation-delay: 0.1s; }
+.hymn-equa span:nth-child(5n) { animation-delay: 0.2s; }
+.hymn-equa span:nth-child(7n) { animation-delay: 0.3s; }
+@keyframes hymn-bar {
+  0%   { height: 18%; }
+  100% { height: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hymn-equa span { animation: none; height: 40%; }
+}
+
+/* ============================================================
+   PROTO-TRANCE (dentro de Géneros)
+   ============================================================ */
+
+.proto-trance {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: clamp(28px, 4vw, 48px);
+  align-items: stretch;
+}
+@media (max-width: 900px) {
+  .proto-trance { grid-template-columns: 1fr; }
+}
+
+.pt-card {
+  padding: clamp(22px, 4vw, 34px);
+  border-radius: var(--r-xl);
+  background: linear-gradient(160deg, var(--deep-2), var(--deep));
+  box-shadow: inset 0 0 0 1px var(--line-2), 0 16px 36px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.pt-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  align-self: flex-start;
+  font-family: var(--f-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 99px;
+  background: rgba(255, 45, 149, 0.12);
+  color: var(--magenta);
+  box-shadow: inset 0 0 0 1px rgba(255, 45, 149, 0.3);
+}
+.pt-card h3 {
+  font-family: var(--f-display);
+  font-size: clamp(1.1rem, 3.6vw, 1.55rem);
+  line-height: 1.18;
+}
+.pt-card p {
+  font-size: 0.92rem;
+  line-height: 1.75;
+  color: var(--txt-dim);
+}
+.pt-card p strong { color: var(--nrg-soft); }
+.pt-card p em { color: var(--txt); font-style: normal; font-weight: 600; }
+
+.pt-tracks {
+  padding: clamp(22px, 4vw, 32px);
+  border-radius: var(--r-xl);
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+  backdrop-filter: blur(12px);
+}
+.pt-tracks h4 {
+  font-family: var(--f-display);
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  margin-bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  color: var(--txt);
+}
+.pt-tracks h4 i {
+  color: var(--nrg);
+  filter: drop-shadow(0 0 8px rgba(255, 119, 0, 0.5));
+}
+
+.tracks-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.tracks-list li {
+  display: grid;
+  grid-template-columns: 40px 1fr;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 14px;
+  border-radius: var(--r-sm);
+  background: rgba(255, 255, 255, 0.03);
+  box-shadow: inset 0 0 0 1px var(--line);
+  transition: transform 0.25s, background 0.25s, box-shadow 0.25s;
+}
+.tracks-list li:hover {
+  transform: translateX(6px);
+  background: rgba(255, 119, 0, 0.06);
+  box-shadow: inset 0 0 0 1px rgba(255, 119, 0, 0.3);
+}
+.tn-rank {
+  font-family: var(--f-display);
+  font-size: 0.92rem;
+  background: linear-gradient(180deg, var(--nrg), var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-align: center;
+}
+.tn-info {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.tn-info strong {
+  font-family: var(--f-head);
+  font-size: 0.86rem;
+  color: var(--txt);
+  letter-spacing: 0.02em;
+}
+.tn-track {
+  font-family: var(--f-display);
+  font-size: 0.82rem;
+  color: var(--nrg);
+  letter-spacing: 0.04em;
+}
+.tn-meta {
+  font-size: 0.68rem;
+  color: var(--txt-mute);
+  letter-spacing: 0.06em;
+}
+
+.pt-footnote {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+  font-size: 0.82rem;
+  font-style: italic;
+  color: var(--txt-dim);
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  line-height: 1.55;
+}
+.pt-footnote i { color: var(--nrg); margin-top: 4px; }
+
+.g-house .gc-num { color: var(--cyan); }
+
+@media (max-width: 640px) {
+  .hymn-num { font-size: 3.2rem; top: -6px; }
+  .hymn-track { padding-right: 50px; font-size: 0.96rem; }
+  .proto-trance { gap: 18px; }
+  .pt-tracks { padding: 18px; }
+  .tn-info strong { font-size: 0.8rem; }
+  .tn-track { font-size: 0.76rem; }
+}
+
+/* ============================================================
    RESPONSIVE
    ============================================================ */
 

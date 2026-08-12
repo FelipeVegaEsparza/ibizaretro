@@ -134,6 +134,7 @@ class IbizaRetroTemplate extends TemplateBase {
       'hero':          null, // hero nunca se oculta
       'historia':      null,
       'generos':       null,
+      'himnos':        null, // himnos es contenido estático, no depende de API
       'djs':           null,
       'features':      null,
       'programacion':  '.prog-block:not(.is-empty), .cta-card',
