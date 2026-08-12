@@ -89,7 +89,60 @@ class IbizaRetroTemplate extends TemplateBase {
     ]);
 
     this.applyImageFallbacks();
+    this.pruneEmptySections();
   }
+
+  /**
+   * Después de cargar todo, oculta las secciones que quedaron completamente
+   * vacías y reaplica `auto-fit` a las grillas para que las columnas que
+   * sí tienen contenido ocupen el ancho completo de su fila. Si una sección
+   * entera quedó vacía, se oculta del flujo y también del dock (scroll-spy).
+   */
+  pruneEmptySections() {
+    // 1) Por cada .cols, contar columnas visibles y ajustar el grid.
+    document.querySelectorAll('.cols').forEach((cols) => {
+      const visible = Array.from(cols.children).filter((c) => !c.classList.contains('is-empty'));
+      cols.classList.remove('cols-2', 'cols-3');
+      if (visible.length === 1) cols.classList.add('cols-2'); // auto-fit llena mejor con minmax
+      if (visible.length >= 2) cols.classList.add(visible.length === 2 ? 'cols-2' : 'cols-3');
+    });
+
+    // 2) Ocultar secciones que no tengan ninguna col/block visible.
+    const sectionMap = {
+      'hero':          null, // hero nunca se oculta
+      'historia':      null,
+      'generos':       null,
+      'djs':           null,
+      'features':      null,
+      'programacion':  '.prog-block',
+      'noticias':      '.cols > .col:not(.is-empty)',
+      'extras':        '.cols > .col:not(.is-empty)',
+      'comunidad':     '.block:not(.is-empty), .cols > .col:not(.is-empty)',
+      'contacto':      null
+    };
+
+    const emptySections = new Set();
+    document.querySelectorAll('main .section').forEach((sec) => {
+      const id = sec.id;
+      if (!id || !sectionMap.hasOwnProperty(id)) return;
+      const sel = sectionMap[id];
+      if (!sel) return;
+      const visible = sec.querySelectorAll(sel);
+      if (visible.length === 0) {
+        sec.classList.add('is-empty');
+        emptySections.add(id);
+      }
+    });
+
+    // 3) Ocultar los items del dock cuya sección quedó vacía.
+    if (emptySections.size) {
+      document.querySelectorAll('.dock-item[data-tab]').forEach((item) => {
+        if (emptySections.has(item.dataset.tab)) item.classList.add('is-empty');
+      });
+      this.updateDockOverflow();
+    }
+  }
+
 
   /**
    * Recorre las imágenes de las cards tras la carga y:
@@ -387,8 +440,8 @@ class IbizaRetroTemplate extends TemplateBase {
     if (!el) return;
 
     if (!items.length) {
-      const col = el.closest('.col');
-      if (col) col.style.display = 'none';
+      const col = el.closest('.col, .block');
+      if (col) col.classList.add('is-empty');
       return;
     }
     for (const item of items) {
@@ -481,7 +534,7 @@ class IbizaRetroTemplate extends TemplateBase {
     const programs = await dm.loadPrograms();
     if (!programs || !programs.length) {
       const block = document.querySelector('.prog-block');
-      if (block) block.style.display = 'none';
+      if (block) block.classList.add('is-empty');
       return;
     }
     this._programDayMap = {};
@@ -584,8 +637,8 @@ class IbizaRetroTemplate extends TemplateBase {
     const items = result?.data || [];
     const el = document.getElementById('podcasts-list');
     if (!items.length) {
-      const col = el?.closest('.col');
-      if (col) col.style.display = 'none';
+      const col = el?.closest('.col, .block');
+      if (col) col.classList.add('is-empty');
       return;
     }
     for (const p of items) {
@@ -674,8 +727,8 @@ class IbizaRetroTemplate extends TemplateBase {
     const items = result?.data || [];
     const el = document.getElementById('videocasts-list');
     if (!items.length) {
-      const col = el?.closest('.col');
-      if (col) col.style.display = 'none';
+      const col = el?.closest('.col, .block');
+      if (col) col.classList.add('is-empty');
       return;
     }
     for (const v of items) {
@@ -726,8 +779,8 @@ class IbizaRetroTemplate extends TemplateBase {
     const el = document.getElementById('videos-ranking');
     if (!el) return;
     if (!videos.length) {
-      const col = el.closest('.col');
-      if (col) col.style.display = 'none';
+      const col = el.closest('.col, .block');
+      if (col) col.classList.add('is-empty');
       return;
     }
     el.innerHTML = videos
@@ -813,8 +866,8 @@ class IbizaRetroTemplate extends TemplateBase {
     const events = await dm.loadEvents();
     const el = document.getElementById('events-timeline');
     if (!events || !events.length) {
-      const col = el?.closest('.col');
-      if (col) col.style.display = 'none';
+      const col = el?.closest('.col, .block');
+      if (col) col.classList.add('is-empty');
       return;
     }
     const sorted = [...events].sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -845,7 +898,7 @@ class IbizaRetroTemplate extends TemplateBase {
     const sponsors = await dm.loadSponsors();
     if (!sponsors || !sponsors.length) {
       const col = document.querySelector('.col:has(#sponsors-carousel)');
-      if (col) col.style.display = 'none';
+      if (col) col.classList.add('is-empty');
       return;
     }
     for (const s of sponsors) {
@@ -965,15 +1018,15 @@ class IbizaRetroTemplate extends TemplateBase {
       const song = await dm.loadCurrentSong();
       const el = document.getElementById('recent-tracks');
       if (!song || !song.history || !song.history.length) {
-        const col = el?.closest('.col');
-        if (col) col.style.display = 'none';
+        const col = el?.closest('.col, .block');
+        if (col) col.classList.add('is-empty');
         return;
       }
       this.renderRecentTracks(song.history);
     } catch (e) {
       const el = document.getElementById('recent-tracks');
-      const col = el?.closest('.col');
-      if (col) col.style.display = 'none';
+      const col = el?.closest('.col, .block');
+      if (col) col.classList.add('is-empty');
     }
   }
 
