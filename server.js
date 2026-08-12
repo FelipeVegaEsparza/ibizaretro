@@ -160,28 +160,34 @@ function addStreamHostsToCsp(cfg) {
   cspDirectives.mediaSrc = [...(cspDirectives.mediaSrc || []), ...list];
 }
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: cspDirectives,
-    reportOnly: false // Cambiar a true para modo solo-reporte si hay problemas
-  },
-  crossOriginEmbedderPolicy: false, // Necesario para recursos de terceros
-  crossOriginResourcePolicy: { policy: "cross-origin" },
-  dnsPrefetchControl: { allow: false },
-  frameguard: { action: 'deny' },
-  hidePoweredBy: true,
-  hsts: {
-    maxAge: 31536000,
-    includeSubDomains: true,
-    preload: true
-  },
-  ieNoOpen: true,
-  noSniff: true,
-  originAgentCluster: true,
-  permittedCrossDomainPolicies: { permittedPolicies: 'none' },
-  referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
-  xssFilter: true
-}));
+// Helmet se registra DESPUÉS de loadConfig() para que el destructuring
+// que hace helmet sobre `directives` capture cspDirectives ya mutado con
+// los hosts del cliente. Aquí solo guardamos la referencia en una variable
+// que se usará más abajo.
+function registerHelmet() {
+  app.use(helmet({
+    contentSecurityPolicy: {
+      directives: cspDirectives,
+      reportOnly: false // Cambiar a true para modo solo-reporte si hay problemas
+    },
+    crossOriginEmbedderPolicy: false, // Necesario para recursos de terceros
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
+    dnsPrefetchControl: { allow: false },
+    frameguard: { action: 'deny' },
+    hidePoweredBy: true,
+    hsts: {
+      maxAge: 31536000,
+      includeSubDomains: true,
+      preload: true
+    },
+    ieNoOpen: true,
+    noSniff: true,
+    originAgentCluster: true,
+    permittedCrossDomainPolicies: { permittedPolicies: 'none' },
+    referrerPolicy: { policy: 'strict-origin-when-cross-origin' },
+    xssFilter: true
+  }));
+}
 
 // Compresión gzip
 app.use(compression());
@@ -239,6 +245,11 @@ function loadConfig() {
   // Añadir hosts de streaming del cliente a la CSP (connectSrc + mediaSrc)
   // para que SonicPanel y el stream de audio no sean bloqueados.
   addStreamHostsToCsp(clientConfig);
+
+  // Registrar helmet AHORA, después de la mutación. helmet hace destructuring
+  // del objeto de directivas al llamar app.use(), así que si lo registramos
+  // antes capturaría cspDirectives sin los hosts del cliente.
+  registerHelmet();
 
   // Validar que el template sea seguro
   if (!isValidTemplateName(currentTemplate)) {
