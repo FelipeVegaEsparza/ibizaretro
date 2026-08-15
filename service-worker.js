@@ -4,7 +4,7 @@ try {
   console.warn('SW: OneSignalSDKWorker.js not found, continuing without it');
 }
 
-const CACHE_NAME = 'ipstream-cache-v8';
+const CACHE_NAME = 'ipstream-cache-v9';
 const OFFLINE_URL = '/offline.html';
 
 // Dominios permitidos para cachear
