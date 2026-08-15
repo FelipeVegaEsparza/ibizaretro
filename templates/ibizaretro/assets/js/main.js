@@ -332,19 +332,21 @@ class IbizaRetroTemplate extends TemplateBase {
       probe.src = url;
     };
 
-    // Sincronización inicial tras la carga básica (puede haber cover de la radio)
-    setTimeout(() => {
-      const initial = artworkEl.getAttribute('src');
-      if (initial) applyBg(initial);
-    }, 400);
+    const syncFromArtwork = () => {
+      const url = artworkEl.getAttribute('src') || artworkEl.src;
+      if (url) applyBg(url);
+      else if (this._radioCoverUrl) applyBg(this._radioCoverUrl);
+    };
+
+    // Sincronización inicial: el artwork ya trae src de la carga básica
+    syncFromArtwork();
+    // Reintento breve por si la URL se setea después del primer frame
+    setTimeout(syncFromArtwork, 400);
 
     // Reaccionar a cada cambio de cover (cuando cambia el tema en reproducción)
     const observer = new MutationObserver((mutations) => {
       for (const m of mutations) {
-        if (m.attributeName === 'src') {
-          const url = artworkEl.getAttribute('src');
-          if (url) applyBg(url);
-        }
+        if (m.attributeName === 'src') syncFromArtwork();
       }
     });
     observer.observe(artworkEl, { attributes: true, attributeFilter: ['src'] });
