@@ -1194,16 +1194,13 @@ class IbizaRetroTemplate extends TemplateBase {
   _setHeroCover(url) {
     const img = document.getElementById('track-artwork');
     const def = document.getElementById('default-artwork');
-    const bg = document.getElementById('hero-bg');
     if (img) {
       img.src = url;
       img.style.display = 'block';
       if (def) def.style.display = 'none';
     }
-    if (bg) {
-      bg.style.backgroundImage = `url('${url}')`;
-      bg.classList.add('loaded');
-    }
+    // El background del player es estático (fondo.jpeg en CSS).
+    // No sobrescribimos hero-bg aquí para mantener fondo.jpeg visible.
   }
 
   _showHeroDefault() {
