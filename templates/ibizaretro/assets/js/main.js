@@ -61,6 +61,7 @@ class IbizaRetroTemplate extends TemplateBase {
       this.setupModalHandlers();
       this.setupLoadMore();
       this.setupContactForm();
+      this.setupHeroBackground();
 
       await this.checkTV();
       await this.loadAllContent();
@@ -310,6 +311,43 @@ class IbizaRetroTemplate extends TemplateBase {
       const top = target.getBoundingClientRect().top + window.scrollY - dockH + 1;
       window.scrollTo({ top, behavior: 'smooth' });
     });
+  }
+
+  setupHeroBackground() {
+    const heroBg = document.getElementById('hero-bg');
+    const artworkEl = document.getElementById('track-artwork');
+    if (!heroBg || !artworkEl) return;
+
+    const applyBg = (url) => {
+      if (!url) return;
+      const probe = new Image();
+      probe.onload = () => {
+        heroBg.style.backgroundImage = `url("${url}")`;
+        heroBg.classList.add('loaded');
+      };
+      probe.onerror = () => {
+        heroBg.style.backgroundImage = '';
+        heroBg.classList.remove('loaded');
+      };
+      probe.src = url;
+    };
+
+    // Sincronización inicial tras la carga básica (puede haber cover de la radio)
+    setTimeout(() => {
+      const initial = artworkEl.getAttribute('src');
+      if (initial) applyBg(initial);
+    }, 400);
+
+    // Reaccionar a cada cambio de cover (cuando cambia el tema en reproducción)
+    const observer = new MutationObserver((mutations) => {
+      for (const m of mutations) {
+        if (m.attributeName === 'src') {
+          const url = artworkEl.getAttribute('src');
+          if (url) applyBg(url);
+        }
+      }
+    });
+    observer.observe(artworkEl, { attributes: true, attributeFilter: ['src'] });
   }
 
   updateDockOverflow() {
