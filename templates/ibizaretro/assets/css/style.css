@@ -550,8 +550,7 @@ body.is-live .on-air-dot {
 .hero-bg {
   position: absolute;
   inset: 0;
-  background-size: cover;
-  background-position: center;
+  background: url('/assets/img/fondo.png') center / cover no-repeat;
   filter: blur(48px) saturate(150%) brightness(0.62);
   transform: scale(1.24);
   opacity: 0;
