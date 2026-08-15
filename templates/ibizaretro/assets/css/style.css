@@ -360,6 +360,20 @@ a { color: inherit; text-decoration: none; }
 .brand-fallback { font-size: 1.2rem; color: var(--nrg); }
 .brand-mark img[style*="block"] ~ .brand-fallback { display: none; }
 
+/* Logo horizontal en header (assets/img/logo.png) */
+.brand-logo {
+  display: inline-flex;
+  align-items: center;
+  height: 48px;
+  text-decoration: none;
+}
+.brand-logo img {
+  display: block;
+  height: 100%;
+  width: auto;
+  max-width: 220px;
+}
+
 .brand-text { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
 .brand-text strong {
   font-family: var(--f-display);
@@ -3405,6 +3419,8 @@ body.is-live .play-orb-ring {
 
   .topbar-in { padding: 10px 14px; }
   .brand-mark { width: 40px; height: 40px; flex-basis: 40px; }
+  .brand-logo { height: 40px; }
+  .brand-logo img { max-width: 150px; }
   .brand-text strong { font-size: 0.86rem; max-width: 38vw; }
   .topbar-actions .social-links { display: none; }
 

@@ -64,11 +64,31 @@ class IbizaRetroTemplate extends TemplateBase {
 
       await this.checkTV();
       await this.loadAllContent();
+      await this.refreshPlayerTrack();
       this.setupCarousels();
       this.updateDockOverflow();
       console.log('IbizaRetro landing: listo');
     } catch (error) {
       console.error('IbizaRetro: init error:', error);
+    }
+  }
+
+  async refreshPlayerTrack() {
+    try {
+      const dm = getDataManager();
+      const song = await dm.loadCurrentSong();
+      const titleEl = document.getElementById('track-title');
+      const artistEl = document.getElementById('track-artist');
+      if (song && titleEl && song.title) {
+        titleEl.textContent = song.title;
+        titleEl.setAttribute('data-text', song.title);
+      }
+      if (song && artistEl) {
+        const artist = song.artist && song.artist !== song.title ? song.artist : 'En Vivo';
+        artistEl.textContent = artist;
+      }
+    } catch (e) {
+      console.warn('IbizaRetro: no se pudo refrescar el tema del player', e);
     }
   }
 
