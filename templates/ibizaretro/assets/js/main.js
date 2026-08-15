@@ -61,7 +61,6 @@ class IbizaRetroTemplate extends TemplateBase {
       this.setupModalHandlers();
       this.setupLoadMore();
       this.setupContactForm();
-      this.setupHeroBackground();
 
       await this.checkTV();
       await this.loadAllContent();
@@ -348,42 +347,9 @@ class IbizaRetroTemplate extends TemplateBase {
   }
 
   setupHeroBackground() {
-    const heroBg = document.getElementById('hero-bg');
-    const artworkEl = document.getElementById('track-artwork');
-    if (!heroBg || !artworkEl) return;
-
-    const applyBg = (url) => {
-      if (!url) return;
-      const probe = new Image();
-      probe.onload = () => {
-        heroBg.style.backgroundImage = `url("${url}")`;
-        heroBg.classList.add('loaded');
-      };
-      probe.onerror = () => {
-        heroBg.style.backgroundImage = '';
-        heroBg.classList.remove('loaded');
-      };
-      probe.src = url;
-    };
-
-    const syncFromArtwork = () => {
-      const url = artworkEl.getAttribute('src') || artworkEl.src;
-      if (url) applyBg(url);
-      else if (this._radioCoverUrl) applyBg(this._radioCoverUrl);
-    };
-
-    // Sincronización inicial: el artwork ya trae src de la carga básica
-    syncFromArtwork();
-    // Reintento breve por si la URL se setea después del primer frame
-    setTimeout(syncFromArtwork, 400);
-
-    // Reaccionar a cada cambio de cover (cuando cambia el tema en reproducción)
-    const observer = new MutationObserver((mutations) => {
-      for (const m of mutations) {
-        if (m.attributeName === 'src') syncFromArtwork();
-      }
-    });
-    observer.observe(artworkEl, { attributes: true, attributeFilter: ['src'] });
+    // Desactivado: el doble preload del cover y el filter:blur congelaban el
+    // navegador en hardware modesto. El fondo dinámico se aplica vía
+    // _setHeroCover (template-base) cuando llega el artwork del tema actual.
   }
 
   updateDockOverflow() {
