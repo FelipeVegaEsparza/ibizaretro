@@ -16,6 +16,8 @@
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="manifest" href="/manifest.json">
 
+  <link rel="preload" as="image" href="/assets/img/cover-sm.jpg" fetchpriority="high">
+  <link rel="preload" as="image" href="/assets/icons/icon-192.webp" fetchpriority="high">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Righteous&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -53,7 +55,7 @@
   <div class="loading-overlay" id="loading-overlay">
     <div class="loading-box">
       <div class="loading-ring">
-        <img id="loading-logo-img" src="/assets/icons/icon-512x512.png" alt="Logo">
+        <img id="loading-logo-img" src="/assets/icons/icon-192.webp" alt="Logo" width="74" height="74" onerror="this.onerror=null;this.src='/assets/icons/icon-192x192.png';">
       </div>
       <h2 class="loading-title" id="loading-title">Ibiza Retro Beats</h2>
       <div class="loading-bar"><span class="loading-progress"></span></div>

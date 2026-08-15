@@ -58,17 +58,14 @@ class TemplateBase {
       // Configurar reproductor de audio
       this.audioPlayer.init();
 
-      // Inicializar enhancer de audio (lazy, no bloquea LCP).
-      // El enhancer escucha `vumeter:realanalysis` y se cablea solo
-      // cuando el VU meter ya tiene el grafo de Web Audio armado.
-      try {
-        const { getAudioEnhancer } = await import('./audio-enhancer.js');
-        await getAudioEnhancer().init({
+      // Inicializar enhancer de audio (lazy, no bloquea LCP ni el init).
+      // Se dispara en background; el enhancer escucha `vumeter:realanalysis`
+      // y se cablea solo cuando el VU meter ya tiene el grafo de Web Audio armado.
+      import('./audio-enhancer.js')
+        .then(({ getAudioEnhancer }) => getAudioEnhancer().init({
           audioElement: this.audioPlayer.audioElement
-        });
-      } catch (e) {
-        console.warn('TemplateBase: no se pudo cargar audio-enhancer', e);
-      }
+        }))
+        .catch((e) => console.warn('TemplateBase: no se pudo cargar audio-enhancer', e));
 
       // Cargar redes sociales
       await this.loadSocialNetworks();
