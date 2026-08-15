@@ -65,11 +65,45 @@ class IbizaRetroTemplate extends TemplateBase {
 
       await this.checkTV();
       await this.loadAllContent();
+
+      // Refresca el player tras la carga inicial (mismo flujo que loadRecentTracks)
+      this.refreshPlayerTrack();
+
+      // Y se mantiene al día cuando el DataManager emita nuevas canciones
+      try {
+        getDataManager().on('currentSongLoaded', () => this.refreshPlayerTrack());
+      } catch (e) {}
+
       this.setupCarousels();
       this.updateDockOverflow();
       console.log('IbizaRetro landing: listo');
     } catch (error) {
       console.error('IbizaRetro: init error:', error);
+    }
+  }
+
+  /**
+   * Refresca directamente el título/artista del player desde el DataManager.
+   * Mismo patrón que loadRecentTracks(): garantiza que el nombre del tema
+   * actual se muestre aunque el flujo heredado de TemplateBase no haya
+   * actualizado #track-title / #track-artist.
+   */
+  async refreshPlayerTrack() {
+    try {
+      const dm = getDataManager();
+      const song = await dm.loadCurrentSong();
+      const titleEl = document.getElementById('track-title');
+      const artistEl = document.getElementById('track-artist');
+      if (song && titleEl && song.title) {
+        titleEl.textContent = song.title;
+        titleEl.setAttribute('data-text', song.title);
+      }
+      if (song && artistEl) {
+        const artist = song.artist && song.artist !== song.title ? song.artist : 'En Vivo';
+        artistEl.textContent = artist;
+      }
+    } catch (e) {
+      console.warn('IbizaRetro: no se pudo refrescar el tema del player', e);
     }
   }
 
