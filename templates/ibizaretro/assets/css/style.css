@@ -360,23 +360,6 @@ a { color: inherit; text-decoration: none; }
 .brand-fallback { font-size: 1.2rem; color: var(--nrg); }
 .brand-mark img[style*="block"] ~ .brand-fallback { display: none; }
 
-/* Logo horizontal en header (assets/img/logo.png) */
-.brand-logo {
-  display: inline-flex;
-  align-items: center;
-  height: 58px;
-  flex: 0 0 auto;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
-}
-.brand-logo:hover { opacity: 0.85; }
-.brand-logo img {
-  display: block;
-  height: 100%;
-  width: auto;
-  max-width: 264px;
-}
-
 .brand-text { min-width: 0; display: flex; flex-direction: column; gap: 3px; }
 .brand-text strong {
   font-family: var(--f-display);
@@ -555,19 +538,20 @@ body.is-live .on-air-dot {
   inset: 0;
   background-size: cover;
   background-position: center;
+  filter: blur(48px) saturate(150%) brightness(0.62);
+  transform: scale(1.24);
   opacity: 0;
   transition: opacity 1.1s ease;
 }
-.hero-bg.loaded { opacity: 0.35; }
+.hero-bg.loaded { opacity: 0.5; }
 
 .hero-veil {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at 22% 32%, rgba(255, 119, 0, 0.18), transparent 55%),
-    radial-gradient(circle at 78% 68%, rgba(255, 45, 149, 0.16), transparent 55%),
-    linear-gradient(180deg, rgba(8, 8, 26, 0.35), rgba(8, 8, 26, 0.6));
-  pointer-events: none;
+    radial-gradient(circle at 22% 32%, rgba(255, 119, 0, 0.16), transparent 55%),
+    radial-gradient(circle at 78% 68%, rgba(255, 45, 149, 0.14), transparent 55%),
+    linear-gradient(180deg, rgba(8, 8, 26, 0.55), rgba(8, 8, 26, 0.9));
 }
 
 .hero-in {
@@ -1902,39 +1886,6 @@ body.is-live .play-orb-ring {
 }
 .foot-sep { color: var(--nrg); }
 
-.foot-credit {
-  display: inline-flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-.foot-credit a {
-  position: relative;
-  color: var(--nrg-soft);
-  font-weight: 600;
-  transition: color 0.25s, text-shadow 0.25s;
-}
-.foot-credit a::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: -2px;
-  width: 0;
-  height: 1px;
-  background: linear-gradient(90deg, var(--nrg), var(--magenta));
-  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-.foot-credit a:hover {
-  color: var(--nrg);
-  text-shadow: 0 0 12px rgba(255, 119, 0, 0.4);
-}
-.foot-credit a:hover::after { width: 100%; }
-
-.foot-handle {
-  font-family: var(--f-display);
-  letter-spacing: 0.04em;
-}
-
 /* ============================================================
    DOCK NAV
    ============================================================ */
@@ -1978,8 +1929,6 @@ body.is-live .play-orb-ring {
   color: var(--txt-mute);
   transition: color 0.25s, background 0.25s, transform 0.25s;
 }
-.dock-item.is-empty,
-.dock-more.is-empty { display: none !important; }
 .dock-item i, .dock-more i { font-size: 1.02rem; }
 .dock-item span {
   font-size: 0.58rem;
@@ -3430,320 +3379,6 @@ body.is-live .play-orb-ring {
 .more-btn:hover { background: linear-gradient(120deg, var(--nrg), var(--magenta)); color: #12101c; transform: translateY(-2px); box-shadow: var(--glow-nrg); }
 
 /* ============================================================
-   OCULTAR CONTENEDORES VACÍOS
-   ============================================================ */
-
-/* Cuando un .col, .block o .section no tiene contenido real, se oculta.
-   .has-content marca que JS confirmó contenido y debe mostrarse.
-   .is-empty marca que definitivamente no hay datos (redundante con la
-   regla de abajo, pero explícito para selectores CSS complejos). */
-.col.is-empty,
-.block.is-empty,
-.section.is-empty { display: none !important; }
-
-/* Regla principal: todo contenedor marcado como [data-dynamic-content]
-   permanece oculto hasta que JS confirme que tiene datos añadiendo la
-   clase .has-content. Esto evita que se rendericen los headers
-   ("Programación destacada", "Últimas noticias", etc.) cuando el
-   endpoint devuelve 0 items. */
-[data-dynamic-content]:not(.has-content) { display: none !important; }
-
-/* Rejuste: si en un .cols quedó solo 1 elemento visible, queremos que
-   ocupe el ancho natural sin huecos. .cols-3 con 1 hijo → auto-fit
-   lo comprimiría a 1/3. Forzamos cols-2 para que el hijo huérfano
-   se vea ancho. */
-.cols {
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
-}
-
-/* ============================================================
-   SECCIÓN 4.5 · HIMNOS DEL DANCEFLOOR + PROTO-TRANCE
-   ============================================================ */
-
-.hymns {
-  background:
-    radial-gradient(circle at 100% 0%, rgba(255, 45, 149, 0.06), transparent 45%),
-    radial-gradient(circle at 0% 100%, rgba(255, 119, 0, 0.06), transparent 45%);
-}
-
-.hymns-lead {
-  max-width: 76ch;
-  margin: 0 auto 40px;
-  font-size: 1rem;
-  line-height: 1.7;
-  color: var(--txt-dim);
-  text-align: center;
-}
-.hymns-lead strong { color: var(--nrg-soft); }
-.hymns-lead em { color: var(--txt); font-style: normal; }
-
-.hymn-row {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: 14px;
-}
-
-.hymn-card {
-  position: relative;
-  padding: 22px 22px 26px;
-  border-radius: var(--r-lg);
-  background: var(--panel);
-  backdrop-filter: blur(10px);
-  box-shadow: inset 0 0 0 1px var(--line);
-  overflow: hidden;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s, background 0.35s;
-}
-.hymn-card::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: var(--r-lg);
-  padding: 1px;
-  background: linear-gradient(135deg, var(--nrg), transparent 45%, var(--magenta));
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  opacity: 0.6;
-  pointer-events: none;
-}
-.hymn-card:hover {
-  transform: translateY(-6px);
-  background: var(--panel-2);
-}
-.hymn-card:hover::before { opacity: 1; }
-
-.hymn-num {
-  position: absolute;
-  top: -10px;
-  right: 16px;
-  font-family: var(--f-display);
-  font-size: 4rem;
-  line-height: 1;
-  background: linear-gradient(180deg, var(--nrg), var(--magenta));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  opacity: 0.18;
-  letter-spacing: -0.04em;
-  pointer-events: none;
-}
-
-.hymn-meta {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.hymn-track {
-  font-family: var(--f-head);
-  font-size: 1.08rem;
-  letter-spacing: 0.01em;
-  line-height: 1.25;
-  padding-right: 60px;
-}
-.hymn-artist {
-  font-family: var(--f-display);
-  font-size: 0.78rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--nrg);
-}
-.hymn-year {
-  font-family: var(--f-display);
-  font-size: 0.66rem;
-  letter-spacing: 0.18em;
-  color: var(--txt-mute);
-  align-self: flex-start;
-  padding: 4px 9px;
-  border-radius: 99px;
-  background: rgba(255, 119, 0, 0.08);
-  box-shadow: inset 0 0 0 1px rgba(255, 119, 0, 0.18);
-}
-
-.hymn-equa {
-  display: flex;
-  align-items: flex-end;
-  gap: 3px;
-  height: 22px;
-  margin-top: 16px;
-}
-.hymn-equa span {
-  flex: 1 1 0;
-  height: 25%;
-  background: linear-gradient(to top, var(--nrg), var(--magenta));
-  border-radius: 2px;
-  transform-origin: bottom;
-  animation: hymn-bar 1.4s ease-in-out infinite alternate;
-}
-.hymn-equa span:nth-child(2n) { animation-duration: 1.05s; }
-.hymn-equa span:nth-child(3n) { animation-duration: 1.7s; animation-delay: 0.1s; }
-.hymn-equa span:nth-child(5n) { animation-delay: 0.2s; }
-.hymn-equa span:nth-child(7n) { animation-delay: 0.3s; }
-@keyframes hymn-bar {
-  0%   { height: 18%; }
-  100% { height: 100%; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hymn-equa span { animation: none; height: 40%; }
-}
-
-/* ============================================================
-   PROTO-TRANCE (dentro de Géneros)
-   ============================================================ */
-
-.proto-trance {
-  margin-top: 56px;
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: clamp(28px, 4vw, 48px);
-  align-items: stretch;
-}
-@media (max-width: 900px) {
-  .proto-trance { grid-template-columns: 1fr; }
-}
-
-.pt-card {
-  padding: clamp(22px, 4vw, 34px);
-  border-radius: var(--r-xl);
-  background: linear-gradient(160deg, var(--deep-2), var(--deep));
-  box-shadow: inset 0 0 0 1px var(--line-2), 0 16px 36px rgba(0, 0, 0, 0.4);
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-.pt-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  align-self: flex-start;
-  font-family: var(--f-display);
-  font-size: 0.62rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  padding: 6px 14px;
-  border-radius: 99px;
-  background: rgba(255, 45, 149, 0.12);
-  color: var(--magenta);
-  box-shadow: inset 0 0 0 1px rgba(255, 45, 149, 0.3);
-}
-.pt-card h3 {
-  font-family: var(--f-display);
-  font-size: clamp(1.1rem, 3.6vw, 1.55rem);
-  line-height: 1.18;
-}
-.pt-card p {
-  font-size: 0.92rem;
-  line-height: 1.75;
-  color: var(--txt-dim);
-}
-.pt-card p strong { color: var(--nrg-soft); }
-.pt-card p em { color: var(--txt); font-style: normal; font-weight: 600; }
-
-.pt-tracks {
-  padding: clamp(22px, 4vw, 32px);
-  border-radius: var(--r-xl);
-  background: var(--panel);
-  box-shadow: inset 0 0 0 1px var(--line);
-  backdrop-filter: blur(12px);
-}
-.pt-tracks h4 {
-  font-family: var(--f-display);
-  font-size: 1rem;
-  letter-spacing: 0.04em;
-  margin-bottom: 18px;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--txt);
-}
-.pt-tracks h4 i {
-  color: var(--nrg);
-  filter: drop-shadow(0 0 8px rgba(255, 119, 0, 0.5));
-}
-
-.tracks-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.tracks-list li {
-  display: grid;
-  grid-template-columns: 40px 1fr;
-  gap: 14px;
-  align-items: center;
-  padding: 12px 14px;
-  border-radius: var(--r-sm);
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: inset 0 0 0 1px var(--line);
-  transition: transform 0.25s, background 0.25s, box-shadow 0.25s;
-}
-.tracks-list li:hover {
-  transform: translateX(6px);
-  background: rgba(255, 119, 0, 0.06);
-  box-shadow: inset 0 0 0 1px rgba(255, 119, 0, 0.3);
-}
-.tn-rank {
-  font-family: var(--f-display);
-  font-size: 0.92rem;
-  background: linear-gradient(180deg, var(--nrg), var(--magenta));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-  text-align: center;
-}
-.tn-info {
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-}
-.tn-info strong {
-  font-family: var(--f-head);
-  font-size: 0.86rem;
-  color: var(--txt);
-  letter-spacing: 0.02em;
-}
-.tn-track {
-  font-family: var(--f-display);
-  font-size: 0.82rem;
-  color: var(--nrg);
-  letter-spacing: 0.04em;
-}
-.tn-meta {
-  font-size: 0.68rem;
-  color: var(--txt-mute);
-  letter-spacing: 0.06em;
-}
-
-.pt-footnote {
-  margin-top: 16px;
-  padding-top: 14px;
-  border-top: 1px dashed var(--line);
-  font-size: 0.82rem;
-  font-style: italic;
-  color: var(--txt-dim);
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-  line-height: 1.55;
-}
-.pt-footnote i { color: var(--nrg); margin-top: 4px; }
-
-.g-house .gc-num { color: var(--cyan); }
-
-@media (max-width: 640px) {
-  .hymn-num { font-size: 3.2rem; top: -6px; }
-  .hymn-track { padding-right: 50px; font-size: 0.96rem; }
-  .proto-trance { gap: 18px; }
-  .pt-tracks { padding: 18px; }
-  .tn-info strong { font-size: 0.8rem; }
-  .tn-track { font-size: 0.76rem; }
-}
-
-/* ============================================================
    RESPONSIVE
    ============================================================ */
 
@@ -3770,8 +3405,6 @@ body.is-live .play-orb-ring {
 
   .topbar-in { padding: 10px 14px; }
   .brand-mark { width: 40px; height: 40px; flex-basis: 40px; }
-  .brand-logo { height: 48px; }
-  .brand-logo img { max-width: 180px; }
   .brand-text strong { font-size: 0.86rem; max-width: 38vw; }
   .topbar-actions .social-links { display: none; }
 

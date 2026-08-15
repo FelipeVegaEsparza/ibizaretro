@@ -64,45 +64,11 @@ class IbizaRetroTemplate extends TemplateBase {
 
       await this.checkTV();
       await this.loadAllContent();
-
-      // Refresca el player tras la carga inicial (mismo flujo que loadRecentTracks)
-      this.refreshPlayerTrack();
-
-      // Y se mantiene al día cuando el DataManager emita nuevas canciones
-      try {
-        getDataManager().on('currentSongLoaded', () => this.refreshPlayerTrack());
-      } catch (e) {}
-
       this.setupCarousels();
       this.updateDockOverflow();
       console.log('IbizaRetro landing: listo');
     } catch (error) {
       console.error('IbizaRetro: init error:', error);
-    }
-  }
-
-  /**
-   * Refresca directamente el título/artista del player desde el DataManager.
-   * Mismo patrón que loadRecentTracks(): garantiza que el nombre del tema
-   * actual se muestre aunque el flujo heredado de TemplateBase no haya
-   * actualizado #track-title / #track-artist.
-   */
-  async refreshPlayerTrack() {
-    try {
-      const dm = getDataManager();
-      const song = await dm.loadCurrentSong();
-      const titleEl = document.getElementById('track-title');
-      const artistEl = document.getElementById('track-artist');
-      if (song && titleEl && song.title) {
-        titleEl.textContent = song.title;
-        titleEl.setAttribute('data-text', song.title);
-      }
-      if (song && artistEl) {
-        const artist = song.artist && song.artist !== song.title ? song.artist : 'En Vivo';
-        artistEl.textContent = artist;
-      }
-    } catch (e) {
-      console.warn('IbizaRetro: no se pudo refrescar el tema del player', e);
     }
   }
 
@@ -123,83 +89,7 @@ class IbizaRetroTemplate extends TemplateBase {
     ]);
 
     this.applyImageFallbacks();
-    this.pruneEmptySections();
   }
-
-  /**
-   * Después de cargar todo, oculta las secciones que quedaron completamente
-   * vacías y reaplica `auto-fit` a las grillas para que las columnas que
-   * sí tienen contenido ocupen el ancho completo de su fila. Si una sección
-   * entera quedó vacía, se oculta del flujo y también del dock (scroll-spy).
-   */
-  pruneEmptySections() {
-    // 1) Por cada .cols, contar columnas visibles y ajustar el grid.
-    document.querySelectorAll('.cols').forEach((cols) => {
-      const visible = Array.from(cols.children).filter((c) => !c.classList.contains('is-empty'));
-      cols.classList.remove('cols-2', 'cols-3');
-      if (visible.length === 1) cols.classList.add('cols-2'); // auto-fit llena mejor con minmax
-      if (visible.length >= 2) cols.classList.add(visible.length === 2 ? 'cols-2' : 'cols-3');
-    });
-
-    // 2) Decidir para cada contenedor [data-dynamic-content] si tiene
-    //    contenido real. Solo cuentan los items inyectados dinámicamente
-    //    (las cards que loadX() crea). Los .col-title y otros headers
-    //    estáticos NO cuentan, para que no marquemos como "con contenido"
-    //    un contenedor cuya API aún no respondió.
-    document.querySelectorAll('[data-dynamic-content]').forEach((container) => {
-      const meaningful = container.querySelectorAll(
-        '.n-lite, .m-card, .p-item, .e-lite, .s-card, .r-item, .a-card, .g-card, .track-item, .t-item, .poll-card, .sponsors-swiper .swiper-slide:not(.swiper-slide-duplicate)'
-      );
-      const hasMeaningful = Array.from(meaningful).some((el) => {
-        if (el.classList.contains('is-empty')) return false;
-        if (el.classList.contains('ph')) return false;
-        return true;
-      });
-      if (hasMeaningful) {
-        container.classList.add('has-content');
-        container.classList.remove('is-empty');
-      } else {
-        container.classList.add('is-empty');
-      }
-    });
-
-    // 3) Ocultar secciones que no tengan ninguna col/block visible.
-    const sectionMap = {
-      'hero':          null, // hero nunca se oculta
-      'historia':      null,
-      'generos':       null,
-      'himnos':        null, // himnos es contenido estático, no depende de API
-      'djs':           null,
-      'features':      null,
-      'programacion':  '.prog-block:not(.is-empty), .cta-card',
-      'noticias':      '.cols > .col:not(.is-empty)',
-      'extras':        '.cols > .col:not(.is-empty)',
-      'comunidad':     '.block:not(.is-empty), .cols > .col:not(.is-empty)',
-      'contacto':      null
-    };
-
-    const emptySections = new Set();
-    document.querySelectorAll('main .section').forEach((sec) => {
-      const id = sec.id;
-      if (!id || !sectionMap.hasOwnProperty(id)) return;
-      const sel = sectionMap[id];
-      if (!sel) return;
-      const visible = sec.querySelectorAll(sel);
-      if (visible.length === 0) {
-        sec.classList.add('is-empty');
-        emptySections.add(id);
-      }
-    });
-
-    // 4) Ocultar los items del dock cuya sección quedó vacía.
-    if (emptySections.size) {
-      document.querySelectorAll('.dock-item[data-tab]').forEach((item) => {
-        if (emptySections.has(item.dataset.tab)) item.classList.add('is-empty');
-      });
-      this.updateDockOverflow();
-    }
-  }
-
 
   /**
    * Recorre las imágenes de las cards tras la carga y:
@@ -344,12 +234,6 @@ class IbizaRetroTemplate extends TemplateBase {
       const top = target.getBoundingClientRect().top + window.scrollY - dockH + 1;
       window.scrollTo({ top, behavior: 'smooth' });
     });
-  }
-
-  setupHeroBackground() {
-    // Desactivado: el doble preload del cover y el filter:blur congelaban el
-    // navegador en hardware modesto. El fondo dinámico se aplica vía
-    // _setHeroCover (template-base) cuando llega el artwork del tema actual.
   }
 
   updateDockOverflow() {
@@ -503,8 +387,8 @@ class IbizaRetroTemplate extends TemplateBase {
     if (!el) return;
 
     if (!items.length) {
-      const col = el.closest('.col, .block');
-      // No añadir .has-content: CSS mantiene oculto este contenedor.
+      const col = el.closest('.col');
+      if (col) col.style.display = 'none';
       return;
     }
     for (const item of items) {
@@ -597,7 +481,7 @@ class IbizaRetroTemplate extends TemplateBase {
     const programs = await dm.loadPrograms();
     if (!programs || !programs.length) {
       const block = document.querySelector('.prog-block');
-      if (block) { /* no has-content: CSS oculta */ }
+      if (block) block.style.display = 'none';
       return;
     }
     this._programDayMap = {};
@@ -700,8 +584,8 @@ class IbizaRetroTemplate extends TemplateBase {
     const items = result?.data || [];
     const el = document.getElementById('podcasts-list');
     if (!items.length) {
-      const col = el?.closest('.col, .block');
-      // No añadir .has-content: CSS mantiene oculto este contenedor.
+      const col = el?.closest('.col');
+      if (col) col.style.display = 'none';
       return;
     }
     for (const p of items) {
@@ -790,8 +674,8 @@ class IbizaRetroTemplate extends TemplateBase {
     const items = result?.data || [];
     const el = document.getElementById('videocasts-list');
     if (!items.length) {
-      const col = el?.closest('.col, .block');
-      // No añadir .has-content: CSS mantiene oculto este contenedor.
+      const col = el?.closest('.col');
+      if (col) col.style.display = 'none';
       return;
     }
     for (const v of items) {
@@ -842,8 +726,8 @@ class IbizaRetroTemplate extends TemplateBase {
     const el = document.getElementById('videos-ranking');
     if (!el) return;
     if (!videos.length) {
-      const col = el.closest('.col, .block');
-      // No añadir .has-content: CSS mantiene oculto este contenedor.
+      const col = el.closest('.col');
+      if (col) col.style.display = 'none';
       return;
     }
     el.innerHTML = videos
@@ -929,8 +813,8 @@ class IbizaRetroTemplate extends TemplateBase {
     const events = await dm.loadEvents();
     const el = document.getElementById('events-timeline');
     if (!events || !events.length) {
-      const col = el?.closest('.col, .block');
-      // No añadir .has-content: CSS mantiene oculto este contenedor.
+      const col = el?.closest('.col');
+      if (col) col.style.display = 'none';
       return;
     }
     const sorted = [...events].sort((a, b) => new Date(a.date) - new Date(b.date));
@@ -961,7 +845,7 @@ class IbizaRetroTemplate extends TemplateBase {
     const sponsors = await dm.loadSponsors();
     if (!sponsors || !sponsors.length) {
       const col = document.querySelector('.col:has(#sponsors-carousel)');
-      if (col) { /* no has-content: CSS oculta */ }
+      if (col) col.style.display = 'none';
       return;
     }
     for (const s of sponsors) {
@@ -1081,15 +965,15 @@ class IbizaRetroTemplate extends TemplateBase {
       const song = await dm.loadCurrentSong();
       const el = document.getElementById('recent-tracks');
       if (!song || !song.history || !song.history.length) {
-        const col = el?.closest('.col, .block');
-        if (col) { /* no has-content: CSS oculta */ }
+        const col = el?.closest('.col');
+        if (col) col.style.display = 'none';
         return;
       }
       this.renderRecentTracks(song.history);
     } catch (e) {
       const el = document.getElementById('recent-tracks');
-      const col = el?.closest('.col, .block');
-      // No añadir .has-content: CSS mantiene oculto este contenedor.
+      const col = el?.closest('.col');
+      if (col) col.style.display = 'none';
     }
   }
 
