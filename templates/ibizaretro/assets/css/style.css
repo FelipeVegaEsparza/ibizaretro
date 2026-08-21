@@ -3392,8 +3392,180 @@ body.is-live .play-orb-ring {
 .more-btn:hover { background: linear-gradient(120deg, var(--nrg), var(--magenta)); color: #12101c; transform: translateY(-2px); box-shadow: var(--glow-nrg); }
 
 /* ============================================================
-   RESPONSIVE
+   UNIVERSO ELECTRÓNICO (géneros raíz + tabla BPM)
    ============================================================ */
+
+.universo {
+  background:
+    radial-gradient(circle at 20% 0%, rgba(0, 229, 255, 0.06), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(123, 45, 255, 0.07), transparent 40%);
+}
+
+.sec-lead {
+  max-width: 780px;
+  font-size: 0.96rem;
+  line-height: 1.8;
+  color: var(--txt-dim);
+  margin-bottom: 34px;
+}
+.sec-lead strong { color: var(--nrg-soft); font-weight: 700; }
+
+/* Tintes extra para las nuevas genre-cards */
+.g-house .gc-num    { color: var(--nrg); }
+.g-techno .gc-num   { color: var(--cyan); }
+.g-trance-e .gc-num { color: var(--magenta); }
+.g-dnb .gc-num      { color: var(--nrg-soft); }
+.g-dubstep .gc-num  { color: var(--cyan); }
+
+.egenre-grid { margin-bottom: 42px; }
+
+/* Tabla BPM */
+.bpm-wrap {
+  border-radius: var(--r-lg);
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+}
+.bpm-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px;
+  font-family: var(--f-display);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--nrg);
+  border-bottom: 1px solid var(--line);
+  background: linear-gradient(90deg, rgba(255, 119, 0, 0.09), transparent 70%);
+}
+.bpm-scroll { overflow-x: auto; }
+.bpm-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+}
+.bpm-table th {
+  font-family: var(--f-display);
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--txt-mute);
+  text-align: left;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--line);
+}
+.bpm-table td {
+  padding: 15px 18px;
+  font-size: 0.85rem;
+  line-height: 1.55;
+  color: var(--txt-dim);
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.bpm-table tbody tr:last-child td { border-bottom: 0; }
+.bpm-table tbody tr { transition: background 0.25s; }
+.bpm-table tbody tr:hover { background: rgba(255, 119, 0, 0.06); }
+.bpm-table .bpm-name {
+  font-family: var(--f-head);
+  font-size: 0.95rem;
+  color: var(--txt);
+  white-space: nowrap;
+}
+.bpm-table .bpm-bpm {
+  font-family: var(--f-display);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  background: linear-gradient(90deg, var(--nrg), var(--magenta));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.bpm-table .bpm-subs { font-size: 0.78rem; color: var(--txt-mute); }
+
+/* ============================================================
+   EURODANCE 90s (nube de artistas)
+   ============================================================ */
+
+.eurodance-sec {
+  background:
+    radial-gradient(circle at 85% 15%, rgba(255, 45, 149, 0.07), transparent 40%);
+}
+
+.sub-h {
+  font-family: var(--f-head);
+  font-size: 1.15rem;
+  margin: 28px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sub-h::before {
+  content: '';
+  width: 22px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--nrg), var(--magenta));
+  flex-shrink: 0;
+}
+
+.artists-block { margin-top: 54px; }
+.artists-block .col-title { margin-bottom: 10px; }
+.artists-note {
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--txt-dim);
+  max-width: 740px;
+  margin-bottom: 18px;
+}
+.artists-note strong { color: var(--txt); font-weight: 700; }
+.artists-note-end { margin-top: 20px; margin-bottom: 0; }
+
+.artist-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.artist-chip {
+  font-family: var(--f-display);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 9px 15px;
+  border-radius: 99px;
+  color: var(--txt-dim);
+  background: var(--panel);
+  box-shadow: inset 0 0 0 1px var(--line);
+  cursor: default;
+  transition: transform 0.25s, box-shadow 0.25s, color 0.25s;
+}
+.artist-chip:hover {
+  transform: translateY(-3px);
+  color: var(--txt);
+  box-shadow: inset 0 0 0 1px rgba(255, 119, 0, 0.45), 0 10px 22px rgba(0, 0, 0, 0.4);
+}
+.artist-chip.c1 { color: var(--nrg-soft); box-shadow: inset 0 0 0 1px rgba(255, 119, 0, 0.35); }
+.artist-chip.c2 { color: #ff8fc0; box-shadow: inset 0 0 0 1px rgba(255, 45, 149, 0.35); }
+.artist-chip.c3 { color: #8fefff; box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.3); }
+.artist-chip.c1:hover { box-shadow: inset 0 0 0 1px rgba(255, 119, 0, 0.6), var(--glow-nrg); }
+.artist-chip.c2:hover { box-shadow: inset 0 0 0 1px rgba(255, 45, 149, 0.6), var(--glow-mag); }
+.artist-chip.c3:hover { box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.55), var(--glow-cyan); }
+
+/* ============================================================
+   GRANDES RAVES DE LOS 90
+   ============================================================ */
+
+.raves {
+  background:
+    radial-gradient(circle at 10% 20%, rgba(123, 45, 255, 0.08), transparent 40%),
+    radial-gradient(circle at 95% 85%, rgba(0, 229, 255, 0.05), transparent 40%);
+}
+
+/* ============================================================
+    RESPONSIVE
+    ============================================================ */
 
 @media (max-width: 900px) {
   .hero-in {
