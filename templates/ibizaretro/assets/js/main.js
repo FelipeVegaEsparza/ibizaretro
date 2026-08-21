@@ -108,7 +108,30 @@ class IbizaRetroTemplate extends TemplateBase {
       this.loadRecentTracks()
     ]);
 
+    this.hideEmptySections();
     this.applyImageFallbacks();
+  }
+
+  /**
+   * Oculta secciones completas (incluido su sec-head y su botón del dock)
+   * cuando ninguna de sus columnas/bloques recibió datos del endpoint.
+   */
+  hideEmptySections() {
+    ['noticias', 'extras', 'comunidad'].forEach((id) => {
+      const section = document.getElementById(id);
+      if (!section) return;
+      const units = section.querySelectorAll('.col, .block');
+      if (!units.length) return;
+      const anyVisible = Array.from(units).some((u) => u.style.display !== 'none');
+      if (!anyVisible) this._hideSection(id);
+    });
+  }
+
+  _hideSection(id) {
+    const section = document.getElementById(id);
+    if (section) section.style.display = 'none';
+    const dockItem = document.querySelector(`.dock-item[data-tab="${id}"]`);
+    if (dockItem) dockItem.style.display = 'none';
   }
 
   /**
