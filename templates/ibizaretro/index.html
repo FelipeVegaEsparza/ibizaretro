@@ -155,10 +155,6 @@
 
             <div class="hero-meta">
               <div class="meta-cell">
-                <span class="meta-k"><i class="fas fa-users"></i> Oyentes</span>
-                <span class="meta-v" id="listeners-count">0</span>
-              </div>
-              <div class="meta-cell">
                 <span class="meta-k"><i class="fas fa-signal"></i> Bitrate</span>
                 <span class="meta-v"><span id="bitrate">—</span> <em>kbps</em></span>
               </div>
@@ -168,7 +164,13 @@
               </div>
             </div>
 
-            <p class="hero-date" id="current-date"></p>
+            <div class="hero-clock" aria-label="Hora y fecha en vivo">
+              <div class="clock-time" id="hero-clock-time">00:00:00</div>
+              <div class="clock-side">
+                <span class="clock-k"><i class="fas fa-clock"></i> Hora local</span>
+                <span class="clock-date" id="hero-clock-date"></span>
+              </div>
+            </div>
 
             <a class="hero-cta" href="#historia"><span>Descúbrenos</span><i class="fas fa-arrow-down"></i></a>
           </div>
@@ -316,7 +318,7 @@
             </article>
 
             <article class="genre-card g-pioneers" data-reveal>
-              <div class="gc-bg" style="background-image:url('https://images.unsplash.com/photo-1598387993441-a364f854c3e1?auto=format&fit=crop&w=900&q=70')"></div>
+              <div class="gc-bg" style="background-image:url('/assets/img/pioneros.jpeg')"></div>
               <div class="gc-overlay"></div>
               <div class="gc-body">
                 <span class="gc-num">03</span>
@@ -601,16 +603,20 @@
             <aside class="about-visual" data-reveal>
               <div class="visual-stack">
                 <div class="vs-card vs-1">
-                  <img src="https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=720&q=70" alt="Fiesta de los 90 con luces de pista">
+                  <img src="/assets/img/d1.jpeg" alt="Fiesta de los 90 con luces de pista">
                   <span class="vs-tag">PISTAS 90s</span>
                 </div>
                 <div class="vs-card vs-2">
-                  <img src="https://images.unsplash.com/photo-1518609878373-06d740f60d8b?auto=format&fit=crop&w=720&q=70" alt="Cassettes y compilados retro">
+                  <img src="/assets/img/d2.jpeg" alt="Cassettes y compilados retro">
                   <span class="vs-tag">CASSETTES</span>
                 </div>
                 <div class="vs-card vs-3">
-                  <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?auto=format&fit=crop&w=720&q=70" alt="Discoteca con confeti y luces">
+                  <img src="/assets/img/d3.jpeg" alt="Discoteca con confeti y luces">
                   <span class="vs-tag">DISCOTECA</span>
+                </div>
+                <div class="vs-card vs-4">
+                  <img src="/assets/img/d4.jpeg" alt="Eurodance clásico de los 90">
+                  <span class="vs-tag">EURODANCE</span>
                 </div>
                 <div class="vs-glow"></div>
               </div>
@@ -708,7 +714,7 @@
 
           <div class="dj-grid">
             <article class="dj-card" data-reveal>
-              <div class="dj-img" style="background-image:url('https://images.unsplash.com/photo-1526478806334-5fd488fcaabc?auto=format&fit=crop&w=700&q=70')"></div>
+              <div class="dj-img" style="background-image:url('/assets/img/1.jpeg')"></div>
               <div class="dj-body">
                 <span class="dj-flag">Berlín, Alemania · 🇩🇪</span>
                 <h3>Love Parade</h3>
@@ -722,7 +728,7 @@
             </article>
 
             <article class="dj-card" data-reveal>
-              <div class="dj-img" style="background-image:url('https://images.unsplash.com/photo-1531058020387-3be344556be6?auto=format&fit=crop&w=700&q=70')"></div>
+              <div class="dj-img" style="background-image:url('/assets/img/2.jpeg')"></div>
               <div class="dj-body">
                 <span class="dj-flag">Zúrich, Suiza · 🇨🇭</span>
                 <h3>Street Parade</h3>
@@ -737,7 +743,7 @@
             </article>
 
             <article class="dj-card" data-reveal>
-              <div class="dj-img" style="background-image:url('https://images.unsplash.com/photo-1598550476439-6847785fcea6?auto=format&fit=crop&w=700&q=70')"></div>
+              <div class="dj-img" style="background-image:url('/assets/img/3.jpeg')"></div>
               <div class="dj-body">
                 <span class="dj-flag">Barcelona, España · 🇪🇸</span>
                 <h3>Sónar</h3>
@@ -752,7 +758,7 @@
             </article>
 
             <article class="dj-card" data-reveal>
-              <div class="dj-img" style="background-image:url('https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?auto=format&fit=crop&w=700&q=70')"></div>
+              <div class="dj-img" style="background-image:url('/assets/img/4.jpeg')"></div>
               <div class="dj-body">
                 <span class="dj-flag">Gante, Bélgica · 🇧🇪</span>
                 <h3>I Love Techno</h3>
@@ -829,6 +835,72 @@
                 <img src="/assets/img/programa.jpeg" alt="InSessions · Mezclas continuas 24/7">
                 <span class="vs-tag">INSESSIONS · LIVE</span>
                 <span class="ins-live"><i class="fas fa-circle"></i> En directo</span>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================
+           5E · VONYC SESSIONS · EL SHOW SEMANAL
+      ============================================= -->
+      <section class="section insessions vonyc" id="vonyc" data-spy="vonyc">
+        <div class="container">
+          <div class="sec-head" data-reveal>
+            <span class="sec-kicker">El show semanal de Paul van Dyk · desde 2006</span>
+            <h2 class="sec-title"><span class="grad">VONYC</span> Sessions<br>el show <span class="grad">semanal</span></h2>
+            <span class="sec-line"></span>
+          </div>
+
+          <div class="about-grid ins-grid">
+            <div class="about-copy" data-reveal>
+              <p class="lead">
+                <strong>VONYC Sessions</strong> es el legendario programa de radio semanal de música
+                electrónica presentado por el reconocido DJ y productor alemán, ganador del premio
+                Grammy, <em>Paul van Dyk</em>.
+              </p>
+              <p>
+                El show se emite de forma ininterrumpida desde su episodio debut el
+                <strong>31 de agosto de 2006</strong>, consolidándose como uno de los espacios más
+                influyentes de la escena global para los amantes del género.
+              </p>
+              <p>
+                Sesiones mezcladas a mano que exploran lo mejor del <em>trance, progressive trance,
+                uplifting, electro, house y techno</em>.
+              </p>
+
+              <div class="pill-list">
+                <span class="pill"><i class="fas fa-wave-square"></i> Trance</span>
+                <span class="pill"><i class="fas fa-gauge-high"></i> Progressive</span>
+                <span class="pill"><i class="fas fa-rocket"></i> Uplifting</span>
+                <span class="pill"><i class="fas fa-bolt"></i> Electro</span>
+                <span class="pill"><i class="fas fa-music"></i> House</span>
+                <span class="pill"><i class="fas fa-cog"></i> Techno</span>
+                <span class="pill pill-em"><i class="fas fa-calendar-week"></i> Semanal · desde 2006</span>
+              </div>
+
+              <div class="ins-stats">
+                <div class="ins-stat">
+                  <span class="ins-stat-num">2006</span>
+                  <span class="ins-stat-k"><i class="fas fa-calendar-day"></i> DESDE EL DEBUT</span>
+                </div>
+                <div class="ins-stat">
+                  <span class="ins-stat-num">01</span>
+                  <span class="ins-stat-k"><i class="fas fa-award"></i> PREMIO GRAMMY</span>
+                </div>
+                <div class="ins-stat">
+                  <span class="ins-stat-num">PvD</span>
+                  <span class="ins-stat-k"><i class="fas fa-headphones"></i> AL FRENTE DEL SHOW</span>
+                </div>
+              </div>
+            </div>
+
+            <aside class="about-visual" data-reveal>
+              <div class="vs-glow"></div>
+              <div class="ins-visual">
+                <img src="/assets/img/programa2.jpeg" alt="VONYC Sessions · Paul van Dyk">
+                <span class="vs-tag">VONYC · WEEKLY</span>
+                <span class="ins-live"><i class="fas fa-circle"></i> Desde 2006</span>
               </div>
             </aside>
           </div>
@@ -1102,6 +1174,7 @@
       <button class="dock-item" data-tab="eurodance"><i class="fas fa-star"></i><span>Eurodance</span></button>
       <button class="dock-item" data-tab="raves"><i class="fas fa-people-group"></i><span>Raves</span></button>
       <button class="dock-item" data-tab="insessions"><i class="fas fa-compact-disc"></i><span>InSessions</span></button>
+      <button class="dock-item" data-tab="vonyc"><i class="fas fa-microphone-lines"></i><span>VONYC</span></button>
       <button class="dock-item" data-tab="programacion"><i class="fas fa-calendar-day"></i><span>Programas</span></button>
       <button class="dock-item" data-tab="noticias"><i class="fas fa-newspaper"></i><span>Noticias</span></button>
       <button class="dock-item" data-tab="contacto"><i class="fas fa-envelope"></i><span>Contacto</span></button>

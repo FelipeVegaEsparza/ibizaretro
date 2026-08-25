@@ -28,7 +28,6 @@ class IbizaRetroTemplate extends TemplateBase {
         footerRadioName: 'footer-radio-name',
         trackTitle: 'track-title',
         trackArtist: 'track-artist',
-        listenersCount: 'listeners-count',
         bitrate: 'bitrate',
         audioQuality: 'audio-quality',
         trackArtwork: 'track-artwork',
@@ -61,6 +60,7 @@ class IbizaRetroTemplate extends TemplateBase {
       this.setupModalHandlers();
       this.setupLoadMore();
       this.setupContactForm();
+      this.setupClock();
 
       await this.checkTV();
       await this.loadAllContent();
@@ -416,6 +416,28 @@ class IbizaRetroTemplate extends TemplateBase {
     const track = document.getElementById('marquee-track');
     if (!track) return;
     track.innerHTML = track.innerHTML + track.innerHTML;
+  }
+
+  setupClock() {
+    const timeEl = document.getElementById('hero-clock-time');
+    const dateEl = document.getElementById('hero-clock-date');
+    if (!timeEl && !dateEl) return;
+
+    const tick = () => {
+      const now = new Date();
+      if (timeEl) {
+        timeEl.textContent = now.toLocaleTimeString('es-ES', {
+          hour: '2-digit', minute: '2-digit', second: '2-digit'
+        });
+      }
+      if (dateEl) {
+        dateEl.textContent = now.toLocaleDateString('es-ES', {
+          weekday: 'long', day: 'numeric', month: 'long', year: 'numeric'
+        });
+      }
+    };
+    tick();
+    this._clockTimer = setInterval(tick, 1000);
   }
 
   // ==========================================================
@@ -1393,6 +1415,7 @@ class IbizaRetroTemplate extends TemplateBase {
 
   destroy() {
     super.destroy();
+    if (this._clockTimer) clearInterval(this._clockTimer);
     if (this.sponsorsSwiper) { try { this.sponsorsSwiper.destroy(); } catch (e) {} }
   }
 }
