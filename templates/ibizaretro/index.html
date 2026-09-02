@@ -234,15 +234,15 @@
             <aside class="about-visual" data-reveal>
               <div class="visual-stack">
                 <div class="vs-card vs-1">
-                  <img src="https://images.unsplash.com/photo-1493676304819-0d7a8d026dcf?auto=format&fit=crop&w=720&q=70" alt="Mezcladora DJ">
+                  <img src="/assets/img/5.jpeg" alt="Mezcladora DJ">
                   <span class="vs-tag">HOUSE</span>
                 </div>
                 <div class="vs-card vs-2">
-                  <img src="https://images.unsplash.com/photo-1485579149621-3123dd979885?auto=format&fit=crop&w=720&q=70" alt="Sintetizador analógico">
+                  <img src="/assets/img/6.jpeg" alt="Sintetizador analógico">
                   <span class="vs-tag">TRANCE</span>
                 </div>
                 <div class="vs-card vs-3">
-                  <img src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?auto=format&fit=crop&w=720&q=70" alt="Concierto con luces">
+                  <img src="/assets/img/7.jpeg" alt="Concierto con luces">
                   <span class="vs-tag">DANCE</span>
                 </div>
                 <div class="vs-glow"></div>
@@ -1182,6 +1182,34 @@
     </nav>
     <div class="dock-overflow" id="dock-overflow" style="display:none;">
       <div class="dock-overflow-in" id="dock-overflow-content"></div>
+    </div>
+
+    <!-- ========== MINI PLAYER (barra inferior persistente) ========== -->
+    <div class="nowbar" id="mini-player" role="region" aria-label="Reproductor en reproducción">
+      <div class="nowbar-in">
+        <span class="nowbar-accent" aria-hidden="true"></span>
+        <button class="nowbar-cover" id="mini-open" type="button" aria-label="Abrir reproductor principal" title="Abrir reproductor">
+          <img id="mini-cover" src="" alt="" style="display:none;">
+          <span class="nowbar-def" id="mini-cover-def"><i class="fas fa-music"></i></span>
+          <span class="nowbar-cover-ring" aria-hidden="true"></span>
+        </button>
+        <div class="nowbar-meta">
+          <span class="nowbar-kicker">
+            <span class="nowbar-dot" aria-hidden="true"></span>
+            <span id="mini-status">AHORA</span>
+          </span>
+          <div class="nowbar-titles">
+            <span class="nowbar-title" id="mini-title">Ibiza Retro Beats</span>
+            <span class="nowbar-artist" id="mini-artist">Dance · House · Trance · Eurodance</span>
+          </div>
+        </div>
+        <div class="eq mini-eq" id="mini-eq" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i>
+        </div>
+        <button class="nowbar-play" id="mini-play" type="button" aria-label="Reproducir">
+          <i class="fas fa-play"></i>
+        </button>
+      </div>
     </div>
   </div>
 

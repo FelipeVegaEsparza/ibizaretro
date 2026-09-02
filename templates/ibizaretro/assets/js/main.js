@@ -61,10 +61,12 @@ class IbizaRetroTemplate extends TemplateBase {
       this.setupLoadMore();
       this.setupContactForm();
       this.setupClock();
+      this.setupMiniPlayer();
 
       await this.checkTV();
       await this.loadAllContent();
       await this.refreshPlayerTrack();
+      this._syncMiniPlayer();
       this.setupCarousels();
       this.updateDockOverflow();
       console.log('IbizaRetro landing: listo');
@@ -1233,6 +1235,83 @@ class IbizaRetroTemplate extends TemplateBase {
   }
 
   // ==========================================================
+  // MINI PLAYER · barra inferior persistente
+  // Espejo del reproductor del hero, sincronizada con él.
+  // ==========================================================
+
+  setupMiniPlayer() {
+    const bar = document.getElementById('mini-player');
+    if (!bar) return;
+
+    const playBtn = document.getElementById('mini-play');
+    if (playBtn) {
+      playBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (this.audioPlayer) this.audioPlayer.toggle();
+      });
+    }
+
+    const openBtn = document.getElementById('mini-open');
+    if (openBtn) {
+      openBtn.addEventListener('click', () => {
+        const hero = document.getElementById('hero');
+        const dockH = document.getElementById('dock')?.offsetHeight || 70;
+        const top = hero
+          ? hero.getBoundingClientRect().top + window.scrollY - dockH + 1
+          : 0;
+        window.scrollTo({ top, behavior: 'smooth' });
+      });
+    }
+
+    this._syncMiniPlayState(!!this.audioPlayer?.isPlaying);
+    this._syncMiniPlayer();
+  }
+
+  _syncMiniPlayer() {
+    const bar = document.getElementById('mini-player');
+    if (!bar) return;
+
+    const heroTitle = document.getElementById('track-title');
+    const heroArtist = document.getElementById('track-artist');
+    const miniTitle = document.getElementById('mini-title');
+    const miniArtist = document.getElementById('mini-artist');
+
+    if (heroTitle && miniTitle && heroTitle.textContent.trim()) {
+      miniTitle.textContent = heroTitle.textContent.trim();
+    }
+    if (heroArtist && miniArtist && heroArtist.textContent.trim()) {
+      miniArtist.textContent = heroArtist.textContent.trim();
+    }
+
+    const heroArt = document.getElementById('track-artwork');
+    const coverImg = document.getElementById('mini-cover');
+    const coverDef = document.getElementById('mini-cover-def');
+    if (heroArt && coverImg && coverDef) {
+      const src = heroArt.getAttribute('src');
+      const hasArt = heroArt.style.display !== 'none' && !!src;
+      if (hasArt) {
+        if (coverImg.getAttribute('src') !== src) coverImg.src = src;
+        coverImg.style.display = 'block';
+        coverDef.style.display = 'none';
+      } else {
+        coverImg.style.display = 'none';
+        coverDef.style.display = 'grid';
+      }
+    }
+  }
+
+  _syncMiniPlayState(playing, statusText) {
+    const btn = document.getElementById('mini-play');
+    if (btn) {
+      const icon = btn.querySelector('i');
+      if (icon) icon.className = playing ? 'fas fa-pause' : 'fas fa-play';
+      btn.setAttribute('aria-label', playing ? 'Pausar' : 'Reproducir');
+    }
+    const status = document.getElementById('mini-status');
+    if (status && statusText) status.textContent = statusText;
+  }
+
+  // ==========================================================
   // COVER / HOOKS
   // ==========================================================
 
@@ -1246,6 +1325,7 @@ class IbizaRetroTemplate extends TemplateBase {
     }
     // El background del player es estático (fondo.jpeg en CSS).
     // No sobrescribimos hero-bg aquí para mantener fondo.jpeg visible.
+    this._syncMiniPlayer();
   }
 
   _showHeroDefault() {
@@ -1258,6 +1338,7 @@ class IbizaRetroTemplate extends TemplateBase {
       bg.style.backgroundImage = '';
       bg.classList.remove('loaded');
     }
+    this._syncMiniPlayer();
   }
 
   onBasicDataLoaded(data) {
@@ -1270,6 +1351,8 @@ class IbizaRetroTemplate extends TemplateBase {
 
     const footName = document.getElementById('foot-name');
     if (footName && data?.projectName) footName.textContent = data.projectName;
+
+    this._syncMiniPlayer();
   }
 
   onCurrentSongLoaded(songData) {
@@ -1305,6 +1388,8 @@ class IbizaRetroTemplate extends TemplateBase {
         this._showHeroDefault();
       }
     }
+
+    this._syncMiniPlayer();
   }
 
   onAudioPlay() {
@@ -1315,6 +1400,7 @@ class IbizaRetroTemplate extends TemplateBase {
     if (status) status.textContent = 'EN VIVO';
     const label = document.getElementById('onair-label');
     if (label) label.textContent = 'AL AIRE';
+    this._syncMiniPlayState(true, 'EN VIVO');
   }
 
   onAudioPause() {
@@ -1325,6 +1411,7 @@ class IbizaRetroTemplate extends TemplateBase {
     if (status) status.textContent = 'PAUSADO';
     const label = document.getElementById('onair-label');
     if (label) label.textContent = 'EN VIVO';
+    this._syncMiniPlayState(false, 'EN PAUSA');
   }
 
   onAudioError(error) {
@@ -1333,6 +1420,7 @@ class IbizaRetroTemplate extends TemplateBase {
     document.getElementById('cover-disc')?.classList.remove('spinning');
     const status = document.getElementById('hero-status');
     if (status) status.textContent = 'ERROR';
+    this._syncMiniPlayState(false, 'SIN SEÑAL');
   }
 
   // ==========================================================
