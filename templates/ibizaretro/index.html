@@ -164,11 +164,39 @@
               </div>
             </div>
 
-            <div class="hero-clock" aria-label="Hora y fecha en vivo">
-              <div class="clock-time" id="hero-clock-time">00:00:00</div>
-              <div class="clock-side">
-                <span class="clock-k"><i class="fas fa-clock"></i> Hora local</span>
-                <span class="clock-date" id="hero-clock-date"></span>
+            <div class="hero-widgets">
+              <div class="hero-clock" aria-label="Hora y fecha en vivo">
+                <div class="clock-time" id="hero-clock-time">00:00:00</div>
+                <div class="clock-side">
+                  <span class="clock-k"><i class="fas fa-clock"></i> Hora local</span>
+                  <span class="clock-date" id="hero-clock-date"></span>
+                </div>
+              </div>
+
+              <div class="hero-weather" aria-label="Clima en vivo">
+                <div class="wx-unit" id="wx-ibiza">
+                  <span class="wx-loc"><i class="fas fa-map-pin"></i> Ibiza, España</span>
+                  <div class="wx-row">
+                    <i class="fas fa-circle-notch wx-icon" id="wx-ibiza-icon" aria-hidden="true"></i>
+                    <span class="wx-temp" id="wx-ibiza-temp">--°</span>
+                  </div>
+                  <span class="wx-desc" id="wx-ibiza-desc">Cargando…</span>
+                  <span class="wx-sub" id="wx-ibiza-sub"></span>
+                </div>
+
+                <div class="wx-unit is-yours" id="wx-yours" hidden>
+                  <span class="wx-loc" id="wx-yours-loc"><i class="fas fa-location-crosshairs"></i> Tu ubicación</span>
+                  <div class="wx-row">
+                    <i class="fas fa-circle-notch wx-icon" id="wx-yours-icon" aria-hidden="true"></i>
+                    <span class="wx-temp" id="wx-yours-temp">--°</span>
+                  </div>
+                  <span class="wx-desc" id="wx-yours-desc"></span>
+                  <span class="wx-sub" id="wx-yours-sub"></span>
+                </div>
+
+                <button class="wx-locate" id="wx-locate" type="button" title="Usar mi ubicación" aria-label="Usar mi ubicación para el clima">
+                  <i class="fas fa-location-crosshairs"></i>
+                </button>
               </div>
             </div>
 

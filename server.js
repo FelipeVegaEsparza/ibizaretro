@@ -111,7 +111,9 @@ const cspDirectives = {
     "https://fonts.googleapis.com",
     "https://fonts.gstatic.com",
     "https://cdn.jsdelivr.net",
-    "https://unpkg.com"
+    "https://unpkg.com",
+    "https://api.open-meteo.com",
+    "https://api.bigdatacloud.net"
   ],
   fontSrc: [
     "'self'",

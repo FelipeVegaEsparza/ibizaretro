@@ -61,6 +61,7 @@ class IbizaRetroTemplate extends TemplateBase {
       this.setupLoadMore();
       this.setupContactForm();
       this.setupClock();
+      this.setupWeather();
       this.setupMiniPlayer();
 
       await this.checkTV();
@@ -440,6 +441,205 @@ class IbizaRetroTemplate extends TemplateBase {
     };
     tick();
     this._clockTimer = setInterval(tick, 1000);
+  }
+
+  // ==========================================================
+  // CLIMA · Ibiza, España + ubicación del oyente (Open-Meteo)
+  // ==========================================================
+
+  setupWeather() {
+    if (this._weatherStarted) return;
+    this._weatherStarted = true;
+
+    const getUnit = (id) => {
+      const root = document.getElementById(id);
+      if (!root) return null;
+      return {
+        root,
+        icon: root.querySelector('.wx-icon'),
+        temp: root.querySelector('.wx-temp'),
+        desc: root.querySelector('.wx-desc'),
+        sub: root.querySelector('.wx-sub'),
+        loc: root.querySelector('.wx-loc')
+      };
+    };
+
+    const el = { ibiza: getUnit('wx-ibiza'), yours: getUnit('wx-yours') };
+    const locateBtn = document.getElementById('wx-locate');
+    if (!el.ibiza || !locateBtn) return;
+
+    const IBIZA = { lat: 38.9067, lon: 1.4329 };
+    const ENDPOINT = 'https://api.open-meteo.com/v1/forecast';
+    const CURRENT = 'temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m';
+
+    const WMO = {
+      0: ['fa-sun', 'Despejado'],
+      1: ['fa-sun', 'Mayormente despejado'],
+      2: ['fa-cloud-sun', 'Parcialmente nublado'],
+      3: ['fa-cloud-sun', 'Nublado'],
+      45: ['fa-smog', 'Niebla'],
+      48: ['fa-smog', 'Niebla engelante'],
+      51: ['fa-cloud-rain', 'Llovizna ligera'],
+      53: ['fa-cloud-rain', 'Llovizna'],
+      55: ['fa-cloud-rain', 'Llovizna densa'],
+      56: ['fa-cloud-sleet', 'Aguanieve ligera'],
+      57: ['fa-cloud-sleet', 'Aguanieve'],
+      61: ['fa-cloud-showers-heavy', 'Lluvia ligera'],
+      63: ['fa-cloud-showers-heavy', 'Lluvia'],
+      65: ['fa-cloud-showers-heavy', 'Lluvia fuerte'],
+      66: ['fa-cloud-sleet', 'Aguanieve'],
+      67: ['fa-cloud-sleet', 'Aguanieve fuerte'],
+      71: ['fa-snowflake', 'Nevada ligera'],
+      73: ['fa-snowflake', 'Nieve'],
+      75: ['fa-snowflake', 'Nieve fuerte'],
+      77: ['fa-snowflake', 'Granos de nieve'],
+      80: ['fa-cloud-showers-heavy', 'Chubascos ligeros'],
+      81: ['fa-cloud-showers-heavy', 'Chubascos'],
+      82: ['fa-cloud-showers-heavy', 'Chubascos fuertes'],
+      85: ['fa-snowflake', 'Chubascos de nieve'],
+      86: ['fa-snowflake', 'Chubascos de nieve fuertes'],
+      95: ['fa-cloud-bolt', 'Tormenta'],
+      96: ['fa-cloud-bolt', 'Tormenta con granizo'],
+      99: ['fa-cloud-bolt', 'Tormenta con granizo fuerte']
+    };
+
+    const fetchJson = async (url, timeoutMs) => {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), timeoutMs || 10000);
+      try {
+        const res = await fetch(url, { signal: ctrl.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json();
+      } finally {
+        clearTimeout(t);
+      }
+    };
+
+    const fetchWeather = async (lat, lon) => {
+      const url = `${ENDPOINT}?latitude=${lat}&longitude=${lon}&current=${CURRENT}&wind_speed_unit=kmh&timezone=Europe%2FMadrid&forecast_days=1`;
+      const data = await fetchJson(url);
+      return data && data.current ? data.current : null;
+    };
+
+    const render = (ref, current) => {
+      if (!ref || !current) return;
+      const w = WMO[current.weather_code] || ['fa-cloud', 'Variable'];
+      if (ref.temp) {
+        ref.temp.textContent = current.temperature_2m != null ? `${Math.round(current.temperature_2m)}°` : '--°';
+      }
+      if (ref.icon) {
+        ref.icon.className = `fas ${w[0]} wx-icon`;
+        ref.icon.setAttribute('aria-hidden', 'true');
+      }
+      if (ref.desc) ref.desc.textContent = current.weather_code != null ? w[1] : '—';
+      if (ref.sub) {
+        const bits = [];
+        if (current.relative_humidity_2m != null) {
+          bits.push(`<i class="fas fa-droplet"></i>${Math.round(current.relative_humidity_2m)}%`);
+        }
+        if (current.wind_speed_10m != null) {
+          bits.push(`<i class="fas fa-wind"></i>${Math.round(current.wind_speed_10m)} km/h`);
+        }
+        if (current.apparent_temperature != null) {
+          bits.push(`<i class="fas fa-temperature-half"></i>${Math.round(current.apparent_temperature)}°`);
+        }
+        ref.sub.innerHTML = bits.join(' · ');
+      }
+    };
+
+    const renderFail = (ref) => {
+      if (!ref) return;
+      if (ref.temp) ref.temp.textContent = '--°';
+      if (ref.icon) {
+        ref.icon.className = 'fas fa-cloud wx-icon';
+        ref.icon.setAttribute('aria-hidden', 'true');
+      }
+      if (ref.desc) ref.desc.textContent = 'Sin conexión';
+      if (ref.sub) ref.sub.innerHTML = '';
+    };
+
+    this._wxPos = null;
+
+    const loadYours = async () => {
+      if (!this._wxPos || !el.yours) return;
+      try {
+        const current = await fetchWeather(this._wxPos.lat, this._wxPos.lon);
+        if (current) render(el.yours, current);
+      } catch (e) { /* silencioso: se reintenta en el siguiente ciclo */ }
+    };
+
+    const locateMe = async (manual) => {
+      if (!navigator.geolocation) return;
+      if (manual) locateBtn.classList.add('loading');
+      try {
+        const pos = await new Promise((resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject, {
+            enableHighAccuracy: false,
+            timeout: 12000,
+            maximumAge: 600000
+          });
+        });
+        this._wxPos = { lat: pos.coords.latitude, lon: pos.coords.longitude };
+        await loadYours();
+        const name = await this._reverseGeocodeCity(this._wxPos.lat, this._wxPos.lon);
+        if (el.yours && el.yours.loc) {
+          el.yours.loc.innerHTML = `<i class="fas fa-location-crosshairs"></i> ${this.esc(name)}`;
+        }
+        if (el.yours) el.yours.root.hidden = false;
+        locateBtn.classList.add('is-active');
+        locateBtn.setAttribute('aria-pressed', 'true');
+        locateBtn.title = 'Actualizar mi ubicación';
+      } catch (e) {
+        locateBtn.classList.remove('is-active');
+        locateBtn.setAttribute('aria-pressed', 'false');
+        locateBtn.title = 'Permitir mi ubicación';
+      } finally {
+        locateBtn.classList.remove('loading');
+      }
+    };
+
+    const refreshAll = async () => {
+      try {
+        const current = await fetchWeather(IBIZA.lat, IBIZA.lon);
+        render(el.ibiza, current);
+      } catch (e) {
+        renderFail(el.ibiza);
+      }
+      await loadYours();
+    };
+
+    refreshAll();
+
+    // Intenta ubicar al oyente al cargar; si se deniega o falla, queda el botón.
+    if (navigator.onLine) setTimeout(() => locateMe(false), 800);
+
+    locateBtn.addEventListener('click', () => locateMe(true));
+    window.addEventListener('online', () => refreshAll());
+
+    if (this._weatherTimer) clearInterval(this._weatherTimer);
+    this._weatherTimer = setInterval(() => refreshAll(), 30 * 60 * 1000);
+  }
+
+  async _reverseGeocodeCity(lat, lon) {
+    try {
+      const ctrl = new AbortController();
+      const t = setTimeout(() => ctrl.abort(), 8000);
+      try {
+        const url = `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${lat}&longitude=${lon}&localityLanguage=es`;
+        const res = await fetch(url, { signal: ctrl.signal });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const data = await res.json();
+        const place = data.city || data.locality || data.principalSubdivision;
+        let country = data.countryName;
+        if (country === 'Spain') country = 'España';
+        const parts = [place, country].filter(Boolean);
+        return parts.join(', ');
+      } finally {
+        clearTimeout(t);
+      }
+    } catch (e) {
+      return 'Tu ubicación';
+    }
   }
 
   // ==========================================================
